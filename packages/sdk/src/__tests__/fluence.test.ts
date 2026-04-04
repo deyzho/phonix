@@ -44,7 +44,7 @@ describe('FluenceProvider.estimate()', () => {
     expect(estimate.token).toBe('FLT');
     expect(typeof estimate.amount).toBe('number');
     expect(estimate.amount).toBeGreaterThan(0);
-    expect(typeof estimate.amountUsd).toBe('number');
+    expect(typeof estimate.usdEquivalent).toBe('number');
   });
 
   it('should scale estimate with replica count', async () => {

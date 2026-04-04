@@ -52,12 +52,7 @@ export class FluenceProvider implements IPhonixProvider {
       provider: 'fluence',
       token: 'FLT',
       amount: amountFlt,
-      amountUsd: amountFlt * FLT_USD_RATE,
-      breakdown: {
-        compute: amountFlt * 0.8,
-        storage: amountFlt * 0.1,
-        network: amountFlt * 0.1,
-      },
+      usdEquivalent: amountFlt * FLT_USD_RATE,
     };
   }
 

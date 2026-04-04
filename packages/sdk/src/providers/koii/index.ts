@@ -51,11 +51,7 @@ export class KoiiProvider implements IPhonixProvider {
       provider: 'koii',
       token: 'KOII',
       amount: amountKoii,
-      amountUsd: amountKoii * KOII_USD_RATE,
-      breakdown: {
-        staking: amountKoii * 0.9,
-        fees: amountKoii * 0.1,
-      },
+      usdEquivalent: amountKoii * KOII_USD_RATE,
     };
   }
 

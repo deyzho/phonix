@@ -63,8 +63,8 @@ export interface CostEstimate {
 // ─── Error types ────────────────────────────────────────────────────────────
 
 export class PhonixError extends Error {
-  constructor(message: string) {
-    super(message);
+  constructor(providerOrMessage: string, message?: string) {
+    super(message ? `[${providerOrMessage}] ${message}` : providerOrMessage);
     this.name = 'PhonixError';
     // Maintain proper prototype chain in ES5 transpilation targets
     Object.setPrototypeOf(this, new.target.prototype);
