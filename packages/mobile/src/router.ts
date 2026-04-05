@@ -1,4 +1,17 @@
 /**
+ * Copyright (c) 2024–present Phonix. All rights reserved.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This file contains trade secret algorithms that form the core of the Phonix
+ * routing engine. Unauthorized copying, distribution, modification, reverse
+ * engineering, or disclosure — in whole or in part — is strictly prohibited
+ * without prior written consent from Phonix.
+ *
+ * For licensing enquiries contact: legal@phonix.dev
+ */
+
+/**
  * MobilePhonixRouter — multi-provider routing for React Native (iOS & Android).
  *
  * Routes send() calls across multiple provider endpoints using the same strategy

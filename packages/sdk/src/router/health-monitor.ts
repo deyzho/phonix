@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2024–present Phonix. All rights reserved.
+ *
+ * PROPRIETARY AND CONFIDENTIAL
+ *
+ * This file contains trade secret algorithms that form the core of the Phonix
+ * routing engine. Unauthorized copying, distribution, modification, reverse
+ * engineering, or disclosure — in whole or in part — is strictly prohibited
+ * without prior written consent from Phonix.
+ *
+ * For licensing enquiries contact: legal@phonix.dev
+ */
+
 const EMA_α = 0.2;
 const OPTIMISTIC_INITIAL_LATENCY = 500;
 const OPTIMISTIC_INITIAL_COST = 0;
