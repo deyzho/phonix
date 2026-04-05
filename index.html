@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Phonix — Build edge dApps once. Run them everywhere.</title>
-  <meta name="description" content="The unified SDK for deploying confidential edge applications across decentralised compute networks. One interface, any provider." />
+  <meta name="description" content="The unified SDK for deploying confidential edge applications across decentralised compute networks. Call from iOS, Android, or any JavaScript environment." />
   <meta property="og:title" content="Phonix SDK" />
-  <meta property="og:description" content="Build edge dApps once. Run them confidentially on millions of smartphones." />
+  <meta property="og:description" content="Build edge dApps once. Call them from iOS, Android, or any JS app — one interface, any provider." />
   <meta property="og:url" content="https://phonix.dev" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -240,6 +240,43 @@
     footer a:hover { color: var(--accent); }
     .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
 
+    /* ── Mobile section ──────────────────────────────────── */
+    .mobile-section { background: var(--bg); }
+    .mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    @media (max-width: 860px) { .mobile-grid { grid-template-columns: 1fr; } }
+    .mobile-platform-badges { display: flex; gap: 0.75rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
+    .platform-badge {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.5rem 1rem;
+      font-size: 0.875rem; font-weight: 600;
+    }
+    .platform-badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-ios { background: #007AFF; }
+    .dot-android { background: #3DDC84; }
+    .dot-expo { background: #f97316; }
+    .mobile-feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 2rem; }
+    .mobile-feature-list li { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--muted); font-size: 0.925rem; }
+    .mobile-feature-list li .check { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+    .tab-btn {
+      background: none; border: none; color: var(--muted);
+      padding: 0.55rem 1rem; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .install-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.65rem 1rem; margin-top: 1rem;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.82rem;
+    }
+    .install-row .prompt { color: var(--accent); user-select: none; }
+
     /* ── Responsive nav ───────────────────────────────────── */
     @media (max-width: 600px) {
       .nav-links { display: none; }
@@ -254,6 +291,7 @@
   <div class="nav-links">
     <a href="#providers">Providers</a>
     <a href="#demo">Quick start</a>
+    <a href="#mobile">Mobile</a>
     <a href="#features">Features</a>
     <a href="https://github.com/deyzho/phonix" target="_blank">GitHub</a>
   </div>
@@ -262,9 +300,9 @@
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="badge">Open Source · v0.2.0</div>
+  <div class="badge">Open Source · v0.2.0 · Now with iOS &amp; Android</div>
   <h1>Build edge dApps once.<br /><em>Run them everywhere.</em></h1>
-  <p>The unified SDK for deploying confidential applications across decentralised compute networks. One interface, any provider.</p>
+  <p>The unified SDK for deploying confidential applications across decentralised compute networks — and calling them from any iOS, Android, or JavaScript app.</p>
   <div class="hero-ctas">
     <a class="btn-primary" href="#demo">Quick start</a>
     <a class="btn-secondary" href="https://github.com/deyzho/phonix" target="_blank">View on GitHub</a>
@@ -436,6 +474,138 @@ client.<span class="fn">disconnect</span>();</pre>
   </div>
 </section>
 
+<!-- ── Mobile ────────────────────────────────────────────────────────────── -->
+<section class="mobile-section" id="mobile">
+  <div class="section-inner">
+    <div class="mobile-grid">
+      <div>
+        <div class="section-label">Mobile SDK</div>
+        <h2 class="section-title">Call your processors<br/>from iOS &amp; Android</h2>
+        <p style="color:var(--muted);font-size:1.05rem;margin-bottom:1.75rem;">
+          Deploy your edge processors once with the Phonix CLI, then call them directly
+          from your React Native or Expo app. Real-time results, secure key storage,
+          and automatic background/foreground lifecycle management — all in one package.
+        </p>
+        <div class="mobile-platform-badges">
+          <div class="platform-badge"><span class="dot dot-ios"></span> iOS</div>
+          <div class="platform-badge"><span class="dot dot-android"></span> Android</div>
+          <div class="platform-badge"><span class="dot dot-expo"></span> Expo</div>
+        </div>
+        <ul class="mobile-feature-list">
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">React hooks</strong> — <code style="color:var(--accent);font-size:.85em">usePhonix</code>, <code style="color:var(--accent);font-size:.85em">useMessages</code>, <code style="color:var(--accent);font-size:.85em">useSend</code> for clean component integration</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Context provider</strong> — wrap your root with <code style="color:var(--accent);font-size:.85em">&lt;PhonixProvider&gt;</code> and access the client anywhere in the tree</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Secure key storage</strong> — iOS Keychain &amp; Android Keystore via <code style="color:var(--accent);font-size:.85em">expo-secure-store</code>, in-memory fallback for bare RN</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">AppState lifecycle</strong> — auto-disconnects when the app backgrounds, auto-reconnects on foreground</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">SSRF protection</strong> — all endpoints validated: https:// only, private IPs blocked</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Zero native modules</strong> — pure JavaScript, works with Expo Go and bare React Native</span></li>
+        </ul>
+        <div class="install-row">
+          <span class="prompt">$</span>
+          <code>npm install @phonix/mobile</code>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span class="dot-red"></span>
+              <span class="dot-yellow"></span>
+              <span class="dot-green"></span>
+            </div>
+            <div class="tab-bar" style="border:none;margin:0;flex:1;margin-left:0.5rem;">
+              <button class="tab-btn active" onclick="switchTab(event,'tab-context')">App.tsx</button>
+              <button class="tab-btn" onclick="switchTab(event,'tab-hooks')">Screen.tsx</button>
+              <button class="tab-btn" onclick="switchTab(event,'tab-standalone')">Standalone</button>
+            </div>
+          </div>
+
+          <!-- Tab: Context / Provider -->
+          <div id="tab-context" class="tab-panel active">
+            <pre><span class="cm">// Wrap your root component once</span>
+<span class="kw">import</span> { <span class="obj">PhonixProvider</span> } <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="obj">PhonixProvider</span>
+      provider=<span class="str">"akash"</span>
+      secretKey={process.env.<span class="obj">PHONIX_SECRET_KEY</span>}
+      autoConnect
+    &gt;
+      &lt;<span class="obj">NavigationContainer</span>&gt;
+        &lt;<span class="obj">MainStack</span> /&gt;
+      &lt;/<span class="obj">NavigationContainer</span>&gt;
+    &lt;/<span class="obj">PhonixProvider</span>&gt;
+  );
+}</pre>
+          </div>
+
+          <!-- Tab: Hooks -->
+          <div id="tab-hooks" class="tab-panel">
+            <pre><span class="cm">// Access from any screen in the tree</span>
+<span class="kw">import</span> {
+  <span class="obj">usePhonixContext</span>,
+  <span class="obj">useMessages</span>,
+  <span class="obj">useSend</span>,
+} <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+
+<span class="kw">export function</span> <span class="fn">ResultsScreen</span>() {
+  <span class="kw">const</span> { connected } = <span class="fn">usePhonixContext</span>();
+  <span class="kw">const</span> messages = <span class="fn">useMessages</span>(client);
+  <span class="kw">const</span> { send, sending } = <span class="fn">useSend</span>(client);
+
+  <span class="kw">return</span> (
+    &lt;<span class="obj">View</span>&gt;
+      &lt;<span class="obj">Text</span>&gt;{connected ? <span class="str">'🟢 Live'</span> : <span class="str">'⚪ Offline'</span>}&lt;/<span class="obj">Text</span>&gt;
+      &lt;<span class="obj">Button</span>
+        title={sending ? <span class="str">'Sending...'</span> : <span class="str">'Run inference'</span>}
+        onPress={() =&gt; <span class="fn">send</span>(leaseUrl, {
+          prompt: <span class="str">'Summarize the news today'</span>
+        })}
+      /&gt;
+      {messages.<span class="fn">map</span>((m, i) =&gt; (
+        &lt;<span class="obj">Text</span> key={i}&gt;{m.payload <span class="kw">as</span> <span class="obj">string</span>}&lt;/<span class="obj">Text</span>&gt;
+      ))}
+    &lt;/<span class="obj">View</span>&gt;
+  );
+}</pre>
+          </div>
+
+          <!-- Tab: Standalone (no context) -->
+          <div id="tab-standalone" class="tab-panel">
+            <pre><span class="cm">// Without context — manage client directly</span>
+<span class="kw">import</span> { <span class="obj">usePhonix</span>, <span class="obj">useMessages</span> } <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+
+<span class="kw">export function</span> <span class="fn">InferenceScreen</span>() {
+  <span class="kw">const</span> { client, connected, connect, error }
+    = <span class="fn">usePhonix</span>({
+        provider: <span class="str">'akash'</span>,
+        secretKey: <span class="obj">PHONIX_SECRET_KEY</span>,
+      });
+  <span class="kw">const</span> messages = <span class="fn">useMessages</span>(client);
+
+  <span class="kw">return</span> (
+    &lt;<span class="obj">View</span>&gt;
+      &lt;<span class="obj">Button</span>
+        title=<span class="str">"Connect"</span>
+        onPress={connect}
+        disabled={connected}
+      /&gt;
+      {error &amp;&amp; &lt;<span class="obj">Text</span>&gt;{error.message}&lt;/<span class="obj">Text</span>&gt;}
+      {messages.<span class="fn">map</span>((m, i) =&gt; (
+        &lt;<span class="obj">Text</span> key={i}&gt;
+          {<span class="obj">JSON</span>.<span class="fn">stringify</span>(m.payload)}
+        &lt;/<span class="obj">Text</span>&gt;
+      ))}
+    &lt;/<span class="obj">View</span>&gt;
+  );
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Features ──────────────────────────────────────────────────────────── -->
 <section class="features" id="features">
   <div class="section-inner">
@@ -472,6 +642,11 @@ client.<span class="fn">disconnect</span>();</pre>
         <div class="feature-icon">🌐</div>
         <h3>Provider-agnostic API</h3>
         <p>Switch from Acurast to Fluence to Koii to Akash by changing one config field. Your application code stays identical across all providers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>iOS &amp; Android ready</h3>
+        <p><code style="font-size:.8em;color:var(--accent)">@phonix/mobile</code> brings React hooks, context, and AppState lifecycle to your React Native and Expo apps — iOS Keychain, Android Keystore, zero native modules.</p>
       </div>
     </div>
   </div>
@@ -543,6 +718,14 @@ client.<span class="fn">disconnect</span>();</pre>
       btn.textContent = 'copied!';
       setTimeout(() => { btn.textContent = 'copy'; }, 2000);
     });
+  }
+
+  function switchTab(event, panelId) {
+    const codeBlock = event.target.closest('.code-block');
+    codeBlock.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    codeBlock.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
   }
 </script>
 </body>

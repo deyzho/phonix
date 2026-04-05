@@ -2,7 +2,7 @@
 
 **Build edge dApps once. Run them confidentially on decentralised compute networks — no servers, no headaches.**
 
-Phonix is the unified developer platform for building and deploying confidential edge applications across decentralised compute networks. It abstracts the complexity of multiple DePIN providers behind a single, consistent API — supporting [Acurast](https://acurast.com) (237k+ smartphone TEE nodes), [Fluence](https://fluence.network), [Koii](https://koii.network), and [Akash Network](https://akash.network).
+Phonix is the unified developer platform for building and deploying confidential edge applications across decentralised compute networks. It abstracts the complexity of multiple DePIN providers behind a single, consistent API — supporting [Acurast](https://acurast.com) (237k+ smartphone TEE nodes), [Fluence](https://fluence.network), [Koii](https://koii.network), and [Akash Network](https://akash.network). Call your deployed processors directly from **iOS and Android** apps with `@phonix/mobile`.
 
 > Phonix is to edge compute what Ethers.js is to EVM chains: **one interface, any provider**.
 
@@ -156,6 +156,97 @@ const unsubscribe = client.onMessage((msg) => {
 
 client.disconnect();
 ```
+
+---
+
+## Mobile SDK (iOS & Android)
+
+`@phonix/mobile` is a React Native / Expo package that lets you call your deployed Phonix processors directly from iOS and Android apps.
+
+```bash
+npm install @phonix/mobile
+```
+
+### Quick start — Expo / React Native
+
+```tsx
+// App.tsx — wrap your root once
+import { PhonixProvider } from '@phonix/mobile';
+
+export default function App() {
+  return (
+    <PhonixProvider provider="akash" secretKey={PHONIX_SECRET_KEY} autoConnect>
+      <NavigationContainer>
+        <MainStack />
+      </NavigationContainer>
+    </PhonixProvider>
+  );
+}
+
+// AnyScreen.tsx — access from anywhere in the tree
+import { usePhonixContext, useMessages, useSend } from '@phonix/mobile';
+
+export function InferenceScreen() {
+  const { client, connected } = usePhonixContext();
+  const messages = useMessages(client);
+  const { send, sending } = useSend(client);
+
+  return (
+    <View>
+      <Text>{connected ? '🟢 Live' : '⚪ Offline'}</Text>
+      <Button
+        title={sending ? 'Sending...' : 'Run inference'}
+        onPress={() => send(AKASH_LEASE_URL, { prompt: 'Hello from iOS!' })}
+      />
+      {messages.map((m, i) => (
+        <Text key={i}>{JSON.stringify(m.payload)}</Text>
+      ))}
+    </View>
+  );
+}
+```
+
+### Without context — standalone hooks
+
+```tsx
+import { usePhonix, useMessages } from '@phonix/mobile';
+
+function Screen() {
+  const { client, connected, connect, error } = usePhonix({
+    provider: 'akash',
+    secretKey: PHONIX_SECRET_KEY,
+  });
+  const messages = useMessages(client);
+
+  return <Button title="Connect" onPress={connect} disabled={connected} />;
+}
+```
+
+### Secure key storage
+
+```tsx
+import { SecureKeyStorage } from '@phonix/mobile';
+
+const storage = new SecureKeyStorage();
+await storage.saveSecretKey(myKey); // iOS Keychain / Android Keystore
+const key = await storage.loadSecretKey();
+```
+
+### Mobile API
+
+| Export | Description |
+|---|---|
+| `MobilePhonixClient` | Messaging-only client (no deploy/esbuild, works in Hermes/JSC) |
+| `usePhonix(options)` | Hook — manages client lifecycle, returns `{ client, connected, connect, disconnect, error }` |
+| `useMessages(client)` | Hook — subscribes to messages, returns reactive `Message[]` array (newest first) |
+| `useSend(client)` | Hook — wraps `client.send()` with `sending` / `sendError` state |
+| `PhonixProvider` | React context — provides client to the full component tree |
+| `usePhonixContext()` | Consumes the PhonixProvider context |
+| `SecureKeyStorage` | Persists keys via iOS Keychain / Android Keystore (`expo-secure-store`) |
+
+**Supported providers in `@phonix/mobile`:** `'akash'` (HTTP), `'acurast'` (WebSocket), `'http'` (generic HTTPS)
+
+> Deploy your processors with `phonix deploy` on your development machine. The mobile SDK handles calling them — not deploying.
 
 ---
 
@@ -323,7 +414,7 @@ cd packages/sdk
 npx vitest run
 ```
 
-104 tests covering config loading and validation, runtime bootstrap generation for all four providers, provider client construction and SSRF protection, cost estimation, message handler registration, SDL generation (Akash), and disconnect lifecycle.
+135 tests covering config loading and validation, runtime bootstrap generation for all four providers, provider client construction and SSRF protection, cost estimation, message handler registration, SDL generation (Akash), disconnect lifecycle, mobile client SSRF/validation, and SecureKeyStorage.
 
 ---
 
