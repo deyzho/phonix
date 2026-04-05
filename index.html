@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Phonix — Build edge dApps once. Run them everywhere.</title>
-  <meta name="description" content="The unified SDK for deploying confidential edge applications across decentralised compute networks. Call from iOS, Android, or any JavaScript environment." />
-  <meta property="og:title" content="Phonix SDK" />
-  <meta property="og:description" content="Build edge dApps once. Call them from iOS, Android, or any JS app — one interface, any provider." />
+  <title>Phonix — Deploy AI to the edge. Any network, one SDK.</title>
+  <meta name="description" content="The deployment layer for edge AI. Run inference on decentralised GPU and TEE compute — automatically routed to the fastest, cheapest option. One SDK. Zero lock-in." />
+  <meta property="og:title" content="Phonix SDK — Deploy AI to the edge" />
+  <meta property="og:description" content="Drop in the OpenAI-compatible inference endpoint and your existing code routes through decentralised GPU in two lines." />
   <meta property="og:url" content="https://phonix.dev" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -291,6 +291,35 @@
     }
     .router-strategy-list li .desc { color: var(--muted); }
 
+    /* ── Inference section ───────────────────────────────── */
+    .inference-section { background: var(--bg); }
+    .inference-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 860px) { .inference-grid { grid-template-columns: 1fr; } }
+    .model-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .model-table th { color: var(--muted); font-weight: 600; text-align: left; padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border); }
+    .model-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(30,30,46,.5); color: var(--text); }
+    .model-table tr:last-child td { border-bottom: none; }
+    .provider-pill {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      padding: 0.15rem 0.5rem; border-radius: 100px;
+      background: rgba(249,115,22,.12); color: var(--accent);
+    }
+
+    /* ── Status callout ──────────────────────────────────── */
+    .status-callout {
+      background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .status-callout-inner {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .status-dot-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .status-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.8rem; font-weight: 600;
+    }
+    .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
+
     /* ── Responsive nav ───────────────────────────────────── */
     @media (max-width: 600px) {
       .nav-links { display: none; }
@@ -304,10 +333,12 @@
   <div class="nav-logo">🔥 <span>Phonix</span></div>
   <div class="nav-links">
     <a href="#providers">Providers</a>
+    <a href="#inference">Inference</a>
     <a href="#demo">Quick start</a>
     <a href="#mobile">Mobile</a>
     <a href="#router">Router</a>
     <a href="#features">Features</a>
+    <a href="https://status.phonixsdk.dev" target="_blank">Status</a>
     <a href="https://github.com/deyzho/phonixsdk" target="_blank">GitHub</a>
   </div>
   <a class="nav-cta" href="https://github.com/deyzho/phonixsdk" target="_blank">Get started →</a>
@@ -315,9 +346,9 @@
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="badge">Open Source · v0.2.0 · Now on npm</div>
-  <h1>Build edge dApps once.<br /><em>Run them everywhere.</em></h1>
-  <p>The unified SDK for deploying confidential applications across decentralised compute networks — and calling them from any iOS, Android, or JavaScript app.</p>
+  <div class="badge">Open Source · v0.2.0 · GPU + TEE Compute · Now on npm</div>
+  <h1>Deploy AI to the edge.<br /><em>Any network, one SDK.</em></h1>
+  <p>Phonix is the deployment layer for edge AI. Run inference on decentralised compute — automatically routed to the fastest, cheapest option. Zero lock-in.</p>
   <div class="hero-ctas">
     <a class="btn-primary" href="#demo">Quick start</a>
     <a class="btn-secondary" href="https://github.com/deyzho/phonixsdk" target="_blank">View on GitHub</a>
@@ -328,6 +359,9 @@
     <button class="copy-btn" onclick="copyInstall()">copy</button>
   </div>
   <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+    <a href="https://www.npmjs.com/package/@phonixsdk/inference" target="_blank">
+      <img src="https://img.shields.io/npm/v/@phonixsdk/inference?label=%40phonixsdk%2Finference&color=f97316&style=flat-square" alt="@phonixsdk/inference on npm" />
+    </a>
     <a href="https://www.npmjs.com/package/@phonixsdk/sdk" target="_blank">
       <img src="https://img.shields.io/npm/v/@phonixsdk/sdk?label=%40phonixsdk%2Fsdk&color=f97316&style=flat-square" alt="@phonixsdk/sdk on npm" />
     </a>
@@ -347,13 +381,37 @@
 <section class="providers" id="providers">
   <div class="section-inner">
     <div class="section-label">Providers</div>
-    <h2 class="section-title">One SDK, four networks</h2>
-    <p class="section-sub">Deploy the same code to any supported DePIN provider without rewriting your application logic.</p>
+    <h2 class="section-title">One SDK, five networks</h2>
+    <p class="section-sub">Deploy the same AI workload to any supported network without rewriting your code. Phonix automatically routes to the fastest, cheapest option.</p>
     <div class="provider-grid">
       <div class="provider-card">
         <div class="provider-header">
-          <div class="provider-name">Acurast</div>
+          <div class="provider-name">io.net</div>
+          <div class="provider-badge">GPU · New</div>
+        </div>
+        <div class="provider-desc">Decentralised GPU clusters — A100, H100, RTX 4090 spot compute at a fraction of AWS pricing. The best option for large model inference.</div>
+        <div class="provider-meta">
+          <span>🖥️ GPU clusters</span>
+          <span>🔑 API key</span>
+          <span>⚡ ~$0.40/hr A100</span>
+        </div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-header">
+          <div class="provider-name">Akash</div>
           <div class="provider-badge">Supported</div>
+        </div>
+        <div class="provider-desc">Decentralised cloud marketplace where providers bid to run containerised workloads. Deploy bundles via IPFS and pay in AKT — no lock-in, no vendor overhead.</div>
+        <div class="provider-meta">
+          <span>☁️ Docker containers</span>
+          <span>🔑 BIP-39 mnemonic</span>
+          <span>⚡ nodejs</span>
+        </div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-header">
+          <div class="provider-name">Acurast</div>
+          <div class="provider-badge">TEE · Supported</div>
         </div>
         <div class="provider-desc">237,000+ smartphone nodes running inside hardware Trusted Execution Environments. Your code and data are private — even from device owners.</div>
         <div class="provider-meta">
@@ -383,18 +441,6 @@
         <div class="provider-meta">
           <span>🔗 Task nodes</span>
           <span>🔑 Solana keypair</span>
-          <span>⚡ nodejs</span>
-        </div>
-      </div>
-      <div class="provider-card">
-        <div class="provider-header">
-          <div class="provider-name">Akash</div>
-          <div class="provider-badge">Supported</div>
-        </div>
-        <div class="provider-desc">Decentralised cloud marketplace where providers bid to run containerised workloads. Deploy bundles via IPFS and pay in AKT — no lock-in, no vendor overhead.</div>
-        <div class="provider-meta">
-          <span>☁️ Docker containers</span>
-          <span>🔑 BIP-39 mnemonic</span>
           <span>⚡ nodejs</span>
         </div>
       </div>
@@ -635,6 +681,136 @@ client.<span class="fn">disconnect</span>();</pre>
   </div>
 </section>
 
+<!-- ── Inference ─────────────────────────────────────────────────────────── -->
+<section class="inference-section" id="inference">
+  <div class="section-inner">
+    <div class="section-label">OpenAI-compatible Inference</div>
+    <h2 class="section-title">Switch to decentralised GPU<br/>in two lines</h2>
+    <p class="section-sub">Tired of OpenAI pricing? Need private inference? <code style="color:var(--accent);font-size:.9em">@phonixsdk/inference</code> is a drop-in <code style="color:var(--accent);font-size:.9em">baseURL</code> replacement — no code changes required.</p>
+    <div class="inference-grid">
+      <div>
+        <table class="model-table">
+          <thead>
+            <tr><th>Model</th><th>Provider</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code style="color:var(--accent);font-size:.8em">phonix-llama-3-70b</code></td>
+              <td><span class="provider-pill">io.net</span></td>
+              <td style="color:var(--muted)">A100 spot, best for large context</td>
+            </tr>
+            <tr>
+              <td><code style="color:var(--accent);font-size:.8em">phonix-mistral-7b</code></td>
+              <td><span class="provider-pill">io.net</span></td>
+              <td style="color:var(--muted)">GPU, cost-efficient</td>
+            </tr>
+            <tr>
+              <td><code style="color:var(--accent);font-size:.8em">phonix-llama-3-8b</code></td>
+              <td><span class="provider-pill">Akash</span></td>
+              <td style="color:var(--muted)">Container cloud, moderate cost</td>
+            </tr>
+            <tr>
+              <td><code style="color:var(--accent);font-size:.8em">phonix-tee-phi-3-mini</code></td>
+              <td><span class="provider-pill">Acurast</span></td>
+              <td style="color:var(--muted)">TEE, private, lowest cost</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="mobile-feature-list">
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">OpenAI wire-compatible</strong> — works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package, LangChain, LlamaIndex, and more</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Streaming SSE</strong> — pass-through token streaming, no buffering overhead</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Automatic failover</strong> — if a provider is unavailable, the next best one is tried automatically</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Routing strategies</strong> — <code style="color:var(--accent);font-size:.85em">cost</code>, <code style="color:var(--accent);font-size:.85em">latency</code>, or <code style="color:var(--accent);font-size:.85em">balanced</code></span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">Works everywhere</strong> — Next.js App Router, Express, Cloudflare Workers, any Node.js HTTP server</span></li>
+        </ul>
+        <div class="install-row">
+          <span class="prompt">$</span>
+          <code>npm install @phonixsdk/inference</code>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+            </div>
+            Before — OpenAI SDK
+          </div>
+          <pre><span class="kw">import</span> <span class="obj">OpenAI</span> <span class="kw">from</span> <span class="str">'openai'</span>;
+
+<span class="kw">const</span> client = <span class="kw">new</span> <span class="fn">OpenAI</span>({
+  apiKey: process.env.<span class="obj">OPENAI_API_KEY</span>,
+});</pre>
+        </div>
+        <div class="code-block" style="margin-top:1rem">
+          <div class="code-header">
+            <div class="code-dots">
+              <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+            </div>
+            After — Phonix (2 line change)
+          </div>
+          <pre><span class="kw">import</span> <span class="obj">OpenAI</span> <span class="kw">from</span> <span class="str">'openai'</span>;
+
+<span class="kw">const</span> client = <span class="kw">new</span> <span class="fn">OpenAI</span>({
+  <span class="cm">// ← swap these two lines</span>
+  baseURL: <span class="str">'https://your-api.example.com/v1'</span>,
+  apiKey:  process.env.<span class="obj">PHONIX_SECRET_KEY</span>,
+});
+
+<span class="cm">// All your existing code stays identical ↓</span>
+<span class="kw">const</span> res = <span class="kw">await</span> client.chat.completions.<span class="fn">create</span>({
+  model:    <span class="str">'phonix-llama-3-70b'</span>,
+  messages: [{ role: <span class="str">'user'</span>, content: prompt }],
+  stream:   <span class="kw">true</span>,
+});</pre>
+        </div>
+        <div class="code-block" style="margin-top:1rem">
+          <div class="code-header">
+            <div class="code-dots">
+              <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+            </div>
+            app/api/v1/chat/completions/route.ts
+          </div>
+          <pre><span class="kw">import</span> { <span class="obj">PhonixInferenceHandler</span> } <span class="kw">from</span> <span class="str">'@phonixsdk/inference'</span>;
+
+<span class="kw">const</span> handler = <span class="kw">new</span> <span class="fn">PhonixInferenceHandler</span>({
+  apiKey:        process.env.<span class="obj">PHONIX_SECRET_KEY</span>,
+  ionetEndpoint: process.env.<span class="obj">IONET_ENDPOINT</span>,
+  akashEndpoint: process.env.<span class="obj">AKASH_ENDPOINT</span>,
+  strategy:      <span class="str">'cost'</span>,
+});
+
+<span class="kw">export const</span> POST = (req: <span class="obj">Request</span>) =&gt; handler.<span class="fn">handleRequest</span>(req);
+<span class="kw">export const</span> GET  = (req: <span class="obj">Request</span>) =&gt; handler.<span class="fn">handleRequest</span>(req);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Status callout ─────────────────────────────────────────────────────── -->
+<section class="status-callout">
+  <div class="section-inner" style="padding:2.5rem 0;">
+    <div class="status-callout-inner">
+      <div>
+        <div class="section-label" style="margin-bottom:0.4rem;">Provider Health Dashboard</div>
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:0.3rem;">Real-time status across all five networks</h3>
+        <p style="color:var(--muted);font-size:0.9rem;">Latency sparklines, health scores, and operational status — updated every 5 minutes.</p>
+      </div>
+      <div>
+        <div class="status-dot-row" style="margin-bottom:0.75rem;">
+          <div class="status-pill"><span class="dot"></span>io.net</div>
+          <div class="status-pill"><span class="dot"></span>Akash</div>
+          <div class="status-pill"><span class="dot"></span>Acurast</div>
+          <div class="status-pill"><span class="dot"></span>Fluence</div>
+          <div class="status-pill"><span class="dot"></span>Koii</div>
+        </div>
+        <a class="btn-secondary" href="https://status.phonixsdk.dev" target="_blank" style="display:inline-block;">View status dashboard →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Router ────────────────────────────────────────────────────────────── -->
 <section class="router-section" id="router">
   <div class="section-inner">
@@ -733,7 +909,17 @@ router.health().forEach(h =&gt; {
       <div class="feature-card">
         <div class="feature-icon">🌐</div>
         <h3>Provider-agnostic API</h3>
-        <p>Switch from Acurast to Fluence to Koii to Akash by changing one config field. Your application code stays identical across all providers.</p>
+        <p>Switch from io.net to Akash to Acurast by changing one config field. Your application code stays identical across all five providers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖥️</div>
+        <h3>GPU compute via io.net</h3>
+        <p>A100 and H100 spot clusters at ~$0.40/hr. The same SDK interface — deploy, send, receive — with a 60-second timeout and 4 MiB response cap for large model outputs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔌</div>
+        <h3>OpenAI-compatible endpoint</h3>
+        <p>Drop <code style="font-size:.8em;color:var(--accent)">@phonixsdk/inference</code> into any Next.js, Express, or Cloudflare Worker. Change <code style="font-size:.8em;color:var(--accent)">baseURL</code> in your existing OpenAI client and you're done.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📱</div>
@@ -787,10 +973,10 @@ router.health().forEach(h =&gt; {
 <!-- ── CTA ───────────────────────────────────────────────────────────────── -->
 <section class="cta-section">
   <div class="section-inner">
-    <h2>Start building today</h2>
-    <p>Open source, Apache-2.0 licensed, and live on npm today.</p>
+    <h2>Deploy AI to the edge today</h2>
+    <p>Open source, Apache-2.0 licensed, and live on npm. Switch from OpenAI in two lines.</p>
     <div class="hero-ctas">
-      <a class="btn-primary" href="https://www.npmjs.com/package/@phonixsdk/sdk" target="_blank">View on npm →</a>
+      <a class="btn-primary" href="https://www.npmjs.com/package/@phonixsdk/inference" target="_blank">Get @phonixsdk/inference →</a>
       <a class="btn-secondary" href="https://github.com/deyzho/phonixsdk" target="_blank">View on GitHub</a>
     </div>
   </div>
@@ -801,12 +987,13 @@ router.health().forEach(h =&gt; {
   <div class="footer-links">
     <a href="https://github.com/deyzho/phonixsdk" target="_blank">GitHub</a>
     <a href="https://github.com/deyzho/phonixsdk/blob/main/README.md" target="_blank">Docs</a>
+    <a href="https://status.phonixsdk.dev" target="_blank">Status</a>
     <a href="https://github.com/deyzho/phonixsdk/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
     <a href="https://github.com/deyzho/phonixsdk/blob/main/ROADMAP.md" target="_blank">Roadmap</a>
-    <a href="https://www.npmjs.com/package/@phonixsdk/sdk" target="_blank">npm</a>
+    <a href="https://www.npmjs.com/package/@phonixsdk/inference" target="_blank">npm</a>
     <a href="https://github.com/deyzho/phonixsdk/blob/main/packages/sdk/LICENSE" target="_blank">Apache-2.0</a>
   </div>
-  <p>Phonix is not affiliated with Acurast, Fluence, Koii, or Akash Network. Provider names and trademarks belong to their respective owners.</p>
+  <p>Phonix is not affiliated with io.net, Akash Network, Acurast, Fluence, or Koii. Provider names and trademarks belong to their respective owners.</p>
 </footer>
 
 <script>

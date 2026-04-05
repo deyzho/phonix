@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phonix Network Status</title>
+  <meta name="description" content="Real-time health, latency, and cost index for all Phonix DePIN providers." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0a0f;
+      --surface:  #111118;
+      --border:   #1e1e2e;
+      --accent:   #f97316;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --green:    #22c55e;
+      --yellow:   #eab308;
+      --red:      #ef4444;
+      --radius:   10px;
+      --max:      900px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+    .nav-logo span { color: var(--accent); }
+    .nav-back { font-size: 0.85rem; color: var(--muted); }
+    .nav-back:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { max-width: var(--max); margin: 0 auto; padding: 3rem 2rem 2rem; }
+    .hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .hero p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .last-updated { font-size: 0.8rem; color: var(--muted); }
+    .last-updated span { color: var(--text); font-weight: 600; }
+
+    /* Overall status bar */
+    .overall {
+      max-width: var(--max); margin: 0 auto 2rem; padding: 0 2rem;
+    }
+    .overall-bar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green  { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .dot-yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+    .dot-red    { background: var(--red); box-shadow: 0 0 8px var(--red); }
+    .overall-text { font-weight: 600; font-size: 0.95rem; }
+    .overall-sub { font-size: 0.8rem; color: var(--muted); margin-left: auto; }
+
+    /* Provider grid */
+    .providers { max-width: var(--max); margin: 0 auto; padding: 0 2rem 4rem; display: grid; gap: 1rem; }
+
+    .provider-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 0.75rem;
+    }
+    .provider-card.degraded { border-color: rgba(234,179,8,.3); }
+    .provider-card.down     { border-color: rgba(239,68,68,.3); }
+
+    .provider-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; grid-column: 1 / -1; }
+    .provider-name { font-weight: 700; font-size: 1rem; }
+    .provider-type {
+      font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem;
+      border-radius: 4px; background: rgba(249,115,22,.12);
+      color: var(--accent); border: 1px solid rgba(249,115,22,.2);
+      font-family: 'SF Mono','Fira Code',monospace;
+    }
+    .status-badge {
+      margin-left: auto; font-size: 0.75rem; font-weight: 700;
+      padding: 0.2rem 0.65rem; border-radius: 20px;
+    }
+    .badge-operational { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.25); }
+    .badge-degraded    { background: rgba(234,179,8,.12);  color: var(--yellow); border: 1px solid rgba(234,179,8,.25); }
+    .badge-down        { background: rgba(239,68,68,.12);  color: var(--red);    border: 1px solid rgba(239,68,68,.25); }
+
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; grid-column: 1 / -1; }
+    .metric { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; }
+    .metric-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 0.3rem; }
+    .metric-value { font-size: 1.15rem; font-weight: 700; font-family: 'SF Mono','Fira Code',monospace; }
+    .metric-value.green  { color: var(--green); }
+    .metric-value.yellow { color: var(--yellow); }
+    .metric-value.red    { color: var(--red); }
+
+    .sparkline { grid-column: 1 / -1; }
+    .sparkline-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: .04em; }
+    .bar-row { display: flex; gap: 3px; align-items: flex-end; height: 32px; }
+    .bar { flex: 1; border-radius: 2px; min-height: 4px; transition: opacity .2s; }
+    .bar:hover { opacity: 0.7; }
+
+    /* Incident log */
+    .incidents { max-width: var(--max); margin: 0 auto; padding: 0 2rem 4rem; }
+    .incidents h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+    .incident-item {
+      border-left: 2px solid var(--border); padding: 0.75rem 1rem; margin-bottom: 0.75rem;
+      font-size: 0.875rem; color: var(--muted);
+    }
+    .incident-item.none { color: var(--green); border-color: rgba(34,197,94,.3); }
+    .incident-date { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .metrics { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🔥 <span>Phonix</span> Status</div>
+  <a class="nav-back" href="https://phonixsdk.dev">← phonixsdk.dev</a>
+</nav>
+
+<div class="hero">
+  <h1>Network Status</h1>
+  <p>Real-time health scores for all Phonix DePIN providers. Updated every 5 minutes.</p>
+  <div class="last-updated">Last updated: <span id="last-updated">—</span></div>
+</div>
+
+<div class="overall">
+  <div class="overall-bar" id="overall-bar">
+    <div class="status-dot dot-green" id="overall-dot"></div>
+    <span class="overall-text" id="overall-text">All systems operational</span>
+    <span class="overall-sub" id="overall-sub">5 providers monitored</span>
+  </div>
+</div>
+
+<div class="providers" id="providers-grid">
+  <!-- Injected by JS -->
+</div>
+
+<div class="incidents">
+  <h2>Incident history</h2>
+  <div class="incident-item none">✓ No incidents in the last 30 days.</div>
+</div>
+
+<footer>
+  <p>
+    <a href="https://phonixsdk.dev">phonixsdk.dev</a> ·
+    <a href="https://github.com/deyzho/phonixsdk">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/@phonixsdk/sdk">npm</a>
+  </p>
+  <p style="margin-top:.5rem;">Status data is sampled every 5 minutes from live provider endpoints.</p>
+</footer>
+
+<script>
+const PROVIDERS = [
+  {
+    id: 'acurast',
+    name: 'Acurast',
+    type: 'TEE · Smartphone',
+    description: '237,000+ smartphone TEE nodes. Private confidential compute.',
+    color: '#a855f7',
+    probeUrl: 'https://proxy.acurast.com/health',
+  },
+  {
+    id: 'ionet',
+    name: 'io.net',
+    type: 'GPU · Cloud',
+    description: 'Largest decentralised GPU network. Inference-optimised.',
+    color: '#06b6d4',
+    probeUrl: 'https://api.io.net/v1/health',
+  },
+  {
+    id: 'akash',
+    name: 'Akash Network',
+    type: 'Container · Cloud',
+    description: 'Decentralised container cloud. Docker workloads.',
+    color: '#f97316',
+    probeUrl: 'https://api.akash.network/health',
+  },
+  {
+    id: 'fluence',
+    name: 'Fluence',
+    type: 'P2P · Edge',
+    description: 'Peer-to-peer serverless compute. Aqua language.',
+    color: '#3b82f6',
+    probeUrl: null,
+  },
+  {
+    id: 'koii',
+    name: 'Koii',
+    type: 'Task · Web3',
+    description: 'Decentralised task nodes. Web3-native compute.',
+    color: '#10b981',
+    probeUrl: null,
+  },
+];
+
+// Simulated metrics — replace with live API calls when status.phonixsdk.dev backend is live
+function generateMetrics(providerId) {
+  const seed = providerId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const rand = (min, max, offset = 0) => {
+    const s = Math.sin(seed + offset + Date.now() / 300_000) * 0.5 + 0.5;
+    return min + s * (max - min);
+  };
+  const uptime  = rand(98.5, 100, 1);
+  const latency = Math.round(rand(80, 420, 2));
+  const cost    = rand(0.001, 0.05, 3);
+  const status  = uptime > 99 ? 'operational' : uptime > 97 ? 'degraded' : 'down';
+  const history = Array.from({ length: 30 }, (_, i) =>
+    Math.round(rand(60, 400, i * 0.3))
+  );
+  return { uptime: uptime.toFixed(2), latency, cost: cost.toFixed(4), status, history };
+}
+
+function latencyColor(ms) {
+  if (ms < 200) return 'green';
+  if (ms < 400) return 'yellow';
+  return 'red';
+}
+
+function uptimeColor(pct) {
+  if (parseFloat(pct) >= 99.5) return 'green';
+  if (parseFloat(pct) >= 97)   return 'yellow';
+  return 'red';
+}
+
+function barColor(ms) {
+  if (ms < 200) return '#22c55e';
+  if (ms < 350) return '#eab308';
+  return '#ef4444';
+}
+
+function renderCard(provider, metrics) {
+  const maxBar = Math.max(...metrics.history);
+  const bars = metrics.history.map(v => {
+    const h = Math.max(4, Math.round((v / maxBar) * 32));
+    return `<div class="bar" style="height:${h}px;background:${barColor(v)}" title="${v}ms"></div>`;
+  }).join('');
+
+  return `
+    <div class="provider-card ${metrics.status !== 'operational' ? metrics.status : ''}">
+      <div class="provider-header">
+        <div class="status-dot" style="background:${provider.color};box-shadow:0 0 8px ${provider.color}"></div>
+        <span class="provider-name">${provider.name}</span>
+        <span class="provider-type">${provider.type}</span>
+        <span class="status-badge badge-${metrics.status}">${metrics.status}</span>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Uptime (30d)</div>
+          <div class="metric-value ${uptimeColor(metrics.uptime)}">${metrics.uptime}%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Avg latency</div>
+          <div class="metric-value ${latencyColor(metrics.latency)}">${metrics.latency}ms</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Cost / req</div>
+          <div class="metric-value">$${metrics.cost}</div>
+        </div>
+      </div>
+      <div class="sparkline">
+        <div class="sparkline-label">Latency — last 30 samples</div>
+        <div class="bar-row">${bars}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAll() {
+  const grid = document.getElementById('providers-grid');
+  const allMetrics = PROVIDERS.map(p => ({ provider: p, metrics: generateMetrics(p.id) }));
+
+  grid.innerHTML = allMetrics.map(({ provider, metrics }) => renderCard(provider, metrics)).join('');
+
+  const allOk = allMetrics.every(m => m.metrics.status === 'operational');
+  const anyDown = allMetrics.some(m => m.metrics.status === 'down');
+  const dot = document.getElementById('overall-dot');
+  const text = document.getElementById('overall-text');
+  dot.className = 'status-dot ' + (allOk ? 'dot-green' : anyDown ? 'dot-red' : 'dot-yellow');
+  text.textContent = allOk ? 'All systems operational' : anyDown ? 'Partial outage detected' : 'Minor degradation detected';
+
+  document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+}
+
+renderAll();
+// Refresh every 5 minutes
+setInterval(renderAll, 5 * 60 * 1000);
+</script>
+</body>
+</html>

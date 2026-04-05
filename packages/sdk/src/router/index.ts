@@ -18,6 +18,7 @@ import { AcurastProvider } from '../providers/acurast/index.js';
 import { FluenceProvider } from '../providers/fluence/index.js';
 import { KoiiProvider } from '../providers/koii/index.js';
 import { AkashProvider } from '../providers/akash/index.js';
+import { IoNetProvider } from '../providers/ionet/index.js';
 import { CircuitBreaker } from './circuit-breaker.js';
 import { ProviderHealthMonitor } from './health-monitor.js';
 import { ProcessorSelector } from './processor-selector.js';
@@ -45,6 +46,7 @@ function createProvider(name: ProviderName, wsUrl?: string): IPhonixProvider {
     case 'fluence': return new FluenceProvider();
     case 'koii':    return new KoiiProvider();
     case 'akash':   return new AkashProvider();
+    case 'ionet':   return new IoNetProvider();
     default: throw new PhonixError(`Unknown provider: ${String(name)}`);
   }
 }

@@ -1,5 +1,5 @@
 // Supported providers
-export type ProviderName = 'acurast' | 'fluence' | 'koii' | 'akash';
+export type ProviderName = 'acurast' | 'fluence' | 'koii' | 'akash' | 'ionet';
 
 // Runtime types (provider availability varies)
 export type RuntimeType = 'nodejs' | 'python' | 'docker' | 'wasm';

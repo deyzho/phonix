@@ -38,6 +38,9 @@ export function generateRuntimeBootstrap(target: RuntimeTarget): string {
       return koiiRuntimeBootstrap();
     case 'akash':
       return akashRuntimeBootstrap();
+    case 'ionet':
+      // io.net GPU workers use the same HTTP runtime shim as Akash containers
+      return akashRuntimeBootstrap();
     case 'mock':
       return mockRuntimeBootstrap();
     default: {

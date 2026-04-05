@@ -1,0 +1,48 @@
+{
+  "name": "@phonixsdk/inference",
+  "version": "0.1.0",
+  "description": "OpenAI-compatible inference endpoint that routes requests through Phonix's decentralised GPU and TEE compute network.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "openai",
+    "openai-compatible",
+    "inference",
+    "llm",
+    "depin",
+    "ionet",
+    "akash",
+    "acurast",
+    "phonix",
+    "gpu",
+    "tee",
+    "edge-ai"
+  ],
+  "author": "Phonix <hello@phonix.dev>",
+  "license": "Apache-2.0",
+  "homepage": "https://phonixsdk.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deyzho/phonixsdk.git",
+    "directory": "packages/inference"
+  },
+  "bugs": { "url": "https://github.com/deyzho/phonixsdk/issues" },
+  "engines": { "node": ">=20.0.0" },
+  "files": ["dist", "README.md", "LICENSE"],
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}

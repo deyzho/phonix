@@ -1,8 +1,12 @@
 # Phonix SDK
 
-**Build edge dApps once. Run them confidentially on decentralised compute networks — no servers, no headaches.**
+**Deploy AI to the edge. Any network, any device, one SDK.**
 
-Phonix is the unified developer platform for building and deploying confidential edge applications across decentralised compute networks. It abstracts the complexity of multiple DePIN providers behind a single, consistent API — supporting [Acurast](https://acurast.com) (237k+ smartphone TEE nodes), [Fluence](https://fluence.network), [Koii](https://koii.network), and [Akash Network](https://akash.network). Call your deployed processors directly from **iOS and Android** apps with `@phonixsdk/mobile`.
+Phonix is the deployment layer for edge AI. Run inference on decentralised compute networks — automatically routed to the fastest, cheapest option. One SDK. Zero lock-in.
+
+Tired of OpenAI pricing? Need private inference? Building a dApp that requires reliable compute without AWS dependency? Phonix routes your AI workloads to the best available edge compute — GPU clusters, TEE smartphones, container clouds — with a single interface across [io.net](https://io.net), [Akash Network](https://akash.network), [Acurast](https://acurast.com), [Fluence](https://fluence.network), and [Koii](https://koii.network).
+
+Drop in the OpenAI-compatible `@phonixsdk/inference` package and your existing code routes through decentralised GPU in two lines. Call your deployed processors directly from **iOS and Android** apps with `@phonixsdk/mobile`.
 
 > Phonix is to edge compute what Ethers.js is to EVM chains: **one interface, any provider**.
 
@@ -12,10 +16,13 @@ Phonix is the unified developer platform for building and deploying confidential
 
 | Provider | Status | Nodes | Runtime | Token |
 |---|---|---|---|---|
+| [io.net](https://io.net) | ✅ Supported | GPU clusters (A100, H100, RTX) | nodejs | IO |
+| [Akash Network](https://akash.network) | ✅ Supported | Decentralised container marketplace | nodejs | AKT |
 | [Acurast](https://acurast.com) | ✅ Supported | 237k+ smartphones (TEE) | nodejs, wasm | ACU |
 | [Fluence](https://fluence.network) | ✅ Supported | Decentralised serverless cloud | nodejs | FLT |
 | [Koii](https://koii.network) | ✅ Supported | Community compute task nodes | nodejs | KOII |
-| [Akash Network](https://akash.network) | ✅ Supported | Decentralised container marketplace | nodejs | AKT |
+
+> **Provider health dashboard:** Real-time status and latency for all five networks → [status.phonixsdk.dev](https://status.phonixsdk.dev)
 
 ---
 
@@ -75,7 +82,7 @@ Bundles your script, uploads it to IPFS, and registers the deployment on-chain (
 import { PhonixClient } from '@phonixsdk/sdk';
 
 const client = new PhonixClient({
-  provider: 'acurast', // 'acurast' | 'fluence' | 'koii' | 'akash'
+  provider: 'ionet', // 'ionet' | 'akash' | 'acurast' | 'fluence' | 'koii'
   secretKey: process.env.PHONIX_SECRET_KEY,
 });
 
@@ -108,7 +115,7 @@ client.disconnect();
 | `phonix send <id> <msg>` | Send a test message to a processor node |
 | `phonix template list` | Show available built-in templates |
 
-Supported values for `[provider]`: `acurast`, `fluence`, `koii`, `akash`
+Supported values for `[provider]`: `ionet`, `akash`, `acurast`, `fluence`, `koii`
 
 ---
 
@@ -119,7 +126,7 @@ import { PhonixClient } from '@phonixsdk/sdk';
 import type { DeploymentConfig } from '@phonixsdk/sdk';
 
 const client = new PhonixClient({
-  provider: 'akash',  // 'acurast' | 'fluence' | 'koii' | 'akash'
+  provider: 'ionet',  // 'ionet' | 'akash' | 'acurast' | 'fluence' | 'koii'
   secretKey: process.env.PHONIX_SECRET_KEY,
 });
 
@@ -156,6 +163,72 @@ const unsubscribe = client.onMessage((msg) => {
 
 client.disconnect();
 ```
+
+---
+
+## OpenAI-compatible inference endpoint
+
+`@phonixsdk/inference` is a drop-in OpenAI-compatible HTTP handler that routes chat completion requests through Phonix's decentralised GPU and TEE compute network. If you're already using the `openai` npm package, switching takes two lines:
+
+```typescript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://your-api.example.com/v1', // your Phonix inference handler URL
+  apiKey:  process.env.PHONIX_SECRET_KEY,
+});
+
+// Everything else stays identical
+const response = await client.chat.completions.create({
+  model:    'phonix-llama-3-70b',
+  messages: [{ role: 'user', content: 'Explain edge AI in one paragraph.' }],
+});
+```
+
+### Supported models
+
+| Model ID | Provider | Notes |
+|---|---|---|
+| `phonix-llama-3-70b` | io.net | GPU, A100 spot — best for large context |
+| `phonix-mistral-7b`  | io.net | GPU, cost-efficient |
+| `phonix-llama-3-8b`  | Akash  | Container cloud, moderate cost |
+| `phonix-tee-phi-3-mini` | Acurast | TEE smartphone, private, lowest cost |
+
+### Setup (Next.js App Router)
+
+```bash
+npm install @phonixsdk/inference
+```
+
+```typescript
+// app/api/v1/chat/completions/route.ts
+import { PhonixInferenceHandler } from '@phonixsdk/inference';
+
+const handler = new PhonixInferenceHandler({
+  apiKey:        process.env.PHONIX_SECRET_KEY!,
+  ionetEndpoint: process.env.IONET_ENDPOINT!,
+  akashEndpoint: process.env.AKASH_ENDPOINT,
+  acurastWsUrl:  process.env.ACURAST_WS_URL,
+  strategy:      'cost', // 'cost' | 'latency' | 'balanced'
+});
+
+export const POST = (req: Request) => handler.handleRequest(req);
+export const GET  = (req: Request) => handler.handleRequest(req); // GET /v1/models
+```
+
+The handler implements:
+- `POST /v1/chat/completions` — streaming (SSE) and non-streaming
+- `GET  /v1/models` — returns available model list
+- Bearer auth, failover on provider error, 30-second auto-recovery
+- `X-Phonix-Provider` response header so you can see which network served each request
+
+---
+
+## Provider health dashboard
+
+Real-time latency, health scores, and status for all five Phonix providers — updated every 5 minutes:
+
+**[status.phonixsdk.dev](https://status.phonixsdk.dev)**
 
 ---
 
@@ -363,6 +436,29 @@ AppState listeners are attached automatically — the router pauses on backgroun
 
 ## Provider setup
 
+### io.net
+
+```bash
+phonix auth ionet
+```
+
+Requires an io.net API key. Get one at [cloud.io.net](https://cloud.io.net) → API Keys.
+
+**Required `.env` keys:** `IONET_API_KEY`
+
+**Optional `.env` keys:** `IONET_CLUSTER_ID` (leave blank to auto-select the cheapest available GPU cluster)
+
+**How it works:**
+1. Your TypeScript entry file is bundled with esbuild
+2. The bundle is uploaded to IPFS — the CID is the deployment source of truth
+3. A job is submitted to `api.io.net/v1/jobs` targeting the specified (or cheapest) GPU cluster
+4. io.net provisions a worker with your bundle; the `workerEndpoint` becomes your processorId
+5. Send messages via `client.send(processorId, payload)` — response size capped at 4 MiB, timeout 60s
+
+**Estimated cost:** ~$0.40/hr per A100 GPU (spot), auto-calculated via `client.estimate()`
+
+---
+
 ### Acurast
 
 ```bash
@@ -461,7 +557,7 @@ Docs: [docs.akash.network/guides/cli/akash-provider-services](https://docs.akash
 | Field | Type | Description |
 |---|---|---|
 | `projectName` | `string` | Human-readable project name |
-| `provider` | `acurast \| fluence \| koii \| akash` | Target compute provider |
+| `provider` | `ionet \| akash \| acurast \| fluence \| koii` | Target compute provider |
 | `runtime` | `nodejs \| python \| docker \| wasm` | Execution runtime |
 | `entryFile` | `string` | Path to your script entry point |
 | `schedule.type` | `on-demand \| interval \| onetime` | When the script runs |
@@ -480,15 +576,19 @@ Docs: [docs.akash.network/guides/cli/akash-provider-services](https://docs.akash
 phonix/
 ├── packages/
 │   ├── cli/          # @phonixsdk/cli — command-line tool
+│   ├── inference/    # @phonixsdk/inference — OpenAI-compatible inference handler
 │   └── sdk/          # @phonixsdk/sdk — core library
 │       └── src/
 │           ├── providers/
+│           │   ├── ionet/    # io.net GPU provider
+│           │   ├── akash/    # Akash Network provider
 │           │   ├── acurast/  # Acurast provider
 │           │   ├── fluence/  # Fluence provider
-│           │   ├── koii/     # Koii provider
-│           │   └── akash/    # Akash Network provider
+│           │   └── koii/     # Koii provider
 │           └── runtime/
 │               └── adapters/ # Per-provider runtime bootstraps
+├── status/
+│   └── index.html    # Provider health dashboard (status.phonixsdk.dev)
 ├── templates/
 │   ├── inference/    # Confidential LLM inference
 │   └── oracle/       # Data oracle
@@ -565,4 +665,4 @@ MIT — see [LICENSE](./LICENSE).
 
 ---
 
-*Phonix is not affiliated with Acurast, Fluence, Koii, or Akash Network. Provider names and trademarks belong to their respective owners.*
+*Phonix is not affiliated with io.net, Akash Network, Acurast, Fluence, or Koii. Provider names and trademarks belong to their respective owners.*

@@ -25,6 +25,7 @@ import { AcurastProvider } from './providers/acurast/index.js';
 import { FluenceProvider } from './providers/fluence/index.js';
 import { KoiiProvider } from './providers/koii/index.js';
 import { AkashProvider } from './providers/akash/index.js';
+import { IoNetProvider } from './providers/ionet/index.js';
 
 export interface PhonixClientOptions {
   /** Provider to use. Defaults to 'acurast'. */
@@ -79,6 +80,8 @@ export class PhonixClient {
         return new KoiiProvider();
       case 'akash':
         return new AkashProvider();
+      case 'ionet':
+        return new IoNetProvider();
       default: {
         // TypeScript exhaustiveness check
         const _exhaustive: never = name;

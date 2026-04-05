@@ -246,6 +246,15 @@ export function generateEnv(provider: ProviderName = 'acurast'): string {
       'AKASH_KEY_NAME=phonix',
       '',
     ],
+    ionet: [
+      '# io.net API key — get one at https://cloud.io.net',
+      '# Run: phonix auth ionet  to save interactively',
+      'IONET_API_KEY=',
+      '',
+      '# io.net cluster ID to target (leave blank to auto-select cheapest)',
+      'IONET_CLUSTER_ID=',
+      '',
+    ],
   };
 
   return [...common, ...(providerVars[provider] ?? providerVars.acurast)].join('\n');
