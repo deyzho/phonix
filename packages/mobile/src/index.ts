@@ -1,20 +1,20 @@
 /**
- * @phonix/mobile — React Native / Expo SDK for iOS and Android.
+ * @phonixsdk/mobile — React Native / Expo SDK for iOS and Android.
  *
  * Call your deployed Phonix processors directly from your iOS and Android apps.
  * Supports Akash (HTTP), Acurast (WebSocket), and any generic HTTPS endpoint.
  *
  * Quick start:
- *   npm install @phonix/mobile
+ *   npm install @phonixsdk/mobile
  *
  *   // Wrap your app
- *   import { PhonixProvider } from '@phonix/mobile';
+ *   import { PhonixProvider } from '@phonixsdk/mobile';
  *   <PhonixProvider provider="akash" secretKey={PHONIX_SECRET_KEY} autoConnect>
  *     <App />
  *   </PhonixProvider>
  *
  *   // Use in any screen
- *   import { usePhonixContext, useMessages, useSend } from '@phonix/mobile';
+ *   import { usePhonixContext, useMessages, useSend } from '@phonixsdk/mobile';
  *   const { client, connected } = usePhonixContext();
  *   const messages = useMessages(client);
  *   const { send, sending } = useSend(client);

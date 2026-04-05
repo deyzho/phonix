@@ -38,8 +38,8 @@ phonix/
 │   │       │   └── akash/     # Akash container marketplace
 │   │       └── runtime/
 │   │           └── adapters/  # Per-provider runtime bootstraps
-│   ├── cli/          # @phonix/cli — command-line tool (Commander.js)
-│   └── mobile/       # @phonix/mobile — React Native / Expo SDK
+│   ├── cli/          # @phonixsdk/cli — command-line tool (Commander.js)
+│   └── mobile/       # @phonixsdk/mobile — React Native / Expo SDK
 ├── templates/
 │   ├── inference/    # Confidential LLM inference template
 │   └── oracle/       # Price feed oracle template
@@ -105,7 +105,7 @@ Each provider lives in `packages/sdk/src/providers/<name>/` and must:
    - `onMessage()` returns an unsubscribe function
    - Client SSRF protection (if applicable)
 
-5. **Update `@phonix/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
+5. **Update `@phonixsdk/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Build edge dApps once. Run them confidentially on decentralised compute networks — no servers, no headaches.**
 
-Phonix is the unified developer platform for building and deploying confidential edge applications across decentralised compute networks. It abstracts the complexity of multiple DePIN providers behind a single, consistent API — supporting [Acurast](https://acurast.com) (237k+ smartphone TEE nodes), [Fluence](https://fluence.network), [Koii](https://koii.network), and [Akash Network](https://akash.network). Call your deployed processors directly from **iOS and Android** apps with `@phonix/mobile`.
+Phonix is the unified developer platform for building and deploying confidential edge applications across decentralised compute networks. It abstracts the complexity of multiple DePIN providers behind a single, consistent API — supporting [Acurast](https://acurast.com) (237k+ smartphone TEE nodes), [Fluence](https://fluence.network), [Koii](https://koii.network), and [Akash Network](https://akash.network). Call your deployed processors directly from **iOS and Android** apps with `@phonixsdk/mobile`.
 
 > Phonix is to edge compute what Ethers.js is to EVM chains: **one interface, any provider**.
 
@@ -24,7 +24,7 @@ Phonix is the unified developer platform for building and deploying confidential
 ### 1. Install the CLI
 
 ```bash
-npm install -g @phonix/cli
+npm install -g @phonixsdk/cli
 ```
 
 ### 2. Initialise a new project
@@ -241,17 +241,17 @@ router.disconnect();
 
 ## Mobile SDK (iOS & Android)
 
-`@phonix/mobile` is a React Native / Expo package that lets you call your deployed Phonix processors directly from iOS and Android apps.
+`@phonixsdk/mobile` is a React Native / Expo package that lets you call your deployed Phonix processors directly from iOS and Android apps.
 
 ```bash
-npm install @phonix/mobile
+npm install @phonixsdk/mobile
 ```
 
 ### Quick start — Expo / React Native
 
 ```tsx
 // App.tsx — wrap your root once
-import { PhonixProvider } from '@phonix/mobile';
+import { PhonixProvider } from '@phonixsdk/mobile';
 
 export default function App() {
   return (
@@ -264,7 +264,7 @@ export default function App() {
 }
 
 // AnyScreen.tsx — access from anywhere in the tree
-import { usePhonixContext, useMessages, useSend } from '@phonix/mobile';
+import { usePhonixContext, useMessages, useSend } from '@phonixsdk/mobile';
 
 export function InferenceScreen() {
   const { client, connected } = usePhonixContext();
@@ -289,7 +289,7 @@ export function InferenceScreen() {
 ### Without context — standalone hooks
 
 ```tsx
-import { usePhonix, useMessages } from '@phonix/mobile';
+import { usePhonix, useMessages } from '@phonixsdk/mobile';
 
 function Screen() {
   const { client, connected, connect, error } = usePhonix({
@@ -305,7 +305,7 @@ function Screen() {
 ### Secure key storage
 
 ```tsx
-import { SecureKeyStorage } from '@phonix/mobile';
+import { SecureKeyStorage } from '@phonixsdk/mobile';
 
 const storage = new SecureKeyStorage();
 await storage.saveSecretKey(myKey); // iOS Keychain / Android Keystore
@@ -317,7 +317,7 @@ const key = await storage.loadSecretKey();
 Route across multiple DePIN endpoints from your React Native app with the same circuit-breaker and health-scoring logic as the server SDK:
 
 ```tsx
-import { usePhonixRouter } from '@phonix/mobile';
+import { usePhonixRouter } from '@phonixsdk/mobile';
 
 function App() {
   const { router, connected, health } = usePhonixRouter({
@@ -355,7 +355,7 @@ AppState listeners are attached automatically — the router pauses on backgroun
 | `usePhonixContext()` | Consumes the PhonixProvider context |
 | `SecureKeyStorage` | Persists keys via iOS Keychain / Android Keystore (`expo-secure-store`) |
 
-**Supported providers in `@phonix/mobile`:** `'akash'` (HTTP), `'acurast'` (WebSocket), `'http'` (generic HTTPS)
+**Supported providers in `@phonixsdk/mobile`:** `'akash'` (HTTP), `'acurast'` (WebSocket), `'http'` (generic HTTPS)
 
 > Deploy your processors with `phonix deploy` on your development machine. The mobile SDK handles calling them — not deploying.
 
@@ -479,7 +479,7 @@ Docs: [docs.akash.network/guides/cli/akash-provider-services](https://docs.akash
 ```
 phonix/
 ├── packages/
-│   ├── cli/          # @phonix/cli — command-line tool
+│   ├── cli/          # @phonixsdk/cli — command-line tool
 │   └── sdk/          # @phonixsdk/sdk — core library
 │       └── src/
 │           ├── providers/

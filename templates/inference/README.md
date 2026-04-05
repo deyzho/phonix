@@ -108,7 +108,7 @@ client.disconnect();
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages, useSend } from '@phonix/mobile';
+import { usePhonix, useMessages, useSend } from '@phonixsdk/mobile';
 
 export function InferenceScreen() {
   const { client, connected, connect } = usePhonix({

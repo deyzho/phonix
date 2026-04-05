@@ -226,8 +226,8 @@ Then update `PROCESSOR_ID` in `.env.local` to the corresponding endpoint for the
 
 ## Want to call processors from mobile?
 
-Use [`@phonix/mobile`](../../packages/mobile/) for React Native / Expo apps. It provides the same messaging API with React hooks, iOS Keychain / Android Keystore secure storage, and AppState lifecycle management.
+Use [`@phonixsdk/mobile`](../../packages/mobile/) for React Native / Expo apps. It provides the same messaging API with React hooks, iOS Keychain / Android Keystore secure storage, and AppState lifecycle management.
 
 ```bash
-npm install @phonix/mobile
+npm install @phonixsdk/mobile
 ```

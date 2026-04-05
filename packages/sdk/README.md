@@ -85,12 +85,12 @@ router.health().forEach((h) => {
 
 ## Mobile (iOS & Android)
 
-Use [`@phonix/mobile`](https://www.npmjs.com/package/@phonix/mobile) for React Native / Expo apps.
+Use [`@phonixsdk/mobile`](https://www.npmjs.com/package/@phonixsdk/mobile) for React Native / Expo apps.
 
 ## CLI
 
 ```bash
-npm install -g @phonix/cli
+npm install -g @phonixsdk/cli
 phonix init
 phonix deploy
 ```

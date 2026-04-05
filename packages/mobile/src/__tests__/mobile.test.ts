@@ -1,5 +1,5 @@
 /**
- * @phonix/mobile test suite.
+ * @phonixsdk/mobile test suite.
  *
  * Runs under vitest in a Node.js environment. All React Native APIs
  * (AppState, Platform) and expo-secure-store are mocked via vi.mock so no
@@ -193,7 +193,7 @@ describe('MobilePhonixClient AppState integration', () => {
   it('attachAppStateListener() is a no-op outside React Native (graceful fallback)', async () => {
     // In a real RN app, require('react-native') succeeds and the AppState listener
     // is registered. In Node.js tests the require() throws and is silently swallowed —
-    // this is correct behaviour so that importing @phonix/mobile in non-RN environments
+    // this is correct behaviour so that importing @phonixsdk/mobile in non-RN environments
     // (e.g. server-side rendering, tests) does not crash.
     const client = new MobilePhonixClient({ provider: 'akash', secretKey: 'k' });
     await client.connect();

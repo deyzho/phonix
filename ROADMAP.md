@@ -16,7 +16,7 @@ This document outlines the planned direction for Phonix. Priorities may shift ba
 - ✅ Inference template — real OpenAI-compatible LLM inference in TEE
 - ✅ Oracle template — scheduled price feed with TEE-signed results
 - ✅ Security hardening — prototype pollution prevention, key validation, response caps, SDL path traversal guard
-- ✅ **`@phonix/mobile`** — React Native / Expo SDK with `usePhonix`, `useMessages`, `useSend` hooks; `PhonixProvider` context; iOS Keychain / Android Keystore via `expo-secure-store`; AppState lifecycle management
+- ✅ **`@phonixsdk/mobile`** — React Native / Expo SDK with `usePhonix`, `useMessages`, `useSend` hooks; `PhonixProvider` context; iOS Keychain / Android Keystore via `expo-secure-store`; AppState lifecycle management
 - ✅ Full test suite — 135 tests across all providers and core modules (SDK + mobile)
 
 ---

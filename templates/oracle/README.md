@@ -106,7 +106,7 @@ client.onMessage((msg) => {
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages } from '@phonix/mobile';
+import { usePhonix, useMessages } from '@phonixsdk/mobile';
 
 export function PriceFeedScreen() {
   const { client, connected, connect } = usePhonix({

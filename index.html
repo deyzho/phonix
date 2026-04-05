@@ -530,7 +530,7 @@ client.<span class="fn">disconnect</span>();</pre>
         </ul>
         <div class="install-row">
           <span class="prompt">$</span>
-          <code>npm install @phonix/mobile</code>
+          <code>npm install @phonixsdk/mobile</code>
         </div>
       </div>
       <div>
@@ -551,7 +551,7 @@ client.<span class="fn">disconnect</span>();</pre>
           <!-- Tab: Context / Provider -->
           <div id="tab-context" class="tab-panel active">
             <pre><span class="cm">// Wrap your root component once</span>
-<span class="kw">import</span> { <span class="obj">PhonixProvider</span> } <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+<span class="kw">import</span> { <span class="obj">PhonixProvider</span> } <span class="kw">from</span> <span class="str">'@phonixsdk/mobile'</span>;
 
 <span class="kw">export default function</span> <span class="fn">App</span>() {
   <span class="kw">return</span> (
@@ -575,7 +575,7 @@ client.<span class="fn">disconnect</span>();</pre>
   <span class="obj">usePhonixContext</span>,
   <span class="obj">useMessages</span>,
   <span class="obj">useSend</span>,
-} <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+} <span class="kw">from</span> <span class="str">'@phonixsdk/mobile'</span>;
 
 <span class="kw">export function</span> <span class="fn">ResultsScreen</span>() {
   <span class="kw">const</span> { connected } = <span class="fn">usePhonixContext</span>();
@@ -602,7 +602,7 @@ client.<span class="fn">disconnect</span>();</pre>
           <!-- Tab: Standalone (no context) -->
           <div id="tab-standalone" class="tab-panel">
             <pre><span class="cm">// Without context — manage client directly</span>
-<span class="kw">import</span> { <span class="obj">usePhonix</span>, <span class="obj">useMessages</span> } <span class="kw">from</span> <span class="str">'@phonix/mobile'</span>;
+<span class="kw">import</span> { <span class="obj">usePhonix</span>, <span class="obj">useMessages</span> } <span class="kw">from</span> <span class="str">'@phonixsdk/mobile'</span>;
 
 <span class="kw">export function</span> <span class="fn">InferenceScreen</span>() {
   <span class="kw">const</span> { client, connected, connect, error }
@@ -680,7 +680,7 @@ router.health().forEach(h =&gt; {
   console.log(h.provider, h.latencyMs, h.circuitState);
 });</code></pre>
         <pre class="code-block" style="font-size:0.78rem;margin-top:1rem;"><code><span style="color:#64748b">// Mobile (React Native / Expo)</span>
-<span style="color:#fb923c">import</span> { usePhonixRouter } <span style="color:#fb923c">from</span> <span style="color:#86efac">'@phonix/mobile'</span>;
+<span style="color:#fb923c">import</span> { usePhonixRouter } <span style="color:#fb923c">from</span> <span style="color:#86efac">'@phonixsdk/mobile'</span>;
 
 <span style="color:#fb923c">const</span> { router, connected, health } = <span style="color:#38bdf8">usePhonixRouter</span>({
   routes: [
