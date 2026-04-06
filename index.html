@@ -588,7 +588,8 @@
           </div>
         </div>
       </div>
-      <div>
+      <!-- ── Tabbed: Terminal (animated) + index.ts (static) ── -->
+      <div id="anim-terminal-wrap">
         <div class="code-block">
           <div class="code-header">
             <div class="code-dots">
@@ -596,9 +597,21 @@
               <span class="dot-yellow"></span>
               <span class="dot-green"></span>
             </div>
-            your-app/index.ts
+            <div class="tab-bar" style="border:none;margin:0;flex:1;margin-left:0.5rem;">
+              <button class="tab-btn active" id="qs-tab-terminal" onclick="qsTab('terminal')">▶ Terminal</button>
+              <button class="tab-btn" id="qs-tab-code" onclick="qsTab('code')">index.ts</button>
+            </div>
+            <button onclick="terminalRestart()" id="anim-restart-btn" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;cursor:pointer;font-family:inherit;">↺ replay</button>
           </div>
-          <pre><span class="cm">// Deploy once — run on edge nodes</span>
+
+          <!-- Tab: animated terminal -->
+          <div id="qs-panel-terminal">
+            <div id="anim-terminal" style="padding:1.1rem 1.25rem;font-family:'JetBrains Mono','SF Mono','Fira Code',monospace;font-size:0.82rem;line-height:1.75;min-height:340px;overflow:hidden;"></div>
+          </div>
+
+          <!-- Tab: static sample code -->
+          <div id="qs-panel-code" style="display:none;">
+            <pre style="padding:1.1rem 1.25rem;font-family:'JetBrains Mono','SF Mono','Fira Code',monospace;font-size:0.82rem;line-height:1.75;min-height:340px;overflow-x:auto;"><span class="cm">// Deploy once — run on GPU edge nodes</span>
 <span class="kw">import</span> { <span class="obj">PhonixClient</span> } <span class="kw">from</span> <span class="str">'@phonixsdk/sdk'</span>;
 
 <span class="kw">const</span> client = <span class="kw">new</span> <span class="fn">PhonixClient</span>({
@@ -608,32 +621,20 @@
 
 <span class="kw">await</span> client.<span class="fn">connect</span>();
 
-<span class="cm">// Listen for results from the TEE</span>
+<span class="cm">// Listen for results from the GPU worker</span>
 client.<span class="fn">onMessage</span>((msg) => {
   <span class="kw">const</span> { result } = msg.payload <span class="kw">as</span> { result: <span class="obj">string</span> };
   console.<span class="fn">log</span>(<span class="str">'Result:'</span>, result);
 });
 
 <span class="cm">// Send a prompt to a processor node</span>
-<span class="kw">await</span> client.<span class="fn">send</span>(<span class="str">'0xproc1...'</span>, {
+<span class="kw">await</span> client.<span class="fn">send</span>(<span class="str">'gpu-worker-0x1a2b3c'</span>, {
   requestId: <span class="str">'req-001'</span>,
   prompt: <span class="str">'Summarize: The quick brown fox...'</span>,
 });
 
 client.<span class="fn">disconnect</span>();</pre>
-        </div>
-        <!-- ── Animated terminal ── -->
-        <div class="code-block" style="margin-top:1rem" id="anim-terminal-wrap">
-          <div class="code-header">
-            <div class="code-dots">
-              <span class="dot-red"></span>
-              <span class="dot-yellow"></span>
-              <span class="dot-green"></span>
-            </div>
-            <span style="flex:1">terminal</span>
-            <button id="anim-restart-btn" onclick="terminalRestart()" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;cursor:pointer;font-family:inherit;" title="Replay">↺ replay</button>
           </div>
-          <div id="anim-terminal" style="padding:1.1rem 1.25rem;font-family:'JetBrains Mono','SF Mono','Fira Code',monospace;font-size:0.82rem;line-height:1.75;min-height:260px;overflow:hidden;"></div>
         </div>
       </div>
     </div>
@@ -1527,6 +1528,16 @@ router.health().forEach(h =&gt; {
     }, { threshold: 0.3 });
     obs.observe(wrap);
   })();
+
+  function qsTab(tab) {
+    const isTerminal = tab === 'terminal';
+    document.getElementById('qs-panel-terminal').style.display = isTerminal ? '' : 'none';
+    document.getElementById('qs-panel-code').style.display     = isTerminal ? 'none' : '';
+    document.getElementById('qs-tab-terminal').classList.toggle('active', isTerminal);
+    document.getElementById('qs-tab-code').classList.toggle('active', !isTerminal);
+    document.getElementById('anim-restart-btn').style.display  = isTerminal ? '' : 'none';
+    if (isTerminal) terminalRestart();
+  }
 
   function copyInstall() {
     navigator.clipboard.writeText('npm install @phonixsdk/inference').then(() => {
