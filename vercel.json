@@ -3,6 +3,8 @@
   "buildCommand": "echo 'static site — no build required'",
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/status",      "destination": "/status/index.html" },
+    { "source": "/status/",     "destination": "/status/index.html" },
+    { "source": "/(.*)",        "destination": "/index.html" }
   ]
 }
