@@ -1,7 +1,7 @@
 {
   "name": "@axonsdk/cli",
-  "version": "0.1.1",
-  "description": "Command-line tool for deploying and managing Axon edge applications across DePIN networks.",
+  "version": "0.1.2",
+  "description": "Command-line tool for deploying and managing AI workloads across edge and cloud compute providers.",
   "type": "module",
   "bin": {
     "axon": "./dist/index.js"
@@ -9,16 +9,21 @@
   "main": "./dist/index.js",
   "keywords": [
     "axon",
-    "depin",
+    "ai",
     "cli",
     "edge-compute",
-    "acurast",
+    "inference",
+    "routing",
+    "gpu",
+    "ionet",
     "akash",
+    "acurast",
     "fluence",
     "koii",
-    "web3",
-    "tee",
-    "confidential-computing"
+    "aws",
+    "cloudflare",
+    "multi-provider",
+    "depin"
   ],
   "author": "Axon <hello@axon.dev>",
   "license": "Apache-2.0",

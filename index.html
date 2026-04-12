@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axon — Deploy AI to the edge. Any network, one SDK.</title>
-  <meta name="description" content="The deployment layer for edge AI. Run inference on decentralised GPU and TEE compute — automatically routed to the fastest, cheapest option. One SDK. Zero lock-in." />
-  <meta property="og:title" content="Axon SDK — Deploy AI to the edge" />
-  <meta property="og:description" content="Drop in the OpenAI-compatible inference endpoint and your existing code routes through decentralised GPU in two lines." />
+  <title>Axon — One SDK. Any compute. Route AI inference anywhere.</title>
+  <meta name="description" content="Universal AI compute routing SDK. Route inference to the fastest, cheapest backend — GPU clusters, cloud, edge, or your own infrastructure. One SDK. Zero lock-in." />
+  <meta property="og:title" content="Axon SDK — Route AI inference to any compute backend" />
+  <meta property="og:description" content="Drop in the OpenAI-compatible inference endpoint and your existing code automatically routes to the cheapest available GPU in two lines." />
   <meta property="og:url" content="https://axon.dev" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -358,10 +358,10 @@
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="badge">Open Source · v0.2.0 · GPU + TEE Compute · Now on npm</div>
-  <h1>Deploy AI to the edge.<br /><em>Any network, one SDK.</em></h1>
-  <p>OpenAI costs too much. You're locked into one vendor. Your prompts hit centralised servers you don't control.<br/><strong style="color:var(--text)">There's a better way.</strong></p>
-  <p style="font-size:0.9rem;color:var(--muted);margin-top:0.75rem;max-width:520px;margin-left:auto;margin-right:auto;">Axon is to edge compute what Ethers.js is to EVM chains —<br/>one interface, any provider.</p>
+  <div class="badge">Open Source · v0.2.0 · GPU + Edge + Cloud · Now on npm</div>
+  <h1>Route AI inference<br /><em>to any compute backend.</em></h1>
+  <p>OpenAI costs too much. You're locked into one vendor. Switching providers means rewriting your integration.<br/><strong style="color:var(--text)">Axon fixes all three.</strong></p>
+  <p style="font-size:0.9rem;color:var(--muted);margin-top:0.75rem;max-width:520px;margin-left:auto;margin-right:auto;">Axon is to AI compute what httpx is to HTTP —<br/>one client, any backend. Cloud, edge, or your own infrastructure.</p>
   <div class="hero-ctas">
     <a class="btn-primary" href="#inference">Switch from OpenAI →</a>
     <a class="btn-secondary" href="https://github.com/deyzho/axonsdk" target="_blank">View on GitHub</a>
@@ -399,9 +399,9 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;" class="inference-hook-grid">
       <div>
         <div class="section-label">OpenAI-compatible · @axonsdk/inference</div>
-        <h2 class="section-title" style="margin-bottom:0.75rem;">Switch to decentralised GPU<br/>in two lines</h2>
+        <h2 class="section-title" style="margin-bottom:0.75rem;">Switch compute backends<br/>in two lines</h2>
         <p style="color:var(--muted);font-size:1rem;margin-bottom:1.5rem;">
-          Your existing OpenAI code works unchanged. Swap <code style="color:var(--accent);font-size:.9em">baseURL</code> and <code style="color:var(--accent);font-size:.9em">apiKey</code> — that's it. Requests route automatically to the cheapest available GPU cluster across io.net, Akash, and Acurast TEE nodes.
+          Your existing OpenAI code works unchanged. Swap <code style="color:var(--accent);font-size:.9em">baseURL</code> and <code style="color:var(--accent);font-size:.9em">apiKey</code> — that's it. Requests route automatically to the cheapest available backend across GPU clusters, container compute, and TEE nodes.
         </p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem;">
           <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> Works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package, LangChain, LlamaIndex</li>
@@ -487,14 +487,14 @@
     <h2 class="section-title">One SDK, any network</h2>
     <p class="section-sub">Deploy the same AI workload to edge or cloud without rewriting your code. Axon automatically routes to the fastest, cheapest option.</p>
 
-    <p style="font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;">Edge &amp; Decentralised</p>
+    <p style="font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;">Edge &amp; Private compute</p>
     <div class="provider-grid" style="margin-bottom:2.5rem;">
       <div class="provider-card">
         <div class="provider-header">
           <div class="provider-name">io.net</div>
           <div class="provider-badge">GPU · Live</div>
         </div>
-        <div class="provider-desc">Decentralised GPU clusters — A100, H100, RTX 4090 spot compute at a fraction of AWS pricing. The best option for large model inference.</div>
+        <div class="provider-desc">GPU clusters — A100, H100, RTX 4090 spot compute at a fraction of cloud pricing. The best option for large model inference.</div>
         <div class="provider-meta">
           <span>🖥️ GPU clusters</span>
           <span>🔑 API key</span>
@@ -506,7 +506,7 @@
           <div class="provider-name">Akash</div>
           <div class="provider-badge">Live</div>
         </div>
-        <div class="provider-desc">Decentralised cloud marketplace where providers bid to run containerised workloads. Deploy bundles via IPFS and pay in AKT — no lock-in, no vendor overhead.</div>
+        <div class="provider-desc">Open cloud marketplace where providers bid to run containerised workloads. Pay per use with no lock-in and no vendor overhead.</div>
         <div class="provider-meta">
           <span>☁️ Docker containers</span>
           <span>🔑 BIP-39 mnemonic</span>
@@ -530,7 +530,7 @@
           <div class="provider-name">Fluence</div>
           <div class="provider-badge">Live</div>
         </div>
-        <div class="provider-desc">Decentralised serverless cloud built on libp2p. Deploy spells to a permissionless peer-to-peer network of compute providers.</div>
+        <div class="provider-desc">Serverless compute built on a peer-to-peer network. Deploy functions globally with no cold starts and no central point of failure.</div>
         <div class="provider-meta">
           <span>🌐 P2P relay</span>
           <span>🔑 Ed25519</span>
@@ -650,7 +650,7 @@
           <div class="step-num">4</div>
           <div class="step-content">
             <h4>Deploy and call</h4>
-            <p>One command bundles, uploads to IPFS, and registers on-chain. Then call from any JavaScript environment with <code style="color:var(--accent);font-size:.85em">@axonsdk/sdk</code>.</p>
+            <p>One command bundles and deploys your workload. Then call from any JavaScript environment with <code style="color:var(--accent);font-size:.85em">@axonsdk/sdk</code>.</p>
           </div>
         </div>
       </div>
@@ -843,7 +843,7 @@ client.<span class="fn">disconnect</span>();</pre>
 <section class="inference-section" id="inference">
   <div class="section-inner">
     <div class="section-label">OpenAI-compatible Inference</div>
-    <h2 class="section-title">Switch to decentralised GPU<br/>in two lines</h2>
+    <h2 class="section-title">Switch compute backends<br/>in two lines</h2>
     <p class="section-sub">Tired of OpenAI pricing? Need private inference? <code style="color:var(--accent);font-size:.9em">@axonsdk/inference</code> is a drop-in <code style="color:var(--accent);font-size:.9em">baseURL</code> replacement — no code changes required.</p>
     <div class="inference-grid">
       <div>
@@ -952,7 +952,7 @@ client.<span class="fn">disconnect</span>();</pre>
     <div class="router-grid">
       <div>
         <div class="section-label">Smart Routing</div>
-        <h2 class="section-title">Route across DePIN networks — automatically</h2>
+        <h2 class="section-title">Route across providers — automatically</h2>
         <p style="color:var(--muted);font-size:1rem;margin-bottom:1.75rem;">
           <code style="font-size:.85em;color:var(--accent)">AxonRouter</code> manages multiple providers simultaneously.
           On every request it scores each provider by health, latency, cost, and availability —
@@ -1064,7 +1064,7 @@ router.health().forEach(h =&gt; {
       <div class="feature-card">
         <div class="feature-icon">⚡</div>
         <h3>Intelligent multi-provider routing</h3>
-        <p><code style="font-size:.8em;color:var(--accent)">AxonRouter</code> scores every provider on latency, availability, and cost in real time. Circuit breakers open on failure and recover automatically — zero downtime across DePIN networks.</p>
+        <p><code style="font-size:.8em;color:var(--accent)">AxonRouter</code> scores every provider on latency, availability, and cost in real time. Circuit breakers open on failure and recover automatically — zero downtime across all providers.</p>
       </div>
     </div>
   </div>
@@ -1087,7 +1087,7 @@ router.health().forEach(h =&gt; {
       </div>
       <div class="cli-row">
         <div class="cli-cmd">axon deploy</div>
-        <div class="cli-desc">Bundle, upload to IPFS, and register deployment on-chain</div>
+        <div class="cli-desc">Bundle and deploy your workload to the target provider</div>
       </div>
       <div class="cli-row">
         <div class="cli-cmd">axon run-local</div>
@@ -1178,7 +1178,7 @@ router.health().forEach(h =&gt; {
 
     const STREAM_TOKENS = [
       'Edge AI ', 'routes ', 'your ', 'inference ', 'requests ',
-      'to the ', 'fastest,\n  cheapest ', 'decentralised ', 'GPU —\n  ',
+      'to the ', 'fastest,\n  cheapest ', 'available ', 'backend —\n  ',
       'automatically. ', 'Zero ', 'code ', 'changes\n  to ', 'your ',
       'existing ', 'OpenAI ', 'integration.',
     ];
@@ -1431,7 +1431,7 @@ router.health().forEach(h =&gt; {
     { kind: 'cmd',     text: 'axon deploy' },
     { kind: 'gap' },
     { kind: 'spin',    text: 'Bundling with esbuild',    resolve: '✔ Bundle ready  (38 kB)' },
-    { kind: 'spin',    text: 'Uploading to IPFS',        resolve: '✔ CID: QmX7k9mN2pR4sT8uV1wY3zA5bC6dE7fG8hI9jK0lM' },
+    { kind: 'spin',    text: 'Uploading bundle',          resolve: '✔ Upload complete  (38 kB)' },
     { kind: 'spin',    text: 'Submitting job to io.net', resolve: '✔ Job accepted' },
     { kind: 'spin',    text: 'Waiting for processors',   resolve: '✔ 3 processors matched' },
     { kind: 'gap' },

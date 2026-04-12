@@ -2,7 +2,7 @@
   "name": "axon",
   "version": "0.1.0",
   "private": true,
-  "description": "Build edge dApps once. Run them confidentially on millions of smartphones.",
+  "description": "Universal AI compute routing SDK — deploy inference to any provider from one interface.",
   "workspaces": [
     "packages/*",
     "templates/*",

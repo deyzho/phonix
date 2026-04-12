@@ -1,6 +1,6 @@
-# Contributing to Phonix
+# Contributing to Axon SDK
 
-Thank you for your interest in contributing! Phonix is an open-source project and all contributions are welcome — from bug reports and docs fixes to new providers and templates.
+Thank you for your interest in contributing! Axon is an open-source project and all contributions are welcome — from bug reports and documentation fixes to new providers and templates.
 
 ---
 
@@ -8,8 +8,8 @@ Thank you for your interest in contributing! Phonix is an open-source project an
 
 ```bash
 # Fork the repo on GitHub, then clone your fork
-git clone https://github.com/YOUR_USERNAME/phonix.git
-cd phonix
+git clone https://github.com/YOUR_USERNAME/axonsdk.git
+cd axon
 
 # Install dependencies
 npm install
@@ -27,22 +27,24 @@ cd packages/mobile && npx vitest run
 ## Project structure
 
 ```
-phonix/
+axon/
 ├── packages/
-│   ├── sdk/          # @phonixsdk/sdk — core TypeScript library
+│   ├── sdk/          # @axonsdk/sdk — core TypeScript library
 │   │   └── src/
 │   │       ├── providers/
-│   │       │   ├── acurast/   # Acurast TEE smartphone network
-│   │       │   ├── fluence/   # Fluence decentralised cloud
-│   │       │   ├── koii/      # Koii community compute
-│   │       │   └── akash/     # Akash container marketplace
+│   │       │   ├── ionet/     # io.net GPU compute
+│   │       │   ├── akash/     # Akash container marketplace
+│   │       │   ├── acurast/   # Acurast TEE node network
+│   │       │   ├── fluence/   # Fluence serverless compute
+│   │       │   └── koii/      # Koii distributed task nodes
 │   │       └── runtime/
 │   │           └── adapters/  # Per-provider runtime bootstraps
-│   ├── cli/          # @phonixsdk/cli — command-line tool (Commander.js)
-│   └── mobile/       # @phonixsdk/mobile — React Native / Expo SDK
+│   ├── cli/          # @axonsdk/cli — command-line tool (Commander.js)
+│   ├── inference/    # @axonsdk/inference — OpenAI-compatible inference handler
+│   └── mobile/       # @axonsdk/mobile — React Native / Expo SDK
 ├── templates/
-│   ├── inference/    # Confidential LLM inference template
-│   └── oracle/       # Price feed oracle template
+│   ├── inference/    # LLM inference template
+│   └── oracle/       # Data oracle template
 └── examples/
     └── nextjs-app/   # Next.js integration example
 ```
@@ -64,14 +66,14 @@ phonix/
 
 4. **Run the test suite** and ensure all tests pass:
    ```bash
-   # SDK (104 tests)
+   # SDK
    cd packages/sdk && npx vitest run
 
-   # Mobile (31 tests)
+   # Mobile
    cd packages/mobile && npx vitest run
    ```
 
-5. **Open a pull request** against `main` with a clear title and description of what changed and why.
+5. **Open a pull request** against `main` with a clear title and description.
 
 ---
 
@@ -79,7 +81,7 @@ phonix/
 
 Each provider lives in `packages/sdk/src/providers/<name>/` and must:
 
-1. **Implement `IPhonixProvider`** (`packages/sdk/src/providers/base.ts`):
+1. **Implement `IAxonProvider`** (`packages/sdk/src/providers/base.ts`):
    - `connect(secretKey)` / `disconnect()`
    - `deploy(config)` → `Deployment`
    - `estimate(config)` → `CostEstimate`
@@ -88,7 +90,7 @@ Each provider lives in `packages/sdk/src/providers/<name>/` and must:
    - `onMessage(handler)` → unsubscribe function
    - `readonly name: ProviderName`
 
-2. **Write a runtime adapter** in `packages/sdk/src/runtime/adapters/<name>.ts` that returns a JavaScript preamble string defining `globalThis.phonix`.
+2. **Write a runtime adapter** in `packages/sdk/src/runtime/adapters/<name>.ts` that returns a JavaScript preamble string defining `globalThis.axon`.
 
 3. **Wire it in** (all of these must be updated):
    - `packages/sdk/src/types.ts` — add to `ProviderName` union
@@ -100,22 +102,22 @@ Each provider lives in `packages/sdk/src/providers/<name>/` and must:
    - `packages/cli/src/index.ts` — update auth command description
 
 4. **Write tests** in `packages/sdk/src/__tests__/<name>.test.ts` covering:
-   - `estimate()` returns a `CostEstimate` with the right token
-   - `listDeployments()` returns an array (including when CLI is absent)
+   - `estimate()` returns a `CostEstimate` with the correct token
+   - `listDeployments()` returns an array
    - `onMessage()` returns an unsubscribe function
-   - Client SSRF protection (if applicable)
+   - SSRF protection (if the provider makes outbound HTTP calls)
 
-5. **Update `@phonixsdk/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
+5. **Update `@axonsdk/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
 
 ---
 
 ## Areas where contributions are most welcome
 
-- **Integration tests** against live Acurast testnet and Akash sandbox
-- **New provider support** — Bacalhau, Render Network, Lilypad
-- **Template library** — additional ready-to-deploy templates (web scraper, AI agent, ML pipeline)
-- **Mobile examples** — Expo Snack examples, React Native starter
-- **Documentation** — guides, examples, and API reference improvements
+- **Integration tests** against live provider sandboxes (Akash, Acurast testnet, io.net)
+- **New provider support** — AWS Lambda, Cloudflare Workers, Bacalhau, Render Network
+- **Template library** — web scraper, AI agent, ML pipeline, RAG pipeline
+- **Mobile examples** — Expo Snack demos, React Native starter kits
+- **Documentation** — guides, tutorials, and API reference improvements
 - **Bug reports** — clear reproduction steps with OS, Node.js version, and provider name
 
 ---
@@ -125,13 +127,13 @@ Each provider lives in `packages/sdk/src/providers/<name>/` and must:
 - **TypeScript throughout** — no untyped `any` unless truly unavoidable; use `unknown` + type guards instead
 - **Keep functions small and single-purpose** — prefer composition over long imperative blocks
 - **Security-sensitive code** (key handling, network requests, JSON parsing) must include comments explaining the threat being mitigated
-- **No `console.log` in library code** — use the provider's `print` global or throw a typed `PhonixError`
+- **No `console.log` in library code** — use the provider's `print` global or throw a typed `AxonError`
 - **SSRF protection is required** for any code that makes outbound HTTP calls based on user-supplied URLs — validate against `PRIVATE_HOST_RE` and enforce `https://`
 - **Prototype pollution prevention** — use `Object.create(null)` for maps built from untrusted input; block `__proto__`, `constructor`, `prototype` keys in JSON parsers
 
 ---
 
-## Running a specific package's tests
+## Running tests
 
 ```bash
 # Core SDK
@@ -151,7 +153,7 @@ npx vitest
 
 ## Reporting security issues
 
-Please do **not** open a public GitHub issue for security vulnerabilities. Instead, email the maintainer directly so the issue can be assessed and a fix prepared before public disclosure. Include:
+Please do **not** open a public GitHub issue for security vulnerabilities. Email the maintainer directly so the issue can be assessed and a fix prepared before public disclosure. Include:
 
 - A description of the vulnerability
 - Steps to reproduce
@@ -162,4 +164,4 @@ Please do **not** open a public GitHub issue for security vulnerabilities. Inste
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](./LICENSE).
+By contributing, you agree that your contributions will be licensed under the [Apache-2.0 License](./LICENSE).

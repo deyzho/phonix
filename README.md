@@ -1,30 +1,28 @@
 # Axon SDK
 
-**Deploy AI to the edge. Any network, any device, one SDK.**
+**One SDK. Any compute. Route AI inference to the fastest, cheapest backend — cloud, edge, or your own infrastructure.**
 
-Axon is the deployment layer for edge AI. Run inference on decentralised compute networks — automatically routed to the fastest, cheapest option. One SDK. Zero lock-in.
+Axon is a universal AI compute routing layer. Stop rewriting integrations every time you switch providers, hit rate limits, or find a cheaper GPU. Point Axon at any backend — GPU clusters, container clouds, serverless functions, TEE enclaves, or your own servers — and it handles routing, failover, and cost optimisation automatically.
 
-Tired of OpenAI pricing? Need private inference? Building a dApp that requires reliable compute without AWS dependency? Axon routes your AI workloads to the best available edge compute — GPU clusters, TEE smartphones, container clouds — with a single interface across [io.net](https://io.net), [Akash Network](https://akash.network), [Acurast](https://acurast.com), [Fluence](https://fluence.network), and [Koii](https://koii.network).
+Drop in the OpenAI-compatible `@axonsdk/inference` package and your existing code routes to a new backend in two lines. Call your deployed processors from **iOS and Android** with `@axonsdk/mobile`.
 
-Drop in the OpenAI-compatible `@axonsdk/inference` package and your existing code routes through decentralised GPU in two lines. Call your deployed processors directly from **iOS and Android** apps with `@axonsdk/mobile`.
-
-> Axon is to edge compute what Ethers.js is to EVM chains: **one interface, any provider**.
+> Axon is to AI compute what httpx is to HTTP — **one client, any backend**.
 
 ---
 
 ## Supported providers
 
-### Edge & Decentralised compute
+### Edge & private compute
 
-| Provider | Status | Nodes | Runtime | Token |
+| Provider | Status | Nodes | Runtime | Cost |
 |---|---|---|---|---|
-| [io.net](https://io.net) | ✅ Supported | GPU clusters (A100, H100, RTX) | nodejs, python | IO |
-| [Akash Network](https://akash.network) | ✅ Supported | Decentralised container marketplace | nodejs, docker | AKT |
-| [Acurast](https://acurast.com) | ✅ Supported | 237k+ smartphones (TEE) | nodejs, wasm | ACU |
-| [Fluence](https://fluence.network) | ✅ Supported | Decentralised serverless cloud | nodejs | FLT |
-| [Koii](https://koii.network) | ✅ Supported | Community compute task nodes | nodejs | KOII |
+| [io.net](https://io.net) | ✅ Live | GPU clusters (A100, H100, RTX) | nodejs, python | ~$0.40/hr GPU spot |
+| [Akash Network](https://akash.network) | ✅ Live | Container compute marketplace | nodejs, docker | Pay-per-use |
+| [Acurast](https://acurast.com) | ✅ Live | 237k+ mobile TEE nodes | nodejs, wasm | Pay-per-execution |
+| [Fluence](https://fluence.network) | ✅ Live | Serverless function compute | nodejs | Pay-per-ms |
+| [Koii](https://koii.network) | ✅ Live | Distributed task nodes | nodejs | Pay-per-task |
 
-### Cloud providers *(coming soon)*
+### Cloud providers
 
 | Provider | Status | Services | Runtime |
 |---|---|---|---|
@@ -40,11 +38,13 @@ Drop in the OpenAI-compatible `@axonsdk/inference` package and your existing cod
 
 ## Python SDK
 
-Axon ships a Python-first SDK for AI/ML engineers and data scientists. It exposes the same provider interface, routing engine, and OpenAI-compatible inference handler — all in idiomatic async Python.
+Axon ships a Python-first SDK for AI/ML engineers and data scientists. Same provider interface, routing engine, and OpenAI-compatible inference handler — in idiomatic async Python.
 
 ```bash
 pip install axon              # core SDK
 pip install axon[inference]   # + FastAPI OpenAI-compatible server
+pip install axon[aws]         # + boto3
+pip install axon[all]         # everything
 ```
 
 ```python
@@ -55,7 +55,7 @@ async with AxonClient(provider="ionet", secret_key="...") as client:
     deployment = await client.deploy(config)
     await client.send(deployment.id, {"prompt": "Hello"})
 
-# Multi-provider with auto-routing
+# Multi-provider with automatic routing
 async with AxonRouter(
     providers=["ionet", "akash", "acurast"],
     secret_key="...",
@@ -71,8 +71,6 @@ axon deploy     # deploy your workload
 axon status     # list active deployments
 ```
 
-> The Python SDK is the primary implementation. The TypeScript packages below are the alternative track for JavaScript/TypeScript and React Native developers.
-
 ---
 
 ## Quick start (TypeScript / Node.js)
@@ -86,11 +84,11 @@ npm install -g @axonsdk/cli
 ### 2. Initialise a new project
 
 ```bash
-mkdir my-edge-app && cd my-edge-app
+mkdir my-app && cd my-app
 axon init
 ```
 
-This will prompt you for a project name, provider, and template (inference / oracle / blank), then generate `axon.json`, `.env`, and `src/index.ts`.
+Prompts for project name, provider, and template, then generates `axon.json`, `.env`, and `src/index.ts`.
 
 ### 3. Configure credentials
 
@@ -98,7 +96,7 @@ This will prompt you for a project name, provider, and template (inference / ora
 axon auth
 ```
 
-The interactive wizard generates and stores all required keys and endpoints for your chosen provider. Your `.env` is automatically added to `.gitignore` and locked to owner-only permissions.
+The interactive wizard generates and stores all required keys for your chosen provider. Your `.env` is locked to owner-only permissions automatically.
 
 ### 4. Test locally
 
@@ -106,7 +104,7 @@ The interactive wizard generates and stores all required keys and endpoints for 
 axon run-local
 ```
 
-Runs your script in a local mock environment — simulates WebSocket messages, real HTTPS requests, and the provider runtime API without touching the network.
+Runs your script in a local mock environment — simulates provider runtime APIs without touching the network or spending credits.
 
 ### 5. Deploy
 
@@ -114,7 +112,7 @@ Runs your script in a local mock environment — simulates WebSocket messages, r
 axon deploy
 ```
 
-Bundles your script, uploads it to IPFS, and registers the deployment on-chain (or submits the SDL to Akash's marketplace).
+Bundles your script, uploads it, and registers the deployment.
 
 ```
 ✔ Deployment live!
@@ -125,7 +123,7 @@ Bundles your script, uploads it to IPFS, and registers the deployment on-chain (
     • 0xproc3...
 ```
 
-### 6. Call from your dApp
+### 6. Send and receive
 
 ```typescript
 import { AxonClient } from '@axonsdk/sdk';
@@ -142,10 +140,7 @@ client.onMessage((msg) => {
   console.log('Result:', result);
 });
 
-await client.send('0xproc1...', {
-  requestId: 'req-001',
-  prompt: 'Summarize: The quick brown fox...',
-});
+await client.send('0xproc1...', { prompt: 'Summarize: The quick brown fox...' });
 
 client.disconnect();
 ```
@@ -158,13 +153,13 @@ client.disconnect();
 |---|---|
 | `axon init` | Interactive setup — generates `axon.json`, `.env`, and template files |
 | `axon auth [provider]` | Credential wizard — generates and stores keys for the selected provider |
-| `axon deploy` | Bundle, upload to IPFS, and register deployment |
-| `axon run-local` | Run your script locally with a mock provider runtime |
+| `axon deploy` | Bundle and register your deployment |
+| `axon run-local` | Run locally with a mock provider runtime |
 | `axon status` | List deployments, processor IDs, and live status |
 | `axon send <id> <msg>` | Send a test message to a processor node |
 | `axon template list` | Show available built-in templates |
 
-Supported values for `[provider]`: `ionet`, `akash`, `acurast`, `fluence`, `koii`
+Supported providers: `ionet`, `akash`, `acurast`, `fluence`, `koii`
 
 ---
 
@@ -175,7 +170,7 @@ import { AxonClient } from '@axonsdk/sdk';
 import type { DeploymentConfig } from '@axonsdk/sdk';
 
 const client = new AxonClient({
-  provider: 'ionet',  // 'ionet' | 'akash' | 'acurast' | 'fluence' | 'koii'
+  provider: 'ionet',
   secretKey: process.env.AXON_SECRET_KEY,
 });
 
@@ -189,26 +184,15 @@ const cost = await client.estimate({
   replicas: 1,
 });
 console.log(`Estimated: ${cost.amount} ${cost.token}`);
-// e.g. "Estimated: 6000000000 AKT" (in uAKT)
 
 // Deploy
-const deployment = await client.deploy({
-  runtime: 'nodejs',
-  code: './dist/index.js',
-  schedule: { type: 'on-demand', durationMs: 86_400_000 },
-  replicas: 1,
-});
+const deployment = await client.deploy({ ... });
 
-// List deployments
-const deployments = await client.listDeployments();
-
-// Send a message to a processor / container
+// Send a message
 await client.send(deployment.processorIds[0], { prompt: 'Hello' });
 
 // Receive results
-const unsubscribe = client.onMessage((msg) => {
-  console.log(msg.payload);
-});
+client.onMessage((msg) => console.log(msg.payload));
 
 client.disconnect();
 ```
@@ -217,7 +201,7 @@ client.disconnect();
 
 ## OpenAI-compatible inference endpoint
 
-`@axonsdk/inference` is a drop-in OpenAI-compatible HTTP handler that routes chat completion requests through Axon's decentralised GPU and TEE compute network. If you're already using the `openai` npm package, switching takes two lines:
+`@axonsdk/inference` is a drop-in replacement for the OpenAI API that routes requests to the fastest available backend. Switch your existing OpenAI integration in two lines:
 
 ```typescript
 import OpenAI from 'openai';
@@ -234,14 +218,14 @@ const response = await client.chat.completions.create({
 });
 ```
 
-### Supported models
+### Available models
 
-| Model ID | Provider | Notes |
+| Model ID | Backend | Notes |
 |---|---|---|
-| `axon-llama-3-70b` | io.net | GPU, A100 spot — best for large context |
-| `axon-mistral-7b`  | io.net | GPU, cost-efficient |
-| `axon-llama-3-8b`  | Akash  | Container cloud, moderate cost |
-| `axon-tee-phi-3-mini` | Acurast | TEE smartphone, private, lowest cost |
+| `axon-llama-3-70b` | io.net | A100 GPU — best quality |
+| `axon-mistral-7b`  | io.net | GPU, most cost-efficient |
+| `axon-llama-3-8b`  | Akash  | Container compute, moderate cost |
+| `axon-tee-phi-3-mini` | Acurast | TEE node — private execution |
 
 ### Setup (Next.js App Router)
 
@@ -265,85 +249,36 @@ export const POST = (req: Request) => handler.handleRequest(req);
 export const GET  = (req: Request) => handler.handleRequest(req); // GET /v1/models
 ```
 
-The handler implements:
-- `POST /v1/chat/completions` — streaming (SSE) and non-streaming
-- `GET  /v1/models` — returns available model list
-- Bearer auth, failover on provider error, 30-second auto-recovery
-- `X-Axon-Provider` response header so you can see which network served each request
-
----
-
-## Provider health dashboard
-
-Real-time latency, health scores, and status for all five Axon providers — updated every 5 minutes:
-
-**[status.axonsdk.dev](https://status.axonsdk.dev)**
+The handler implements streaming (SSE) and non-streaming, bearer auth, automatic failover with 30-second recovery, and an `X-Axon-Provider` response header so you can see which backend served each request.
 
 ---
 
 ## Multi-provider Router
 
-`AxonRouter` routes requests across multiple DePIN providers simultaneously, picking the best one on every call based on real-time health data.
+`AxonRouter` routes requests across multiple providers simultaneously, picking the best one on every call based on real-time latency, cost, and availability.
 
 ```typescript
 import { AxonRouter } from '@axonsdk/sdk';
 
 const router = new AxonRouter({
-  providers: ['akash', 'acurast'],
+  providers: ['ionet', 'akash', 'acurast'],
   secretKey: process.env.AXON_SECRET_KEY,
-
-  // Routing strategy: 'balanced' | 'latency' | 'availability' | 'cost' | 'round-robin'
-  strategy: 'latency',
-
-  // Processor selection within a provider: 'round-robin' | 'fastest' | 'random' | 'first'
-  processorStrategy: 'fastest',
-
-  // Circuit breaker — open after 3 consecutive failures, recover after 30s
-  failureThreshold: 3,
+  strategy: 'latency',          // 'balanced' | 'latency' | 'availability' | 'cost' | 'round-robin'
+  processorStrategy: 'fastest', // 'round-robin' | 'fastest' | 'random' | 'first'
+  failureThreshold: 3,          // open circuit after 3 consecutive failures
   recoveryTimeoutMs: 30_000,
-
   maxRetries: 2,
-  retryDelayMs: 200,
 });
 
 await router.connect();
+await router.deploy({ runtime: 'nodejs', code: './dist/index.js', ... });
 
-// Deploy to ALL providers in parallel
-const deployment = await router.deploy({
-  runtime: 'nodejs',
-  code: './dist/index.js',
-  schedule: { type: 'on-demand', durationMs: 86_400_000 },
-});
-console.log(`Deployed to ${deployment.providers.length} providers`);
-if (deployment.failedProviders.length) {
-  console.warn('Failed providers:', deployment.failedProviders);
-}
-
-// Send — automatically picks the highest-scoring callable provider
+// Automatically picks the highest-scoring provider
 await router.send({ prompt: 'Hello' });
 
-// Force a specific provider
-await router.send({ prompt: 'Hello' }, { preferProvider: 'akash' });
-
-// Receive messages from all providers
-const unsubscribe = router.onMessage((msg) => {
-  console.log(msg.payload);
-});
-
-// Health snapshot — one entry per provider
+// Health snapshot
 router.health().forEach((h) => {
-  console.log(h.provider, {
-    score:       h.score.toFixed(3),
-    latencyMs:   h.latencyMs,
-    successRate: h.successRate,
-    circuit:     h.circuitState,
-  });
-});
-
-// Listen for routing events
-router.onEvent((event) => {
-  // event.type: 'provider:selected' | 'provider:failed' | 'circuit:opened' | 'retry' | 'failover' | ...
-  console.log(event.type, event.provider);
+  console.log(h.provider, h.latencyMs, h.circuitState, h.score);
 });
 
 router.disconnect();
@@ -351,41 +286,37 @@ router.disconnect();
 
 ### Routing strategies
 
-| Strategy | Availability weight | Latency weight | Cost weight |
-|---|---|---|---|
-| `balanced` | 33% | 34% | 33% |
-| `latency` | 10% | 85% | 5% |
-| `availability` | 80% | 15% | 5% |
-| `cost` | 10% | 5% | 85% |
-| `round-robin` | — distributes evenly, ignores scores — | | |
+| Strategy | Best for |
+|---|---|
+| `balanced` | General purpose — equal weight on availability, latency, cost |
+| `latency` | Interactive workloads — always picks the fastest provider |
+| `availability` | High uptime — prefers the most reliable provider |
+| `cost` | Batch jobs — routes to the cheapest option |
+| `round-robin` | Even load distribution |
 
 ---
 
 ## Mobile SDK (iOS & Android)
 
-`@axonsdk/mobile` is a React Native / Expo package that lets you call your deployed Axon processors directly from iOS and Android apps.
+`@axonsdk/mobile` is a React Native / Expo package for calling AI inference endpoints from iOS and Android apps — with automatic failover, circuit breakers, and secure key storage.
 
 ```bash
 npm install @axonsdk/mobile
 ```
 
-### Quick start — Expo / React Native
-
 ```tsx
-// App.tsx — wrap your root once
+// App.tsx
 import { AxonProvider } from '@axonsdk/mobile';
 
 export default function App() {
   return (
     <AxonProvider provider="akash" secretKey={AXON_SECRET_KEY} autoConnect>
-      <NavigationContainer>
-        <MainStack />
-      </NavigationContainer>
+      <NavigationContainer><MainStack /></NavigationContainer>
     </AxonProvider>
   );
 }
 
-// AnyScreen.tsx — access from anywhere in the tree
+// AnyScreen.tsx
 import { useAxonContext, useMessages, useSend } from '@axonsdk/mobile';
 
 export function InferenceScreen() {
@@ -398,30 +329,26 @@ export function InferenceScreen() {
       <Text>{connected ? '🟢 Live' : '⚪ Offline'}</Text>
       <Button
         title={sending ? 'Sending...' : 'Run inference'}
-        onPress={() => send(AKASH_LEASE_URL, { prompt: 'Hello from iOS!' })}
+        onPress={() => send(ENDPOINT_URL, { prompt: 'Hello from iOS!' })}
       />
-      {messages.map((m, i) => (
-        <Text key={i}>{JSON.stringify(m.payload)}</Text>
-      ))}
+      {messages.map((m, i) => <Text key={i}>{JSON.stringify(m.payload)}</Text>)}
     </View>
   );
 }
 ```
 
-### Without context — standalone hooks
-
 ```tsx
-import { useAxon, useMessages } from '@axonsdk/mobile';
+// Multi-provider routing in mobile
+import { useAxonRouter } from '@axonsdk/mobile';
 
-function Screen() {
-  const { client, connected, connect, error } = useAxon({
-    provider: 'akash',
-    secretKey: AXON_SECRET_KEY,
-  });
-  const messages = useMessages(client);
-
-  return <Button title="Connect" onPress={connect} disabled={connected} />;
-}
+const { router, connected, health } = useAxonRouter({
+  routes: [
+    { provider: 'akash',   endpoint: 'https://lease.akash.example.com', secretKey },
+    { provider: 'acurast', endpoint: 'wss://proxy.acurast.com',          secretKey },
+  ],
+  strategy: 'latency',
+  autoConnect: true,
+});
 ```
 
 ### Secure key storage
@@ -434,188 +361,17 @@ await storage.saveSecretKey(myKey); // iOS Keychain / Android Keystore
 const key = await storage.loadSecretKey();
 ```
 
-### Mobile Router
-
-Route across multiple DePIN endpoints from your React Native app with the same circuit-breaker and health-scoring logic as the server SDK:
-
-```tsx
-import { useAxonRouter } from '@axonsdk/mobile';
-
-function App() {
-  const { router, connected, health } = useAxonRouter({
-    routes: [
-      { provider: 'akash',   endpoint: 'https://lease.akash.example.com', secretKey },
-      { provider: 'acurast', endpoint: 'wss://proxy.acurast.com',          secretKey },
-    ],
-    strategy: 'balanced',
-    autoConnect: true,
-  });
-
-  return (
-    <Button
-      title="Send"
-      onPress={() => router?.send({ prompt: 'Hello from iOS' })}
-      disabled={!connected}
-    />
-  );
-}
-```
-
-AppState listeners are attached automatically — the router pauses on background and resumes on foreground.
-
-### Mobile API
-
-| Export | Description |
-|---|---|
-| `MobileAxonClient` | Messaging-only client (no deploy/esbuild, works in Hermes/JSC) |
-| `MobileAxonRouter` | Multi-provider router with circuit breakers and health scoring |
-| `useAxon(options)` | Hook — manages client lifecycle, returns `{ client, connected, connect, disconnect, error }` |
-| `useAxonRouter(config)` | Hook — manages router lifecycle, returns `{ router, connected, health, connect, disconnect }` |
-| `useMessages(client)` | Hook — subscribes to messages, returns reactive `Message[]` array (newest first) |
-| `useSend(client)` | Hook — wraps `client.send()` with `sending` / `sendError` state |
-| `AxonProvider` | React context — provides client to the full component tree |
-| `useAxonContext()` | Consumes the AxonProvider context |
-| `SecureKeyStorage` | Persists keys via iOS Keychain / Android Keystore (`expo-secure-store`) |
-
-**Supported providers in `@axonsdk/mobile`:** `'akash'` (HTTP), `'acurast'` (WebSocket), `'http'` (generic HTTPS)
-
-> Deploy your processors with `axon deploy` on your development machine. The mobile SDK handles calling them — not deploying.
-
 ---
 
-## Provider setup
+## Security
 
-### io.net
-
-```bash
-axon auth ionet
-```
-
-Requires an io.net API key. Get one at [cloud.io.net](https://cloud.io.net) → API Keys.
-
-**Required `.env` keys:** `IONET_API_KEY`
-
-**Optional `.env` keys:** `IONET_CLUSTER_ID` (leave blank to auto-select the cheapest available GPU cluster)
-
-**How it works:**
-1. Your TypeScript entry file is bundled with esbuild
-2. The bundle is uploaded to IPFS — the CID is the deployment source of truth
-3. A job is submitted to `api.io.net/v1/jobs` targeting the specified (or cheapest) GPU cluster
-4. io.net provisions a worker with your bundle; the `workerEndpoint` becomes your processorId
-5. Send messages via `client.send(processorId, payload)` — response size capped at 4 MiB, timeout 60s
-
-**Estimated cost:** ~$0.40/hr per A100 GPU (spot), auto-calculated via `client.estimate()`
-
----
-
-### Acurast
-
-```bash
-axon auth acurast
-```
-
-Requires a Polkadot-compatible wallet mnemonic (12 or 24 words) and an IPFS endpoint. Get a wallet at [console.acurast.com](https://console.acurast.com) and testnet tokens at [faucet.acurast.com](https://faucet.acurast.com).
-
-**Required `.env` keys:** `ACURAST_MNEMONIC`, `ACURAST_IPFS_URL`, `ACURAST_IPFS_API_KEY`
-
----
-
-### Fluence
-
-```bash
-axon auth fluence
-```
-
-Requires an EVM-compatible private key (hex). The wizard generates one automatically and prints the address so you can fund it.
-
-**Required `.env` keys:** `FLUENCE_PRIVATE_KEY`, `FLUENCE_RELAY_ADDR`, `FLUENCE_NETWORK`
-
----
-
-### Koii
-
-```bash
-axon auth koii
-```
-
-Requires a Solana-compatible keypair (base58). The wizard generates one automatically.
-
-**Required `.env` keys:** `KOII_PRIVATE_KEY`, `KOII_IPFS_URL`, `KOII_NETWORK`
-
----
-
-### Akash Network
-
-```bash
-axon auth akash
-```
-
-Requires a BIP-39 wallet mnemonic (12 or 24 words) and an IPFS endpoint. The wizard stores your mnemonic and configures the RPC node and chain ID automatically.
-
-**Required `.env` keys:** `AKASH_MNEMONIC`, `AKASH_IPFS_URL`
-
-**Optional `.env` keys:** `AKASH_IPFS_API_KEY`, `AKASH_NODE` (default: `https://rpc.akashnet.net:443`), `AKASH_CHAIN_ID` (default: `akashnet-2`), `AKASH_KEY_NAME` (default: `axon`)
-
-**Prerequisite:** The `provider-services` CLI must be installed:
-```bash
-# Install Akash provider-services CLI
-curl https://raw.githubusercontent.com/akash-network/provider/main/script/install.sh | bash
-```
-Docs: [docs.akash.network/guides/cli/akash-provider-services](https://docs.akash.network/guides/cli/akash-provider-services)
-
-**How it works:**
-1. Your TypeScript entry file is bundled with esbuild
-2. The bundle is uploaded to IPFS — the CID is the immutable source of truth
-3. An Akash SDL (Stack Definition Language) is generated with `node:20-alpine`, the CID embedded as `BUNDLE_CID`, and your env vars
-4. `provider-services tx deployment create` submits the SDL to the Akash marketplace
-5. A winning provider bids and spins up the container, which fetches the bundle from IPFS at startup and runs it
-
----
-
-## Templates
-
-| Template | Description |
-|---|---|
-| [`inference`](./templates/inference) | Confidential LLM inference — receive prompts, call an OpenAI-compatible API, return results privately inside a TEE |
-| [`oracle`](./templates/oracle) | Data oracle — fetch external data on a schedule, sign it inside the TEE, push to on-chain destinations |
-| `blank` | Empty project with full provider runtime type declarations |
-
----
-
-## `axon.json` reference
-
-```json
-{
-  "projectName": "my-edge-app",
-  "provider": "akash",
-  "runtime": "nodejs",
-  "entryFile": "src/index.ts",
-  "schedule": {
-    "type": "on-demand",
-    "durationMs": 86400000
-  },
-  "replicas": 1,
-  "maxCostPerExecution": 10000,
-  "environment": {
-    "MY_VAR": "my-value"
-  },
-  "destinations": []
-}
-```
-
-| Field | Type | Description |
-|---|---|---|
-| `projectName` | `string` | Human-readable project name |
-| `provider` | `ionet \| akash \| acurast \| fluence \| koii` | Target compute provider |
-| `runtime` | `nodejs \| python \| docker \| wasm` | Execution runtime |
-| `entryFile` | `string` | Path to your script entry point |
-| `schedule.type` | `on-demand \| interval \| onetime` | When the script runs |
-| `schedule.intervalMs` | `number` | Milliseconds between runs (interval only) |
-| `schedule.durationMs` | `number` | Total deployment lifetime in ms |
-| `replicas` | `number` | Number of processor nodes / container replicas |
-| `maxCostPerExecution` | `number` | Cost cap per run (in provider micro-units: uACU, uAKT, etc.) |
-| `environment` | `object` | Key-value pairs injected into your script at bundle time |
-| `destinations` | `string[]` | On-chain addresses to push results to |
+- **Secrets never leave `.env`** — the auth wizard generates keys locally and stores them with `chmod 600`. Never logged or transmitted.
+- **SSRF protection** — all HTTP calls validate URLs against a private-IP blocklist and enforce HTTPS.
+- **DNS rebinding defence** — resolves hostnames to IPs before opening connections, then re-validates the IP.
+- **Prototype pollution prevention** — remote JSON payloads are parsed with key blocklisting; environment maps use `Object.create(null)`.
+- **Response size caps** — all provider clients enforce a 1 MiB response cap; mock runtime enforces 4 MiB.
+- **Input validation** — `processorId` and deployment names validated for control characters and path traversal sequences.
+- **esbuild injection guard** — rejects any `environment` key that looks like a secret before bundle time.
 
 ---
 
@@ -626,23 +382,23 @@ axon/
 ├── packages/
 │   ├── cli/          # @axonsdk/cli — command-line tool
 │   ├── inference/    # @axonsdk/inference — OpenAI-compatible inference handler
+│   ├── mobile/       # @axonsdk/mobile — React Native / Expo SDK
 │   └── sdk/          # @axonsdk/sdk — core library
 │       └── src/
 │           ├── providers/
 │           │   ├── ionet/    # io.net GPU provider
 │           │   ├── akash/    # Akash Network provider
-│           │   ├── acurast/  # Acurast provider
-│           │   ├── fluence/  # Fluence provider
-│           │   └── koii/     # Koii provider
+│           │   ├── acurast/  # Acurast TEE provider
+│           │   ├── fluence/  # Fluence serverless provider
+│           │   └── koii/     # Koii task node provider
 │           └── runtime/
 │               └── adapters/ # Per-provider runtime bootstraps
-├── status/
-│   └── index.html    # Provider health dashboard (status.axonsdk.dev)
+├── status/           # Provider health dashboard
 ├── templates/
-│   ├── inference/    # Confidential LLM inference
-│   └── oracle/       # Data oracle
+│   ├── inference/    # LLM inference template
+│   └── oracle/       # Data oracle template
 └── examples/
-    └── nextjs-app/   # Example Next.js integration
+    └── nextjs-app/   # Next.js integration example
 ```
 
 ---
@@ -650,67 +406,29 @@ axon/
 ## Development
 
 ```bash
-# Clone
 git clone https://github.com/deyzho/axonsdk.git
 cd axon
-
-# Install dependencies
 npm install
-
-# Build all packages
 npm run build
-
-# Run tests
 npm test
-
-# Watch mode during development
-cd packages/sdk && npm run dev
 ```
-
-### Running tests
-
-```bash
-cd packages/sdk
-npx vitest run
-```
-
-135 tests covering config loading and validation, runtime bootstrap generation for all four providers, provider client construction and SSRF protection, cost estimation, message handler registration, SDL generation (Akash), disconnect lifecycle, mobile client SSRF/validation, and SecureKeyStorage.
-
----
-
-## Security
-
-Axon is designed to protect both developers and end users:
-
-- **Secrets never leave `.env`** — the auth wizard generates keys locally and stores them with `chmod 600`. They are never logged or transmitted.
-- **esbuild injection guard** — the deploy pipeline rejects any `environment` key that looks like a secret (`_KEY`, `_SECRET`, `_TOKEN`, `_MNEMONIC`, `_PASSWORD`) to prevent accidental bundle-time embedding of credentials.
-- **SSRF protection** — all HTTP calls (IPFS upload, Akash lease endpoints, Koii task nodes) validate URLs against a private-IP blocklist and enforce HTTPS.
-- **DNS rebinding defence** — the local mock runtime resolves hostnames to IPs via `dns.lookup()` before opening any TCP connection, then re-validates the resolved IP against the blocklist.
-- **Prototype pollution prevention** — remote JSON payloads are parsed with key blocklisting (`__proto__`, `constructor`, `prototype`) and `axon.json` environment maps use `Object.create(null)`.
-- **Response size caps** — all provider clients enforce a 1 MiB cap on remote responses; the mock runtime enforces a 4 MiB cap on HTTP bodies.
-- **SDL path traversal guard** — Akash deploy validates that the entry file path cannot escape the project directory before bundling.
 
 ---
 
 ## Contributing
 
-Pull requests are welcome. To get started:
-
-1. Fork the repo and create a feature branch
-2. Make your changes with tests
-3. Run `npm test` and ensure all tests pass
-4. Open a pull request with a clear description
+Pull requests are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
 
 High-impact areas:
-- Integration tests against Acurast testnet and Akash sandbox
-- Additional provider support (Bacalhau, Render Network)
-- Template marketplace
+- Integration tests against live provider sandboxes
+- Additional cloud provider support (AWS Lambda, Cloudflare Workers)
+- Template library
 
 ---
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+Apache-2.0 — see [LICENSE](./LICENSE).
 
 ---
 

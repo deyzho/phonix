@@ -1,7 +1,7 @@
 {
   "name": "@axonsdk/mobile",
-  "version": "0.2.1",
-  "description": "React Native / Expo SDK for calling Axon edge processors from iOS and Android apps.",
+  "version": "0.2.2",
+  "description": "React Native / Expo SDK for calling AI inference endpoints from iOS and Android apps — with automatic routing, failover, and secure key storage.",
   "private": false,
   "type": "module",
   "main": "./src/index.ts",
@@ -19,17 +19,19 @@
   },
   "keywords": [
     "axon",
-    "depin",
+    "ai",
+    "inference",
     "react-native",
     "expo",
     "ios",
     "android",
     "edge-compute",
+    "routing",
+    "gpu",
     "acurast",
     "akash",
-    "confidential-computing",
-    "web3",
-    "tee"
+    "multi-provider",
+    "depin"
   ],
   "author": "Axon <hello@axon.dev>",
   "license": "Apache-2.0",
