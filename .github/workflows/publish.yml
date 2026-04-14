@@ -9,8 +9,11 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20', '22']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,11 +21,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
+
+      - name: Type check (SDK)
+        working-directory: packages/sdk
+        run: npx tsc --noEmit
 
       - name: Build SDK
         working-directory: packages/sdk
@@ -35,6 +42,25 @@ jobs:
       - name: Run mobile tests
         working-directory: packages/mobile
         run: npm test
+
+  sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: sbom.spdx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.spdx.json
 
   publish:
     name: Build & Publish

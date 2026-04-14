@@ -57,6 +57,9 @@ export type { ProviderPricing } from './pricing/index.js';
 export { withRetry } from './utils/retry.js';
 export type { RetryOptions } from './utils/retry.js';
 
+// Security utilities — SSRF prevention, URL validation
+export { assertSafeUrl, assertSafeUrlSync } from './utils/security.js';
+
 // Auth cache utilities — useful for testing
 export { clearGcpTokenCache } from './providers/gcp/auth.js';
 export { clearAzureTokenCache } from './providers/azure/auth.js';

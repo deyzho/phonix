@@ -57,7 +57,7 @@
     "@types/inquirer": "^8.2.12",
     "@types/node": "^20.19.39",
     "@types/update-notifier": "^6.0.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.9.3"
   },
   "files": [
     "dist",
