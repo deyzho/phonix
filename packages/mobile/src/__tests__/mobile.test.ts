@@ -7,8 +7,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { MobileAxonClient } from '../client.js';
-import { SecureKeyStorage } from '../storage.js';
+import { MobileAxonClient } from '../client.ts';
+import { SecureKeyStorage } from '../storage.ts';
 import { AxonError } from '@axonsdk/sdk';
 
 // ─── Mock react-native ────────────────────────────────────────────────────────
