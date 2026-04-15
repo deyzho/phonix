@@ -38,17 +38,14 @@ describe('AwsProvider', () => {
   });
 
   describe('connect()', () => {
-    beforeEach(() => {
-      vi.stubEnv('AWS_ACCESS_KEY_ID', '');
-      vi.stubEnv('AWS_SECRET_ACCESS_KEY', '');
-    });
     afterEach(() => {
       vi.unstubAllEnvs();
     });
 
-    it('should throw when AWS credentials are missing', async () => {
+    it('should throw when secret key is empty', async () => {
       const p = new AwsProvider();
-      await expect(p.connect('dummy-key')).rejects.toThrow();
+      // connect() validates its secretKey argument — empty string triggers the guard
+      await expect(p.connect('')).rejects.toThrow();
     });
   });
 

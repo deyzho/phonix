@@ -1,12 +1,18 @@
 import { defineConfig } from 'vitest/config';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   resolve: {
-    // Allow Vitest to resolve .js imports to their .ts source equivalents
-    // when running tests directly against TypeScript source (not compiled dist).
-    extensionAlias: {
-      '.js': ['.ts', '.tsx', '.js'],
-    },
+    // Intercept all .js imports and redirect to .ts source equivalents.
+    // This ensures that source files importing './types.js' and test files
+    // importing '../types.ts' resolve to the same absolute path and therefore
+    // the same Vitest module cache entry — preventing instanceof identity splits.
+    alias: [
+      {
+        find: /^(\.{1,2}\/.+)\.js$/,
+        replacement: '$1.ts',
+      },
+    ],
   },
   test: {
     environment: 'node',
