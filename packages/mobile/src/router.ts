@@ -8,7 +8,7 @@
  * engineering, or disclosure — in whole or in part — is strictly prohibited
  * without prior written consent from Axon.
  *
- * For licensing enquiries contact: legal@axon.dev
+ * For licensing enquiries contact: legal@axonsdk.dev
  */
 
 /**

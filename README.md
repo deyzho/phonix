@@ -1,5 +1,7 @@
 # Axon SDK
 
+**[axonsdk.dev](https://axonsdk.dev) · [npm](https://www.npmjs.com/org/axonsdk) · [GitHub](https://github.com/deyzho/phonixsdk)**
+
 **One SDK. Any compute. Route AI inference to the fastest, cheapest backend — cloud, edge, or your own infrastructure.**
 
 Axon is a universal AI compute routing layer. Stop rewriting integrations every time you switch providers, hit rate limits, or find a cheaper GPU. Point Axon at any backend — GPU clusters, container clouds, serverless functions, TEE enclaves, or your own servers — and it handles routing, failover, and cost optimisation automatically.
@@ -403,5 +405,7 @@ High-impact areas:
 Apache-2.0 — see [LICENSE](./LICENSE).
 
 ---
+
+**[axonsdk.dev](https://axonsdk.dev)** · hello@axonsdk.dev · Apache-2.0
 
 *Axon is not affiliated with io.net, Akash Network, Acurast, Fluence, or Koii. Provider names and trademarks belong to their respective owners.*

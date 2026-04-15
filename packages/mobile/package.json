@@ -32,9 +32,9 @@
     "akash",
     "multi-provider"
   ],
-  "author": "Axon <hello@axon.dev>",
+  "author": "Axon <hello@axonsdk.dev>",
   "license": "Apache-2.0",
-  "homepage": "https://axon.dev",
+  "homepage": "https://axonsdk.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/deyzho/phonixsdk.git",

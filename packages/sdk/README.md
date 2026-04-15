@@ -8,7 +8,7 @@
 
 ## Overview
 
-`@axonsdk/sdk` is the core library for the [Axon](https://axon.dev) platform. It gives you a single, unified interface to deploy code and exchange messages with processors running on any supported DePIN network — without changing your application logic when you switch providers.
+`@axonsdk/sdk` is the core library for the [Axon](https://axonsdk.dev) platform. It gives you a single, unified interface to deploy code and exchange messages with processors running on any supported DePIN network — without changing your application logic when you switch providers.
 
 **Supported providers:** [io.net](https://io.net) · [Acurast](https://acurast.com) · [Akash Network](https://akash.network) · [Fluence](https://fluence.network) · [Koii](https://koii.network)
 
@@ -97,10 +97,10 @@ axon deploy
 
 ## Documentation
 
-Full documentation at [axon.dev](https://axon.dev) and the [GitHub repository](https://github.com/deyzho/axonsdk).
+Full documentation at [axonsdk.dev](https://axonsdk.dev) and the [GitHub repository](https://github.com/deyzho/phonixsdk).
 
 ## License
 
-Apache-2.0 © [Axon](https://axon.dev)
+Apache-2.0 © [Axon](https://axonsdk.dev)
 
 > **Note:** The routing engine (`AxonRouter` internals) is proprietary and confidential. See individual file headers for details.

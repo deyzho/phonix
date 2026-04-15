@@ -111,8 +111,8 @@ const key = await storage.loadSecretKey();
 
 ## Documentation
 
-Full docs at [axon.dev](https://axon.dev) · [GitHub](https://github.com/deyzho/axonsdk)
+Full docs at [axonsdk.dev](https://axonsdk.dev) · [GitHub](https://github.com/deyzho/phonixsdk)
 
 ## License
 
-Apache-2.0 © [Axon](https://axon.dev)
+Apache-2.0 © [Axon](https://axonsdk.dev)
