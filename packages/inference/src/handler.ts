@@ -71,7 +71,22 @@ export class AxonInferenceHandler {
       return this.jsonError(400, 'invalid_request', '"messages" is required.');
     }
 
-    const route = this.router.pickEndpoint();
+    return this.dispatchToProvider(body);
+  }
+
+  /**
+   * Dispatch a parsed request body to the best available provider,
+   * with automatic failover on errors or non-2xx responses.
+   */
+  private async dispatchToProvider(body: InferenceRequest): Promise<Response> {
+    // pickEndpoint() throws when no providers remain — convert to 503
+    let route: ReturnType<AxonInferenceRouter['pickEndpoint']>;
+    try {
+      route = this.router.pickEndpoint();
+    } catch {
+      return this.jsonError(503, 'provider_unavailable', 'No inference providers are currently available.');
+    }
+
     const t0 = Date.now();
 
     try {
@@ -91,7 +106,7 @@ export class AxonInferenceHandler {
       if (!providerRes.ok) {
         this.router.markUnavailable(route.provider);
         // Retry on next available provider
-        return this.handleChatCompletion(req);
+        return this.dispatchToProvider(body);
       }
 
       if (body.stream) {
@@ -116,8 +131,9 @@ export class AxonInferenceHandler {
       });
 
     } catch (err) {
+      // Network-level error (fetch threw) — mark unavailable and try next
       this.router.markUnavailable(route.provider);
-      return this.jsonError(503, 'provider_unavailable', `Provider ${route.provider} is unavailable: ${(err as Error).message}`);
+      return this.dispatchToProvider(body);
     }
   }
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AxonInferenceHandler } from '../handler.js';
 
 const TEST_API_KEY = 'test-axon-key-abc123';
@@ -147,5 +147,175 @@ describe('AxonInferenceHandler — routing', () => {
     const req = makeRequest('/v1/models', 'GET');
     const res = await handler.handleRequest(req);
     expect(res.headers.get('Content-Type')).toContain('application/json');
+  });
+});
+
+// ─── POST /v1/chat/completions — routing with mocked fetch ───────────────────
+
+const MOCK_COMPLETION: Record<string, unknown> = {
+  id: 'chatcmpl-test123',
+  object: 'chat.completion',
+  created: 1700000000,
+  model: 'axon-llama-3-70b',
+  choices: [{
+    index: 0,
+    message: { role: 'assistant', content: 'Hello!' },
+    finish_reason: 'stop',
+  }],
+  usage: { prompt_tokens: 5, completion_tokens: 3, total_tokens: 8 },
+};
+
+function mockFetchOk(body: unknown = MOCK_COMPLETION) {
+  return vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => body,
+    body: null,
+  });
+}
+
+function mockFetchFail(status = 500) {
+  return vi.fn().mockResolvedValue({
+    ok: false,
+    status,
+    json: async () => ({ error: 'provider error' }),
+    body: null,
+  });
+}
+
+describe('AxonInferenceHandler — POST /v1/chat/completions (with mocked fetch)', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  const validBody = {
+    model: 'axon-llama-3-70b',
+    messages: [{ role: 'user' as const, content: 'ping' }],
+  };
+
+  it('returns 200 with OpenAI-shaped response on provider success', async () => {
+    vi.stubGlobal('fetch', mockFetchOk());
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.status).toBe(200);
+    const data = await res.json() as { object: string };
+    expect(data.object).toBe('chat.completion');
+  });
+
+  it('sets X-Axon-Provider header on success', async () => {
+    vi.stubGlobal('fetch', mockFetchOk());
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.headers.get('X-Axon-Provider')).toBeTruthy();
+  });
+
+  it('Content-Type is application/json on non-streaming response', async () => {
+    vi.stubGlobal('fetch', mockFetchOk());
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.headers.get('Content-Type')).toContain('application/json');
+  });
+
+  it('forwards request with Authorization header to provider', async () => {
+    const fetchSpy = mockFetchOk();
+    vi.stubGlobal('fetch', fetchSpy);
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    await handler.handleRequest(req);
+    const [, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
+    const headers = init.headers as Record<string, string>;
+    expect(headers['Authorization']).toBe(`Bearer ${TEST_API_KEY}`);
+    expect(headers['Content-Type']).toBe('application/json');
+  });
+
+  it('forwards request body to provider endpoint', async () => {
+    const fetchSpy = mockFetchOk();
+    vi.stubGlobal('fetch', fetchSpy);
+    const handler = makeHandler();
+    const body = { ...validBody, temperature: 0.7, max_tokens: 100 };
+    const req = makeRequest('/v1/chat/completions', 'POST', body, TEST_API_KEY);
+    await handler.handleRequest(req);
+    const [, init] = fetchSpy.mock.calls[0] as [string, RequestInit];
+    const forwarded = JSON.parse(init.body as string) as typeof body;
+    expect(forwarded.messages).toEqual(body.messages);
+    expect(forwarded.temperature).toBe(0.7);
+    expect(forwarded.max_tokens).toBe(100);
+  });
+
+  it('calls provider /v1/chat/completions endpoint path', async () => {
+    const fetchSpy = mockFetchOk();
+    vi.stubGlobal('fetch', fetchSpy);
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    await handler.handleRequest(req);
+    const [url] = fetchSpy.mock.calls[0] as [string];
+    expect(url).toContain('/v1/chat/completions');
+  });
+
+  it('fails over to next provider when first returns 5xx', async () => {
+    // First call fails (ionet), second succeeds (akash)
+    const fetchSpy = vi.fn()
+      .mockResolvedValueOnce({ ok: false, status: 503, json: async () => ({}), body: null })
+      .mockResolvedValueOnce({ ok: true, json: async () => MOCK_COMPLETION, body: null });
+    vi.stubGlobal('fetch', fetchSpy);
+
+    const handler = makeHandler({ strategy: 'cost' });
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(res.status).toBe(200);
+  });
+
+  it('returns 503 when all providers fail', async () => {
+    // All fetches fail
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false, status: 503, json: async () => ({}), body: null,
+    }));
+
+    // Single provider so no fallback
+    const handler = new AxonInferenceHandler({
+      apiKey: TEST_API_KEY,
+      ionetEndpoint: 'https://only-provider.example.com',
+    });
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.status).toBe(503);
+    const data = await res.json() as { error: { code: string } };
+    expect(data.error.code).toBe('provider_unavailable');
+  });
+
+  it('returns 503 with error body when fetch throws (network error)', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('ECONNREFUSED')));
+    const handler = new AxonInferenceHandler({
+      apiKey: TEST_API_KEY,
+      ionetEndpoint: 'https://unreachable.example.com',
+    });
+    const req = makeRequest('/v1/chat/completions', 'POST', validBody, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.status).toBe(503);
+  });
+
+  it('streaming: passes Content-Type: text/event-stream through', async () => {
+    const mockStream = new ReadableStream();
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      body: mockStream,
+    }));
+    const handler = makeHandler();
+    const body = { ...validBody, stream: true };
+    const req = makeRequest('/v1/chat/completions', 'POST', body, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.headers.get('Content-Type')).toContain('text/event-stream');
+  });
+
+  it('streaming: X-Axon-Provider header is set', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      body: new ReadableStream(),
+    }));
+    const handler = makeHandler();
+    const req = makeRequest('/v1/chat/completions', 'POST', { ...validBody, stream: true }, TEST_API_KEY);
+    const res = await handler.handleRequest(req);
+    expect(res.headers.get('X-Axon-Provider')).toBeTruthy();
   });
 });
