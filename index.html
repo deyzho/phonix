@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axon — One SDK. Any compute. Route AI inference anywhere.</title>
+  <title>AxonSDK — One SDK. Any compute. Route AI inference anywhere.</title>
   <meta name="description" content="Universal AI compute routing SDK. Route inference to the fastest, cheapest backend — GPU clusters, cloud, edge, or your own infrastructure. One SDK. Zero lock-in." />
-  <meta property="og:title" content="Axon SDK — Route AI inference to any compute backend" />
+  <meta property="og:title" content="AxonSDK — Route AI inference to any compute backend" />
   <meta property="og:description" content="Drop in the OpenAI-compatible inference endpoint and your existing code automatically routes to the cheapest available GPU in two lines." />
   <meta property="og:url" content="https://axon.dev" />
   <meta property="og:type" content="website" />
@@ -342,7 +342,7 @@
 
 <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
 <nav>
-  <div class="nav-logo">🔥 <span>Axon</span></div>
+  <div class="nav-logo">🔥 <span>AxonSDK</span></div>
   <div class="nav-links">
     <a href="#providers">Providers</a>
     <a href="#inference">Inference</a>
@@ -360,8 +360,8 @@
 <section class="hero">
   <div class="badge">Open Source · v0.2.5 · 10 Providers · GPU + Edge + Cloud · Now on npm</div>
   <h1>Route AI inference<br /><em>to any compute backend.</em></h1>
-  <p>OpenAI costs too much. You're locked into one vendor. Switching providers means rewriting your integration.<br/><strong style="color:var(--text)">Axon fixes all three.</strong></p>
-  <p style="font-size:0.9rem;color:var(--muted);margin-top:0.75rem;max-width:520px;margin-left:auto;margin-right:auto;">Axon is to AI compute what httpx is to HTTP —<br/>one client, any backend. Cloud, edge, or your own infrastructure.</p>
+  <p>OpenAI costs too much. You're locked into one vendor. Switching providers means rewriting your integration.<br/><strong style="color:var(--text)">AxonSDK fixes all three.</strong></p>
+  <p style="font-size:0.9rem;color:var(--muted);margin-top:0.75rem;max-width:520px;margin-left:auto;margin-right:auto;">AxonSDK is to AI compute what httpx is to HTTP —<br/>one client, any backend. Cloud, edge, or your own infrastructure.</p>
   <div class="hero-ctas">
     <a class="btn-primary" href="#inference">Switch from OpenAI →</a>
     <a class="btn-secondary" href="https://github.com/deyzho/axon-ts" target="_blank">View on GitHub</a>
@@ -490,7 +490,7 @@
   <div class="section-inner">
     <div class="section-label">Providers</div>
     <h2 class="section-title">One SDK, any network</h2>
-    <p class="section-sub">Deploy the same AI workload to edge or cloud without rewriting your code. Axon automatically routes to the fastest, cheapest option.</p>
+    <p class="section-sub">Deploy the same AI workload to edge or cloud without rewriting your code. AxonSDK automatically routes to the fastest, cheapest option.</p>
 
     <p style="font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;">Edge &amp; Private compute</p>
     <div class="provider-grid" style="margin-bottom:2.5rem;">
@@ -563,7 +563,7 @@
           <div class="provider-name">AWS</div>
           <div class="provider-badge">Lambda · Live</div>
         </div>
-        <div class="provider-desc">Lambda, ECS / Fargate, and EC2 via boto3. Same Axon interface — no AWS SDK boilerplate.</div>
+        <div class="provider-desc">Lambda, ECS / Fargate, and EC2 via boto3. Same AxonSDK interface — no AWS SDK boilerplate.</div>
         <div class="provider-meta">
           <span>⚡ Lambda · Fargate</span>
           <span>🔑 IAM credentials</span>
@@ -634,7 +634,7 @@
           <div class="step-num">1</div>
           <div class="step-content">
             <h4>Initialise your project</h4>
-            <p>Choose a provider and template. Axon generates your config and entry point.</p>
+            <p>Choose a provider and template. AxonSDK generates your config and entry point.</p>
           </div>
         </div>
         <div class="step">
@@ -720,7 +720,7 @@ client.<span class="fn">disconnect</span>();</pre>
         <div class="section-label">Mobile SDK</div>
         <h2 class="section-title">Call your processors<br/>from iOS &amp; Android</h2>
         <p style="color:var(--muted);font-size:1.05rem;margin-bottom:1.75rem;">
-          Deploy your edge processors once with the Axon CLI, then call them directly
+          Deploy your edge processors once with the AxonSDK CLI, then call them directly
           from your React Native or Expo app. Real-time results, secure key storage,
           and automatic background/foreground lifecycle management — all in one package.
         </p>
@@ -910,7 +910,7 @@ client.<span class="fn">disconnect</span>();</pre>
             <div class="code-dots">
               <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
             </div>
-            After — Axon (2 line change)
+            After — AxonSDK (2 line change)
           </div>
           <pre><span class="kw">import</span> <span class="obj">OpenAI</span> <span class="kw">from</span> <span class="str">'openai'</span>;
 
@@ -1137,7 +1137,7 @@ router.health().forEach(h =&gt; {
     <a href="https://www.npmjs.com/package/@axonsdk/inference" target="_blank">npm</a>
     <a href="https://github.com/deyzho/axon-ts/blob/main/packages/sdk/LICENSE" target="_blank">Apache-2.0</a>
   </div>
-  <p>Axon is not affiliated with io.net, Akash Network, Acurast, Fluence, Koii, Amazon Web Services, Google Cloud, Microsoft Azure, Cloudflare, or Fly.io. Provider names and trademarks belong to their respective owners.</p>
+  <p>AxonSDK is not affiliated with io.net, Akash Network, Acurast, Fluence, Koii, Amazon Web Services, Google Cloud, Microsoft Azure, Cloudflare, or Fly.io. Provider names and trademarks belong to their respective owners.</p>
 </footer>
 
 <script>
@@ -1315,7 +1315,7 @@ router.health().forEach(h =&gt; {
 
     async function act3() {
       setStage(2);
-      setBadge('Axon ✔', IC.grn, 'rgba(34,197,94,.12)', 'rgba(34,197,94,.2)');
+      setBadge('AxonSDK ✔', IC.grn, 'rgba(34,197,94,.12)', 'rgba(34,197,94,.2)');
       document.getElementById('inf-file-label').textContent = 'streaming response';
 
       // Collapse code block to show just the call
