@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AxonInferenceRouter } from '../router.ts';
+import { AxonInferenceRouter } from '../router.js';
 
 const BASE = {
   apiKey: 'test-key',

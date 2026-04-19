@@ -17,7 +17,7 @@
 
 import { AxonInferenceRouter } from './router.js';
 import type { AxonInferenceConfig, InferenceRequest, InferenceResponse, ModelInfo } from './types.js';
-import { assertSafeUrl } from '../../sdk/src/utils/security.js';
+import { assertSafeUrl } from '@axonsdk/sdk';
 
 const RATE_LIMIT_RPM = 60;
 

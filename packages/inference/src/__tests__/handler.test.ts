@@ -183,7 +183,9 @@ function mockFetchFail(status = 500) {
 }
 
 describe('AxonInferenceHandler — POST /v1/chat/completions (with mocked fetch)', () => {
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
 
   const validBody = {
     model: 'axon-llama-3-70b',
