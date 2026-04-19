@@ -1,5 +1,5 @@
 /**
- * @phonixsdk/sdk — public API surface
+ * @axonsdk/sdk — public API surface
  *
  * Export everything a consumer of the SDK might need.
  */

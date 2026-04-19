@@ -10,7 +10,7 @@
  * Response body:         { result?: string; error?: string }
  */
 
-import { AxonClient } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';

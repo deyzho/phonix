@@ -1,5 +1,5 @@
 {
-  "name": "@phonixsdk/sdk",
+  "name": "@axonsdk/sdk",
   "version": "0.2.5",
   "description": "Provider-abstracted SDK for routing AI inference across edge and cloud compute — io.net, Akash, Acurast, Fluence, Koii, AWS, GCP, Azure, Cloudflare, and Fly.io.",
   "type": "module",
@@ -40,16 +40,16 @@
     "tee",
     "depin"
   ],
-  "author": "Axon <hello@phonixsdk.dev>",
+  "author": "Axon <deyzho@me.com>",
   "license": "Apache-2.0",
-  "homepage": "https://phonixsdk.dev",
+  "homepage": "https://axonsdk.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deyzho/phonixsdk.git",
+    "url": "https://github.com/deyzho/axon-ts.git",
     "directory": "packages/sdk"
   },
   "bugs": {
-    "url": "https://github.com/deyzho/phonixsdk/issues"
+    "url": "https://github.com/deyzho/axon-ts/issues"
   },
   "engines": {
     "node": ">=20.0.0"

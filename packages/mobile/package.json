@@ -1,5 +1,5 @@
 {
-  "name": "@phonixsdk/mobile",
+  "name": "@axonsdk/mobile",
   "version": "0.2.5",
   "description": "React Native / Expo SDK for calling AI inference endpoints from iOS and Android apps — with automatic routing, failover, and secure key storage.",
   "private": false,
@@ -32,16 +32,16 @@
     "akash",
     "multi-provider"
   ],
-  "author": "Axon <hello@phonixsdk.dev>",
+  "author": "Axon <deyzho@me.com>",
   "license": "Apache-2.0",
-  "homepage": "https://phonixsdk.dev",
+  "homepage": "https://axonsdk.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deyzho/phonixsdk.git",
+    "url": "https://github.com/deyzho/axon-ts.git",
     "directory": "packages/mobile"
   },
   "bugs": {
-    "url": "https://github.com/deyzho/phonixsdk/issues"
+    "url": "https://github.com/deyzho/axon-ts/issues"
   },
   "files": [
     "src",
@@ -50,7 +50,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@phonixsdk/sdk": "*"
+    "@axonsdk/sdk": "*"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

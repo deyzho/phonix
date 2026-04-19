@@ -351,7 +351,7 @@
     <a href="#router">Router</a>
     <a href="#features">Features</a>
     <a href="https://status.axonsdk.dev" target="_blank">Status</a>
-    <a href="https://github.com/deyzho/axonsdk" target="_blank">GitHub</a>
+    <a href="https://github.com/deyzho/axon-ts" target="_blank">GitHub</a>
   </div>
   <a class="nav-cta" href="#inference">Get started →</a>
 </nav>
@@ -364,7 +364,7 @@
   <p style="font-size:0.9rem;color:var(--muted);margin-top:0.75rem;max-width:520px;margin-left:auto;margin-right:auto;">Axon is to AI compute what httpx is to HTTP —<br/>one client, any backend. Cloud, edge, or your own infrastructure.</p>
   <div class="hero-ctas">
     <a class="btn-primary" href="#inference">Switch from OpenAI →</a>
-    <a class="btn-secondary" href="https://github.com/deyzho/axonsdk" target="_blank">View on GitHub</a>
+    <a class="btn-secondary" href="https://github.com/deyzho/axon-ts" target="_blank">View on GitHub</a>
   </div>
   <div class="install-strip">
     <span class="prompt">$</span>
@@ -372,8 +372,8 @@
     <button class="copy-btn" onclick="copyInstall()">copy</button>
   </div>
   <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
-    <a href="https://github.com/deyzho/axonsdk" target="_blank">
-      <img src="https://img.shields.io/github/stars/deyzho/axonsdk?style=flat-square&color=f97316&label=stars" alt="GitHub stars" />
+    <a href="https://github.com/deyzho/axon-ts" target="_blank">
+      <img src="https://img.shields.io/github/stars/deyzho/axon-ts?style=flat-square&color=f97316&label=stars" alt="GitHub stars" />
     </a>
     <a href="https://www.npmjs.com/package/@axonsdk/inference" target="_blank">
       <img src="https://img.shields.io/npm/v/@axonsdk/inference?label=%40axonsdk%2Finference&color=f97316&style=flat-square" alt="@axonsdk/inference on npm" />
@@ -387,8 +387,8 @@
     <a href="https://www.npmjs.com/package/@axonsdk/cli" target="_blank">
       <img src="https://img.shields.io/npm/v/@axonsdk/cli?label=%40axonsdk%2Fcli&color=f97316&style=flat-square" alt="@axonsdk/cli on npm" />
     </a>
-    <a href="https://github.com/deyzho/axonsdk" target="_blank">
-      <img src="https://img.shields.io/github/license/deyzho/axonsdk?color=f97316&style=flat-square" alt="License" />
+    <a href="https://github.com/deyzho/axon-ts" target="_blank">
+      <img src="https://img.shields.io/github/license/deyzho/axon-ts?color=f97316&style=flat-square" alt="License" />
     </a>
   </div>
 </section>
@@ -404,7 +404,7 @@
           Your existing OpenAI code works unchanged. Swap <code style="color:var(--accent);font-size:.9em">baseURL</code> and <code style="color:var(--accent);font-size:.9em">apiKey</code> — that's it. Requests route automatically to the cheapest available backend across GPU clusters, container compute, and TEE nodes.
         </p>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem;">
-          <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> Works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package, LangChain, LlamaIndex</li>
+          <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> Works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package and any OpenAI-compatible tooling</li>
           <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> Streaming SSE, automatic failover, cost / latency routing</li>
           <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> Next.js, Express, Cloudflare Workers — any Node.js HTTP server</li>
           <li style="display:flex;gap:0.75rem;font-size:0.9rem;color:var(--muted)"><span style="color:var(--accent);font-weight:700;">✓</span> ~$0.40/hr A100 spot vs $0.06/1K tokens on GPT-4</li>
@@ -464,7 +464,7 @@
     <div class="status-callout-inner">
       <div>
         <p style="font-size:0.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem;">Live provider health</p>
-        <p style="color:var(--muted);font-size:0.875rem;">Real-time status across all ten networks — updated every 5 minutes.</p>
+        <p style="color:var(--muted);font-size:0.875rem;">Provider health dashboard — preview (sample data). Live probes coming soon.</p>
       </div>
       <div>
         <div class="status-dot-row" style="margin-bottom:0.6rem;">
@@ -880,7 +880,7 @@ client.<span class="fn">disconnect</span>();</pre>
           </tbody>
         </table>
         <ul class="mobile-feature-list">
-          <li><span class="check">✓</span> <span><strong style="color:var(--text)">OpenAI wire-compatible</strong> — works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package, LangChain, LlamaIndex, and more</span></li>
+          <li><span class="check">✓</span> <span><strong style="color:var(--text)">OpenAI wire-compatible</strong> — works with the <code style="color:var(--accent);font-size:.85em">openai</code> npm package and any OpenAI-compatible tooling</span></li>
           <li><span class="check">✓</span> <span><strong style="color:var(--text)">Streaming SSE</strong> — pass-through token streaming, no buffering overhead</span></li>
           <li><span class="check">✓</span> <span><strong style="color:var(--text)">Automatic failover</strong> — if a provider is unavailable, the next best one is tried automatically</span></li>
           <li><span class="check">✓</span> <span><strong style="color:var(--text)">Routing strategies</strong> — <code style="color:var(--accent);font-size:.85em">cost</code>, <code style="color:var(--accent);font-size:.85em">latency</code>, or <code style="color:var(--accent);font-size:.85em">balanced</code></span></li>
@@ -1121,7 +1121,7 @@ router.health().forEach(h =&gt; {
     <p>Open source, Apache-2.0 licensed, and live on npm. Switch from OpenAI in two lines.</p>
     <div class="hero-ctas">
       <a class="btn-primary" href="https://www.npmjs.com/package/@axonsdk/inference" target="_blank">Get @axonsdk/inference →</a>
-      <a class="btn-secondary" href="https://github.com/deyzho/axonsdk" target="_blank">View on GitHub</a>
+      <a class="btn-secondary" href="https://github.com/deyzho/axon-ts" target="_blank">View on GitHub</a>
     </div>
   </div>
 </section>
@@ -1129,13 +1129,13 @@ router.health().forEach(h =&gt; {
 <!-- ── Footer ────────────────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-links">
-    <a href="https://github.com/deyzho/axonsdk" target="_blank">GitHub</a>
-    <a href="https://github.com/deyzho/axonsdk/blob/main/README.md" target="_blank">Docs</a>
+    <a href="https://github.com/deyzho/axon-ts" target="_blank">GitHub</a>
+    <a href="https://github.com/deyzho/axon-ts/blob/main/README.md" target="_blank">Docs</a>
     <a href="https://status.axonsdk.dev" target="_blank">Status</a>
-    <a href="https://github.com/deyzho/axonsdk/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
-    <a href="https://github.com/deyzho/axonsdk/blob/main/ROADMAP.md" target="_blank">Roadmap</a>
+    <a href="https://github.com/deyzho/axon-ts/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
+    <a href="https://github.com/deyzho/axon-ts/blob/main/ROADMAP.md" target="_blank">Roadmap</a>
     <a href="https://www.npmjs.com/package/@axonsdk/inference" target="_blank">npm</a>
-    <a href="https://github.com/deyzho/axonsdk/blob/main/packages/sdk/LICENSE" target="_blank">Apache-2.0</a>
+    <a href="https://github.com/deyzho/axon-ts/blob/main/packages/sdk/LICENSE" target="_blank">Apache-2.0</a>
   </div>
   <p>Axon is not affiliated with io.net, Akash Network, Acurast, Fluence, Koii, Amazon Web Services, Google Cloud, Microsoft Azure, Cloudflare, or Fly.io. Provider names and trademarks belong to their respective owners.</p>
 </footer>

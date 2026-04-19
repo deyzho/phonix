@@ -1,20 +1,20 @@
 /**
- * @phonixsdk/mobile — React Native / Expo SDK for iOS and Android.
+ * @axonsdk/mobile — React Native / Expo SDK for iOS and Android.
  *
  * Call your deployed Axon processors directly from your iOS and Android apps.
  * Supports Akash (HTTP), Acurast (WebSocket), and any generic HTTPS endpoint.
  *
  * Quick start:
- *   npm install @phonixsdk/mobile
+ *   npm install @axonsdk/mobile
  *
  *   // Wrap your app
- *   import { AxonProvider } from '@phonixsdk/mobile';
+ *   import { AxonProvider } from '@axonsdk/mobile';
  *   <AxonProvider provider="akash" secretKey={AXON_SECRET_KEY} autoConnect>
  *     <App />
  *   </AxonProvider>
  *
  *   // Use in any screen
- *   import { useAxonContext, useMessages, useSend } from '@phonixsdk/mobile';
+ *   import { useAxonContext, useMessages, useSend } from '@axonsdk/mobile';
  *   const { client, connected } = useAxonContext();
  *   const messages = useMessages(client);
  *   const { send, sending } = useSend(client);
@@ -51,5 +51,5 @@ export type { AxonProviderProps } from './context.js';
 export { SecureKeyStorage } from './storage.js';
 
 // ─── Re-export shared types from the SDK so consumers only need one import ────
-export type { Message, Deployment, CostEstimate } from '@phonixsdk/sdk';
-export { AxonError } from '@phonixsdk/sdk';
+export type { Message, Deployment, CostEstimate } from '@axonsdk/sdk';
+export { AxonError } from '@axonsdk/sdk';

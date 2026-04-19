@@ -1,17 +1,17 @@
-# @phonixsdk/inference
+# @axonsdk/inference
 
 OpenAI-compatible inference routing for the Phonix SDK. Routes chat completion requests across decentralized compute providers (io.net, Akash, Acurast) with automatic failover and latency-aware routing.
 
 ## Installation
 
 ```bash
-npm install @phonixsdk/inference
+npm install @axonsdk/inference
 ```
 
 ## Quick Start
 
 ```typescript
-import { AxonInferenceHandler } from '@phonixsdk/inference';
+import { AxonInferenceHandler } from '@axonsdk/inference';
 
 const handler = new AxonInferenceHandler({
   apiKey: process.env.AXON_SECRET_KEY!,

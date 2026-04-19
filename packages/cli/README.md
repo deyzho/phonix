@@ -1,14 +1,14 @@
-# @phonixsdk/cli
+# @axonsdk/cli
 
 > Command-line tool for deploying and managing Axon edge applications across DePIN networks.
 
-[![npm](https://img.shields.io/npm/v/@phonixsdk/cli)](https://www.npmjs.com/package/@phonixsdk/cli)
-[![license](https://img.shields.io/npm/l/@phonixsdk/cli)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/@axonsdk/cli)](https://www.npmjs.com/package/@axonsdk/cli)
+[![license](https://img.shields.io/npm/l/@axonsdk/cli)](./LICENSE)
 
 ## Installation
 
 ```bash
-npm install -g @phonixsdk/cli
+npm install -g @axonsdk/cli
 ```
 
 Requires **Node.js ≥ 20**.
@@ -58,8 +58,8 @@ axon send <deployment-id> '{"prompt":"Hello"}'
 
 ## Documentation
 
-Full docs at [phonixsdk.dev](https://phonixsdk.dev) · [GitHub](https://github.com/deyzho/phonixsdk)
+Full docs at [axonsdk.dev](https://axonsdk.dev) · [GitHub](https://github.com/deyzho/axon-ts)
 
 ## License
 
-Apache-2.0 © [Axon](https://phonixsdk.dev)
+Apache-2.0 © [Axon](https://axonsdk.dev)

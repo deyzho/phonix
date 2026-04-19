@@ -31,7 +31,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Message } from '@phonixsdk/sdk';
+import type { Message } from '@axonsdk/sdk';
 import { MobileAxonClient } from './client.js';
 import type { MobileAxonClientOptions } from './client.js';
 import { MobileAxonRouter } from './router.js';

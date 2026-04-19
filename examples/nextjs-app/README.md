@@ -66,7 +66,7 @@ Browser (React)
     │
 Next.js API Route (server-side only)
     │
-    │  AxonClient from '@phonixsdk/sdk'
+    │  AxonClient from '@axonsdk/sdk'
     │
     ├── Acurast: wss://ws-1.acurast.com  →  Smartphone TEE
     │
@@ -81,7 +81,7 @@ The browser never sees `AXON_SECRET_KEY`. All provider calls happen in the API R
 
 ```typescript
 // app/api/axon/send/route.ts
-import { AxonClient } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -123,7 +123,7 @@ export async function POST(req: Request) {
 
 ```typescript
 // app/api/axon/send/route.ts  (Akash variant)
-import { AxonClient } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -226,8 +226,8 @@ Then update `PROCESSOR_ID` in `.env.local` to the corresponding endpoint for the
 
 ## Want to call processors from mobile?
 
-Use [`@phonixsdk/mobile`](../../packages/mobile/) for React Native / Expo apps. It provides the same messaging API with React hooks, iOS Keychain / Android Keystore secure storage, and AppState lifecycle management.
+Use [`@axonsdk/mobile`](../../packages/mobile/) for React Native / Expo apps. It provides the same messaging API with React hooks, iOS Keychain / Android Keystore secure storage, and AppState lifecycle management.
 
 ```bash
-npm install @phonixsdk/mobile
+npm install @axonsdk/mobile
 ```

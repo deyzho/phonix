@@ -4,7 +4,7 @@
  * Axon Next.js Example — Confidential Inference dApp
  *
  * The private key (AXON_SECRET_KEY) is held exclusively by the server.
- * This component never imports @phonixsdk/sdk — it only calls the server-side
+ * This component never imports @axonsdk/sdk — it only calls the server-side
  * API route at /api/axon/send, which relays the message and returns the result.
  *
  * Setup:
@@ -311,7 +311,7 @@ export default function AxonDemoPage() {
         <br />
         <br />
         <a
-          href="https://github.com/axon-sdk/axon"
+          href="https://github.com/deyzho/axon-ts"
           style={{ color: '#6366f1', textDecoration: 'none' }}
           target="_blank"
           rel="noopener noreferrer"

@@ -13,8 +13,8 @@
 
 import { readFile, writeFile, access, chmod } from 'node:fs/promises';
 import { join } from 'node:path';
-import { generateP256KeyPair } from '@phonixsdk/sdk';
-import type { ProviderName } from '@phonixsdk/sdk';
+import { generateP256KeyPair } from '@axonsdk/sdk';
+import type { ProviderName } from '@axonsdk/sdk';
 
 async function getChalk() {
   return (await import('chalk')).default;
