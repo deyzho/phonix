@@ -5,8 +5,8 @@
  * and prints a friendly success message.
  */
 
-import { loadConfig, AxonClient } from '@phonixsdk/sdk';
-import type { DeploymentConfig } from '@phonixsdk/sdk';
+import { loadConfig, AxonClient } from '@axonsdk/sdk';
+import type { DeploymentConfig } from '@axonsdk/sdk';
 import { config as loadDotenv } from '../utils/env.js';
 
 async function getChalk() {

@@ -84,7 +84,7 @@ See the [Acurast Consumer documentation](https://docs.acurast.com/developers/sub
 ### From a Node.js / Next.js backend
 
 ```typescript
-import { PhonixClient } from '@phonixsdk/sdk';
+import { PhonixClient } from '@axonsdk/sdk';
 
 const client = new PhonixClient({
   provider: 'acurast',
@@ -106,7 +106,7 @@ client.onMessage((msg) => {
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages } from '@phonixsdk/mobile';
+import { usePhonix, useMessages } from '@axonsdk/mobile';
 
 export function PriceFeedScreen() {
   const { client, connected, connect } = usePhonix({

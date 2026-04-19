@@ -29,7 +29,7 @@ cd packages/mobile && npx vitest run
 ```
 axon/
 ├── packages/
-│   ├── sdk/          # @phonixsdk/sdk — core TypeScript library
+│   ├── sdk/          # @axonsdk/sdk — core TypeScript library
 │   │   └── src/
 │   │       ├── providers/
 │   │       │   ├── ionet/     # io.net GPU compute
@@ -39,9 +39,9 @@ axon/
 │   │       │   └── koii/      # Koii distributed task nodes
 │   │       └── runtime/
 │   │           └── adapters/  # Per-provider runtime bootstraps
-│   ├── cli/          # @phonixsdk/cli — command-line tool (Commander.js)
-│   ├── inference/    # @phonixsdk/inference — OpenAI-compatible inference handler
-│   └── mobile/       # @phonixsdk/mobile — React Native / Expo SDK
+│   ├── cli/          # @axonsdk/cli — command-line tool (Commander.js)
+│   ├── inference/    # @axonsdk/inference — OpenAI-compatible inference handler
+│   └── mobile/       # @axonsdk/mobile — React Native / Expo SDK
 ├── templates/
 │   ├── inference/    # LLM inference template
 │   └── oracle/       # Data oracle template
@@ -107,7 +107,7 @@ Each provider lives in `packages/sdk/src/providers/<name>/` and must:
    - `onMessage()` returns an unsubscribe function
    - SSRF protection (if the provider makes outbound HTTP calls)
 
-5. **Update `@phonixsdk/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
+5. **Update `@axonsdk/mobile`** if the provider can be called from a mobile app (add to `MobileProviderName`).
 
 ---
 

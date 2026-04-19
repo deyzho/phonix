@@ -10,7 +10,7 @@
  *
  * Example (Next.js App Router):
  *   // app/api/v1/chat/completions/route.ts
- *   import { AxonInferenceHandler } from '@phonixsdk/inference';
+ *   import { AxonInferenceHandler } from '@axonsdk/inference';
  *   const handler = new AxonInferenceHandler({ apiKey: process.env.AXON_SECRET_KEY, ... });
  *   export const POST = (req: Request) => handler.handleRequest(req);
  */
@@ -22,10 +22,10 @@ import { assertSafeUrl } from '../../sdk/src/utils/security.js';
 const RATE_LIMIT_RPM = 60;
 
 const SUPPORTED_MODELS: ModelInfo[] = [
-  { id: 'axon-llama-3-70b',      object: 'model', created: 1700000000, owned_by: 'phonixsdk', provider: 'ionet' },
-  { id: 'axon-mistral-7b',       object: 'model', created: 1700000000, owned_by: 'phonixsdk', provider: 'ionet' },
-  { id: 'axon-llama-3-8b',       object: 'model', created: 1700000000, owned_by: 'phonixsdk', provider: 'akash' },
-  { id: 'axon-tee-phi-3-mini',   object: 'model', created: 1700000000, owned_by: 'phonixsdk', provider: 'acurast' },
+  { id: 'axon-llama-3-70b',      object: 'model', created: 1700000000, owned_by: 'axonsdk', provider: 'ionet' },
+  { id: 'axon-mistral-7b',       object: 'model', created: 1700000000, owned_by: 'axonsdk', provider: 'ionet' },
+  { id: 'axon-llama-3-8b',       object: 'model', created: 1700000000, owned_by: 'axonsdk', provider: 'akash' },
+  { id: 'axon-tee-phi-3-mini',   object: 'model', created: 1700000000, owned_by: 'axonsdk', provider: 'acurast' },
 ];
 
 export class AxonInferenceHandler {

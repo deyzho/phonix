@@ -33,8 +33,8 @@
 import { MobileAxonClient } from './client.js';
 import type { MobileProviderName } from './client.js';
 export type { MobileProviderName };
-import type { Message } from '@phonixsdk/sdk';
-import { AxonError } from '@phonixsdk/sdk';
+import type { Message } from '@axonsdk/sdk';
+import { AxonError } from '@axonsdk/sdk';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

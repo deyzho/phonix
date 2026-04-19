@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @phonixsdk/cli — entry point
+ * @axonsdk/cli — entry point
  *
  * Registers all commands and handles global flags.
  */
@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 function readVersion(): string {
   try {
     const requireFromHere = createRequire(import.meta.url);
-    const pkgPath = requireFromHere.resolve('@phonixsdk/cli/package.json');
+    const pkgPath = requireFromHere.resolve('@axonsdk/cli/package.json');
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as { version: string };
     return pkg.version;
   } catch {
@@ -40,7 +40,7 @@ async function checkForUpdates(): Promise<void> {
     const { default: updateNotifier } = await import('update-notifier');
     const { createRequire } = await import('node:module');
     const requireFromHere = createRequire(import.meta.url);
-    const pkg = requireFromHere('@phonixsdk/cli/package.json') as {
+    const pkg = requireFromHere('@axonsdk/cli/package.json') as {
       name: string;
       version: string;
     };

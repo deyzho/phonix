@@ -1,17 +1,17 @@
 # Axon SDK
 
-[![CI](https://github.com/deyzho/phonixsdk/actions/workflows/publish.yml/badge.svg)](https://github.com/deyzho/phonixsdk/actions/workflows/publish.yml)
-[![npm](https://img.shields.io/npm/v/@phonixsdk/sdk)](https://www.npmjs.com/package/@phonixsdk/sdk)
-[![Node](https://img.shields.io/node/v/@phonixsdk/sdk)](https://nodejs.org)
+[![CI](https://github.com/deyzho/axon-ts/actions/workflows/publish.yml/badge.svg)](https://github.com/deyzho/axon-ts/actions/workflows/publish.yml)
+[![npm](https://img.shields.io/npm/v/@axonsdk/sdk)](https://www.npmjs.com/package/@axonsdk/sdk)
+[![Node](https://img.shields.io/node/v/@axonsdk/sdk)](https://nodejs.org)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
 
-**[phonixsdk.dev](https://phonixsdk.dev) · [npm](https://www.npmjs.com/org/phonixsdk) · [GitHub](https://github.com/deyzho/phonixsdk)**
+**[axonsdk.dev](https://axonsdk.dev) · [npm](https://www.npmjs.com/org/axonsdk) · [GitHub](https://github.com/deyzho/axon-ts)**
 
 **One SDK. Any compute. Route AI inference to the fastest, cheapest backend — cloud, edge, or your own infrastructure.**
 
 Axon is a universal AI compute routing layer. Stop rewriting integrations every time you switch providers, hit rate limits, or find a cheaper GPU. Point Axon at any backend — GPU clusters, container clouds, serverless functions, TEE enclaves, or your own servers — and it handles routing, failover, and cost optimisation automatically.
 
-Drop in the OpenAI-compatible `@phonixsdk/inference` package and your existing code routes to a new backend in two lines. Call your deployed processors from **iOS and Android** with `@phonixsdk/mobile`.
+Drop in the OpenAI-compatible `@axonsdk/inference` package and your existing code routes to a new backend in two lines. Call your deployed processors from **iOS and Android** with `@axonsdk/mobile`.
 
 > Axon is to AI compute what httpx is to HTTP — **one client, any backend**.
 
@@ -48,7 +48,7 @@ Drop in the OpenAI-compatible `@phonixsdk/inference` package and your existing c
 ### 1. Install the CLI
 
 ```bash
-npm install -g @phonixsdk/cli
+npm install -g @axonsdk/cli
 ```
 
 ### 2. Initialise a new project
@@ -96,7 +96,7 @@ Bundles your script, uploads it, and registers the deployment.
 ### 6. Send and receive
 
 ```typescript
-import { AxonClient } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 
 const client = new AxonClient({
   provider: 'ionet', // 'ionet' | 'akash' | 'acurast' | 'fluence' | 'koii' | 'aws' | 'gcp' | 'azure' | 'cloudflare' | 'flyio'
@@ -137,8 +137,8 @@ Supported providers: `ionet`, `akash`, `acurast`, `fluence`, `koii`, `aws`, `gcp
 ## SDK reference
 
 ```typescript
-import { AxonClient } from '@phonixsdk/sdk';
-import type { DeploymentConfig } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
+import type { DeploymentConfig } from '@axonsdk/sdk';
 
 const client = new AxonClient({
   provider: 'ionet',
@@ -175,7 +175,7 @@ client.disconnect();
 
 ## OpenAI-compatible inference endpoint
 
-`@phonixsdk/inference` is a drop-in replacement for the OpenAI API that routes requests to the fastest available backend. Switch your existing OpenAI integration in two lines:
+`@axonsdk/inference` is a drop-in replacement for the OpenAI API that routes requests to the fastest available backend. Switch your existing OpenAI integration in two lines:
 
 ```typescript
 import OpenAI from 'openai';
@@ -204,12 +204,12 @@ const response = await client.chat.completions.create({
 ### Setup (Next.js App Router)
 
 ```bash
-npm install @phonixsdk/inference
+npm install @axonsdk/inference
 ```
 
 ```typescript
 // app/api/v1/chat/completions/route.ts
-import { AxonInferenceHandler } from '@phonixsdk/inference';
+import { AxonInferenceHandler } from '@axonsdk/inference';
 
 const handler = new AxonInferenceHandler({
   apiKey:        process.env.AXON_SECRET_KEY!,
@@ -232,7 +232,7 @@ The handler implements streaming (SSE) and non-streaming, bearer auth, automatic
 `AxonRouter` routes requests across multiple providers simultaneously, picking the best one on every call based on real-time latency, cost, and availability.
 
 ```typescript
-import { AxonRouter } from '@phonixsdk/sdk';
+import { AxonRouter } from '@axonsdk/sdk';
 
 const router = new AxonRouter({
   providers: ['ionet', 'akash', 'acurast'],
@@ -272,15 +272,15 @@ router.disconnect();
 
 ## Mobile SDK (iOS & Android)
 
-`@phonixsdk/mobile` is a React Native / Expo package for calling AI inference endpoints from iOS and Android apps — with automatic failover, circuit breakers, and secure key storage.
+`@axonsdk/mobile` is a React Native / Expo package for calling AI inference endpoints from iOS and Android apps — with automatic failover, circuit breakers, and secure key storage.
 
 ```bash
-npm install @phonixsdk/mobile
+npm install @axonsdk/mobile
 ```
 
 ```tsx
 // App.tsx
-import { AxonProvider } from '@phonixsdk/mobile';
+import { AxonProvider } from '@axonsdk/mobile';
 
 export default function App() {
   return (
@@ -291,7 +291,7 @@ export default function App() {
 }
 
 // AnyScreen.tsx
-import { useAxonContext, useMessages, useSend } from '@phonixsdk/mobile';
+import { useAxonContext, useMessages, useSend } from '@axonsdk/mobile';
 
 export function InferenceScreen() {
   const { client, connected } = useAxonContext();
@@ -313,7 +313,7 @@ export function InferenceScreen() {
 
 ```tsx
 // Multi-provider routing in mobile
-import { useAxonRouter } from '@phonixsdk/mobile';
+import { useAxonRouter } from '@axonsdk/mobile';
 
 const { router, connected, health } = useAxonRouter({
   routes: [
@@ -328,7 +328,7 @@ const { router, connected, health } = useAxonRouter({
 ### Secure key storage
 
 ```tsx
-import { SecureKeyStorage } from '@phonixsdk/mobile';
+import { SecureKeyStorage } from '@axonsdk/mobile';
 
 const storage = new SecureKeyStorage();
 await storage.saveSecretKey(myKey); // iOS Keychain / Android Keystore
@@ -354,10 +354,10 @@ const key = await storage.loadSecretKey();
 ```
 axon/
 ├── packages/
-│   ├── cli/          # @phonixsdk/cli — command-line tool
-│   ├── inference/    # @phonixsdk/inference — OpenAI-compatible inference handler
-│   ├── mobile/       # @phonixsdk/mobile — React Native / Expo SDK
-│   └── sdk/          # @phonixsdk/sdk — core library
+│   ├── cli/          # @axonsdk/cli — command-line tool
+│   ├── inference/    # @axonsdk/inference — OpenAI-compatible inference handler
+│   ├── mobile/       # @axonsdk/mobile — React Native / Expo SDK
+│   └── sdk/          # @axonsdk/sdk — core library
 │       └── src/
 │           ├── providers/
 │           │   ├── ionet/      # io.net GPU provider
@@ -385,7 +385,7 @@ axon/
 ## Development
 
 ```bash
-git clone https://github.com/deyzho/phonixsdk.git
+git clone https://github.com/deyzho/axon-ts.git
 cd axon
 npm install
 npm run build
@@ -427,6 +427,6 @@ Apache-2.0 — see [LICENSE](./LICENSE).
 
 ---
 
-**[phonixsdk.dev](https://phonixsdk.dev)** · hello@phonixsdk.dev · Apache-2.0
+**[axonsdk.dev](https://axonsdk.dev)** · deyzho@me.com · Apache-2.0
 
 *Axon is not affiliated with io.net, Akash Network, Acurast, Fluence, or Koii. Provider names and trademarks belong to their respective owners.*

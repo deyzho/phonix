@@ -92,7 +92,7 @@ jobs:
         working-directory: packages/sdk
         run: npm run build
 
-      - name: Publish @phonixsdk/sdk
+      - name: Publish @axonsdk/sdk
         working-directory: packages/sdk
         run: npm publish --access public
         env:
@@ -102,7 +102,7 @@ jobs:
         working-directory: packages/inference
         run: npm run build
 
-      - name: Publish @phonixsdk/inference
+      - name: Publish @axonsdk/inference
         working-directory: packages/inference
         run: npm publish --access public
         env:
@@ -112,7 +112,7 @@ jobs:
         working-directory: packages/mobile
         run: npm run typecheck
 
-      - name: Publish @phonixsdk/mobile
+      - name: Publish @axonsdk/mobile
         working-directory: packages/mobile
         run: npm publish --access public
         env:
@@ -126,7 +126,7 @@ jobs:
         working-directory: packages/cli
         run: npm run build
 
-      - name: Publish @phonixsdk/cli
+      - name: Publish @axonsdk/cli
         working-directory: packages/cli
         run: npm publish --access public
         env:

@@ -1,21 +1,21 @@
-# @phonixsdk/sdk
+# @axonsdk/sdk
 
 > Provider-abstracted SDK for deploying and calling confidential edge applications across DePIN compute networks.
 
-[![npm](https://img.shields.io/npm/v/@phonixsdk/sdk)](https://www.npmjs.com/package/@phonixsdk/sdk)
-[![license](https://img.shields.io/npm/l/@phonixsdk/sdk)](./LICENSE)
-[![node](https://img.shields.io/node/v/@phonixsdk/sdk)](https://nodejs.org)
+[![npm](https://img.shields.io/npm/v/@axonsdk/sdk)](https://www.npmjs.com/package/@axonsdk/sdk)
+[![license](https://img.shields.io/npm/l/@axonsdk/sdk)](./LICENSE)
+[![node](https://img.shields.io/node/v/@axonsdk/sdk)](https://nodejs.org)
 
 ## Overview
 
-`@phonixsdk/sdk` is the core library for the [Axon](https://phonixsdk.dev) platform. It gives you a single, unified interface to deploy code and exchange messages with processors running on any supported DePIN network — without changing your application logic when you switch providers.
+`@axonsdk/sdk` is the core library for the [Axon](https://axonsdk.dev) platform. It gives you a single, unified interface to deploy code and exchange messages with processors running on any supported DePIN network — without changing your application logic when you switch providers.
 
 **Supported providers:** [io.net](https://io.net) · [Acurast](https://acurast.com) · [Akash Network](https://akash.network) · [Fluence](https://fluence.network) · [Koii](https://koii.network)
 
 ## Installation
 
 ```bash
-npm install @phonixsdk/sdk
+npm install @axonsdk/sdk
 ```
 
 Requires **Node.js ≥ 20**.
@@ -23,7 +23,7 @@ Requires **Node.js ≥ 20**.
 ## Quick start
 
 ```typescript
-import { AxonClient } from '@phonixsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 
 const client = new AxonClient({
   provider: 'akash',            // 'ionet' | 'acurast' | 'fluence' | 'koii' | 'akash'
@@ -51,7 +51,7 @@ client.disconnect();
 Route across multiple providers simultaneously with automatic failover, circuit breaking, and health-based scoring:
 
 ```typescript
-import { AxonRouter } from '@phonixsdk/sdk';
+import { AxonRouter } from '@axonsdk/sdk';
 
 const router = new AxonRouter({
   providers: ['akash', 'acurast'],
@@ -85,22 +85,22 @@ router.health().forEach((h) => {
 
 ## Mobile (iOS & Android)
 
-Use [`@phonixsdk/mobile`](https://www.npmjs.com/package/@phonixsdk/mobile) for React Native / Expo apps.
+Use [`@axonsdk/mobile`](https://www.npmjs.com/package/@axonsdk/mobile) for React Native / Expo apps.
 
 ## CLI
 
 ```bash
-npm install -g @phonixsdk/cli
+npm install -g @axonsdk/cli
 axon init
 axon deploy
 ```
 
 ## Documentation
 
-Full documentation at [phonixsdk.dev](https://phonixsdk.dev) and the [GitHub repository](https://github.com/deyzho/phonixsdk).
+Full documentation at [axonsdk.dev](https://axonsdk.dev) and the [GitHub repository](https://github.com/deyzho/axon-ts).
 
 ## License
 
-Apache-2.0 © [Axon](https://phonixsdk.dev)
+Apache-2.0 © [Axon](https://axonsdk.dev)
 
 > **Note:** The routing engine (`AxonRouter` internals) is proprietary and confidential. See individual file headers for details.

@@ -2,7 +2,7 @@
  * axon teardown <deploymentId> — delete a deployment from the provider.
  */
 
-import { loadConfig, AxonClient } from '@phonixsdk/sdk';
+import { loadConfig, AxonClient } from '@axonsdk/sdk';
 import { config as loadDotenv } from '../utils/env.js';
 
 async function getChalk() {

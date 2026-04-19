@@ -1,20 +1,20 @@
-# @phonixsdk/mobile
+# @axonsdk/mobile
 
 > React Native / Expo SDK for calling Axon edge processors from iOS and Android apps.
 
-[![npm](https://img.shields.io/npm/v/@phonixsdk/mobile)](https://www.npmjs.com/package/@phonixsdk/mobile)
-[![license](https://img.shields.io/npm/l/@phonixsdk/mobile)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/@axonsdk/mobile)](https://www.npmjs.com/package/@axonsdk/mobile)
+[![license](https://img.shields.io/npm/l/@axonsdk/mobile)](./LICENSE)
 
 ## Overview
 
-`@phonixsdk/mobile` lets you call your deployed Axon processors directly from iOS and Android apps. Deploy your processors with the Axon CLI on your development machine, then call them from your mobile app using React hooks or the standalone client.
+`@axonsdk/mobile` lets you call your deployed Axon processors directly from iOS and Android apps. Deploy your processors with the Axon CLI on your development machine, then call them from your mobile app using React hooks or the standalone client.
 
 **Supports:** Akash Network (HTTP) · Acurast (WebSocket) · Generic HTTPS
 
 ## Installation
 
 ```bash
-npm install @phonixsdk/mobile @phonixsdk/sdk
+npm install @axonsdk/mobile @axonsdk/sdk
 # optional: expo-secure-store for secure key storage
 expo install expo-secure-store
 ```
@@ -24,7 +24,7 @@ expo install expo-secure-store
 ### Context + hooks (recommended)
 
 ```tsx
-import { AxonProvider, useAxonContext, useMessages, useSend } from '@phonixsdk/mobile';
+import { AxonProvider, useAxonContext, useMessages, useSend } from '@axonsdk/mobile';
 
 // Wrap your app
 export default function App() {
@@ -61,7 +61,7 @@ function HomeScreen() {
 Route across multiple DePIN networks with automatic failover and health scoring:
 
 ```tsx
-import { useAxonRouter } from '@phonixsdk/mobile';
+import { useAxonRouter } from '@axonsdk/mobile';
 
 function App() {
   const { router, connected, health } = useAxonRouter({
@@ -88,7 +88,7 @@ AppState listeners are attached automatically — the router pauses on backgroun
 ### Secure key storage
 
 ```tsx
-import { SecureKeyStorage } from '@phonixsdk/mobile';
+import { SecureKeyStorage } from '@axonsdk/mobile';
 
 const storage = new SecureKeyStorage();
 await storage.saveSecretKey(myKey);   // iOS Keychain / Android Keystore
@@ -111,8 +111,8 @@ const key = await storage.loadSecretKey();
 
 ## Documentation
 
-Full docs at [phonixsdk.dev](https://phonixsdk.dev) · [GitHub](https://github.com/deyzho/phonixsdk)
+Full docs at [axonsdk.dev](https://axonsdk.dev) · [GitHub](https://github.com/deyzho/axon-ts)
 
 ## License
 
-Apache-2.0 © [Axon](https://phonixsdk.dev)
+Apache-2.0 © [Axon](https://axonsdk.dev)

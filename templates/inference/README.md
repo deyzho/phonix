@@ -77,7 +77,7 @@ The template targets the OpenAI-compatible `/v1/chat/completions` endpoint:
 ### From a Node.js / Next.js backend
 
 ```typescript
-import { PhonixClient } from '@phonixsdk/sdk';
+import { PhonixClient } from '@axonsdk/sdk';
 
 const client = new PhonixClient({
   provider: 'acurast',
@@ -108,7 +108,7 @@ client.disconnect();
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages, useSend } from '@phonixsdk/mobile';
+import { usePhonix, useMessages, useSend } from '@axonsdk/mobile';
 
 export function InferenceScreen() {
   const { client, connected, connect } = usePhonix({

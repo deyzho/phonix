@@ -9,7 +9,7 @@ import { execFile } from 'node:child_process';
 import { join, resolve, normalize } from 'node:path';
 import { access } from 'node:fs/promises';
 import { createRequire } from 'node:module';
-import { loadConfig, generateRuntimeBootstrap } from '@phonixsdk/sdk';
+import { loadConfig, generateRuntimeBootstrap } from '@axonsdk/sdk';
 import { config as loadDotenv } from '../utils/env.js';
 
 async function getChalk() {

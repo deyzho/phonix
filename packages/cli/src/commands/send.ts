@@ -2,7 +2,7 @@
  * axon send <pubkey> <message> — send a test message to a processor.
  */
 
-import { loadConfig, AxonClient } from '@phonixsdk/sdk';
+import { loadConfig, AxonClient } from '@axonsdk/sdk';
 import { config as loadDotenv } from '../utils/env.js';
 
 async function getChalk() {

@@ -1,7 +1,7 @@
 /**
  * MobileAxonClient — messaging-only client for React Native (iOS & Android).
  *
- * The full @phonixsdk/sdk AxonClient handles deploy, estimate, and bundling via
+ * The full @axonsdk/sdk AxonClient handles deploy, estimate, and bundling via
  * esbuild and Node.js child_process — none of which exist in React Native's
  * Hermes/JSC runtimes. This client handles only the MESSAGING half of the SDK:
  * connecting, sending payloads, and receiving results.
@@ -21,8 +21,8 @@
  *  - AppState integration auto-disconnects on background, reconnects on foreground
  */
 
-import type { Message } from '@phonixsdk/sdk';
-import { AxonError } from '@phonixsdk/sdk';
+import type { Message } from '@axonsdk/sdk';
+import { AxonError } from '@axonsdk/sdk';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
