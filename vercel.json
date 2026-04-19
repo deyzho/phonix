@@ -2,6 +2,20 @@
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "echo 'static site — no build required'",
   "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "phonixsdk.dev" }],
+      "destination": "https://axonsdk.dev/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.phonixsdk.dev" }],
+      "destination": "https://axonsdk.dev/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/status",      "destination": "/status/index.html" },
     { "source": "/status/",     "destination": "/status/index.html" },
