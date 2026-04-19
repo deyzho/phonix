@@ -6,6 +6,16 @@ dist/
 build/
 out/
 
+# tsc emit leaking into src/ — never commit. Generated output belongs in dist/.
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map
+# Re-allow hand-authored ambient declarations (not tsc emit).
+!packages/cli/src/declarations.d.ts
+!packages/cli/src/optional-modules.d.ts
+!packages/mobile/src/optional-modules.d.ts
+
 # ─── Next.js ──────────────────────────────────────────────────────────────────
 .next/
 .vercel/
