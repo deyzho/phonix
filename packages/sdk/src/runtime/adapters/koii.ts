@@ -14,7 +14,7 @@
  */
 export function koiiRuntimeBootstrap(): string {
   return `
-// ─── Phonix Runtime (Koii adapter) ───────────────────────────────────────────
+// ─── AxonSDK Runtime (Koii adapter) ──────────────────────────────────────────
 (function () {
   var _messageHandler = null;
 

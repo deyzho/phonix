@@ -47,7 +47,7 @@ async function bundleForFluence(
     }
     if (SECRET_KEY_PATTERNS.some((re) => re.test(key))) {
       throw new Error(
-        `"${key}" looks like a secret. Do not bake credentials into the public bundle via phonix.json > environment.`
+        `"${key}" looks like a secret. Do not bake credentials into the public bundle via axon.json > environment.`
       );
     }
     if (value !== '') defines[`process.env.${key}`] = JSON.stringify(value);
@@ -154,8 +154,8 @@ export interface FluenceDeployOptions {
 export async function fluenceDeploy(options: FluenceDeployOptions): Promise<Deployment> {
   const { config, cwd = process.cwd() } = options;
 
-  // Only FLUENCE_PRIVATE_KEY is accepted — never fall back to PHONIX_SECRET_KEY.
-  // PHONIX_SECRET_KEY is a P-256 scalar; Fluence requires Ed25519. Reusing the
+  // Only FLUENCE_PRIVATE_KEY is accepted — never fall back to AXON_SECRET_KEY.
+  // AXON_SECRET_KEY is a P-256 scalar; Fluence requires Ed25519. Reusing the
   // same key material across different elliptic curves compromises both identities
   // and is cryptographically unsound.
   const privateKey =
@@ -166,8 +166,8 @@ export async function fluenceDeploy(options: FluenceDeployOptions): Promise<Depl
   if (!privateKey) {
     throw new Error(
       'FLUENCE_PRIVATE_KEY is not set. Add it to your .env file.\n' +
-        'Run: phonix auth fluence  to generate and configure credentials.\n' +
-        'Do not use PHONIX_SECRET_KEY — Fluence requires a separate Ed25519 key.'
+        'Run: axon auth fluence  to generate and configure credentials.\n' +
+        'Do not use AXON_SECRET_KEY — Fluence requires a separate Ed25519 key.'
     );
   }
 

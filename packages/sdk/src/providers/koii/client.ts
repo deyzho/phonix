@@ -248,7 +248,7 @@ function base58Decode(input: string): Uint8Array {
     throw new AxonError(
       'koii',
       `Base58 key decodes to only ${Math.ceil(hex.length / 2)} bytes — expected 32 or 64.\n` +
-        'The key may be truncated or invalid. Run: phonix auth koii  to generate a new key.'
+        'The key may be truncated or invalid. Run: axon auth koii  to generate a new key.'
     );
   }
   const byteLen = Math.ceil(hex.length / 2);

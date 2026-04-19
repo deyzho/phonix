@@ -1,4 +1,4 @@
-# Phonix Oracle Template
+# AxonSDK Oracle Template
 
 A data oracle that fetches external data on a schedule, signs it inside a Trusted Execution Environment (TEE), and pushes it to configured destinations — running privately on Acurast smartphone nodes.
 
@@ -17,21 +17,21 @@ cp -r templates/oracle my-oracle
 cd my-oracle
 
 # 2. Set up Acurast credentials (one-time)
-phonix auth acurast
+axon auth acurast
 
 # 3. Configure your destination (e.g. a smart contract address)
-#    Edit phonix.json → "destinations": ["0xYourContractAddress"]
+#    Edit axon.json → "destinations": ["0xYourContractAddress"]
 
 # 4. Test locally first
-phonix run-local
+axon run-local
 
 # 5. Deploy
-phonix deploy
+axon deploy
 ```
 
 ## Configuration
 
-Edit `phonix.json`:
+Edit `axon.json`:
 
 | Field | Default | Description |
 |---|---|---|
@@ -62,14 +62,14 @@ All URLs must be `https://` — the runtime blocks plain HTTP and private IP ran
 
 ## Other providers
 
-This template targets Acurast by default (TEE-signed results). You can deploy to other providers by changing the `provider` field in `phonix.json`:
+This template targets Acurast by default (TEE-signed results). You can deploy to other providers by changing the `provider` field in `axon.json`:
 
 | Provider | Best for | Auth |
 |---|---|---|
-| `acurast` | TEE-signed results, on-chain destinations | `phonix auth acurast` |
-| `akash` | Long-running containers, cost control | `phonix auth akash` |
-| `fluence` | P2P serverless, Ethereum-native | `phonix auth fluence` |
-| `koii` | Community compute, recurring tasks | `phonix auth koii` |
+| `acurast` | TEE-signed results, on-chain destinations | `axon auth acurast` |
+| `akash` | Long-running containers, cost control | `axon auth akash` |
+| `fluence` | P2P serverless, Ethereum-native | `axon auth fluence` |
+| `koii` | Community compute, recurring tasks | `axon auth koii` |
 
 > **Note:** TEE-signed results (verifiable on-chain) are only available with the Acurast provider.
 
@@ -84,11 +84,11 @@ See the [Acurast Consumer documentation](https://docs.acurast.com/developers/sub
 ### From a Node.js / Next.js backend
 
 ```typescript
-import { PhonixClient } from '@axonsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 
-const client = new PhonixClient({
+const client = new AxonClient({
   provider: 'acurast',
-  secretKey: process.env.PHONIX_SECRET_KEY,
+  secretKey: process.env.AXON_SECRET_KEY,
 });
 
 await client.connect();
@@ -106,12 +106,12 @@ client.onMessage((msg) => {
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages } from '@axonsdk/mobile';
+import { useAxon, useMessages } from '@axonsdk/mobile';
 
 export function PriceFeedScreen() {
-  const { client, connected, connect } = usePhonix({
+  const { client, connected, connect } = useAxon({
     provider: 'acurast',
-    secretKey: PHONIX_SECRET_KEY,
+    secretKey: AXON_SECRET_KEY,
     autoConnect: true,
   });
   const messages = useMessages(client, { maxMessages: 10 });

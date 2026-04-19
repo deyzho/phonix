@@ -7,7 +7,7 @@ import type {
 } from '../types.js';
 
 /**
- * The unified provider interface every Phonix backend must satisfy.
+ * The unified provider interface every AxonSDK backend must satisfy.
  *
  * Five primitives map to five method groups:
  *   Deploy → deploy()

@@ -2,7 +2,7 @@
  * AkashProvider — full implementation of IAxonProvider for the Akash Network.
  *
  * Akash is a decentralised cloud computing marketplace where providers bid to
- * run containerised workloads. Phonix wraps the full deployment lifecycle:
+ * run containerised workloads. AxonSDK wraps the full deployment lifecycle:
  *
  *  1. Bundle the user's TypeScript/JavaScript entry file with esbuild
  *  2. Upload the bundle to IPFS (CID used as the immutable source of truth)
@@ -10,7 +10,7 @@
  *  4. Create the deployment via the provider-services CLI
  *  5. Communicate with running containers over HTTPS (POST /message)
  *
- * Required credentials (in .env — run `phonix auth akash` to set up):
+ * Required credentials (in .env — run `axon auth akash` to set up):
  *   AKASH_MNEMONIC       — BIP-39 wallet mnemonic (12 or 24 words)
  *   AKASH_IPFS_URL       — IPFS API endpoint for uploading bundles
  *   AKASH_IPFS_API_KEY   — IPFS API key (optional for public nodes)

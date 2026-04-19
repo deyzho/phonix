@@ -1,5 +1,5 @@
 /**
- * Phonix Oracle Template — Data Oracle on Acurast
+ * AxonSDK Oracle Template — Data Oracle on Acurast
  *
  * This script runs ON the phone inside the Trusted Execution Environment (TEE).
  * It fetches external data, signs it with the processor keypair, and pushes
@@ -13,10 +13,10 @@
  *  3. The signed result is pushed to the configured destinations
  *
  * To deploy:
- *   phonix deploy
+ *   axon deploy
  *
  * To test locally (with mock _STD_):
- *   phonix run-local oracle
+ *   axon run-local oracle
  */
 
 // _STD_ is the Acurast TEE runtime global — available on-device, mocked locally
@@ -108,12 +108,12 @@ function fetchAndFulfill(): void {
       const resultString = JSON.stringify(result);
 
       // Push the signed result to the configured destinations
-      // In production, destinations are set in phonix.json
+      // In production, destinations are set in axon.json
       _STD_.fulfill(
         resultString,
         'application/json',
         {
-          // Destination config — filled in by Acurast based on phonix.json destinations[]
+          // Destination config — filled in by Acurast based on axon.json destinations[]
         },
         () => {
           print('[phonix:oracle] Result fulfilled successfully');
@@ -132,6 +132,6 @@ function fetchAndFulfill(): void {
 fetchAndFulfill();
 
 // Note: For interval deployments, Acurast will re-invoke this script
-// according to the schedule defined in phonix.json.
+// according to the schedule defined in axon.json.
 // You do NOT need to set up your own timer — the TEE runtime handles it.
 print('[phonix:oracle] Oracle script initialised');

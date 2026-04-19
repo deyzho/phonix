@@ -10,7 +10,7 @@
  */
 export function acurastRuntimeBootstrap(): string {
   return `
-// ─── Phonix Runtime (Acurast adapter) ────────────────────────────────────────
+// ─── AxonSDK Runtime (Acurast adapter) ───────────────────────────────────────
 (function () {
   var _ph = {
     providerName: 'acurast',

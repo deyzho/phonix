@@ -1,5 +1,5 @@
 /**
- * Mock runtime bootstrap for `phonix run-local`.
+ * Mock runtime bootstrap for `axon run-local`.
  *
  * Returns a JavaScript string that, when injected via `node --import`,
  * sets up both `globalThis.phonix` and `globalThis._STD_` (for backward
@@ -12,7 +12,7 @@
  */
 export function mockRuntimeBootstrap(): string {
   return `
-// ─── Phonix Runtime Mock (run-local mode) ────────────────────────────────────
+// ─── AxonSDK Runtime Mock (run-local mode) ───────────────────────────────────
 (function () {
   // Block requests to private/loopback/link-local addresses.
   // Applied to BOTH the hostname AND the DNS-resolved IP to defeat DNS rebinding

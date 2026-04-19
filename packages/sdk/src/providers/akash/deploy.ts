@@ -114,7 +114,7 @@ async function uploadToIpfs(
 // ─── SDL generation ───────────────────────────────────────────────────────────
 
 /**
- * Generate an Akash SDL (Stack Definition Language) YAML for a Phonix deployment.
+ * Generate an Akash SDL (Stack Definition Language) YAML for an AxonSDK deployment.
  *
  * The container downloads the bundle from IPFS at startup using wget and runs
  * it with Node.js. Environment variables are injected via the SDL env block.
@@ -302,13 +302,13 @@ export async function akashDeploy(options: AkashDeployOptions): Promise<Deployme
   if (!mnemonic) {
     throw new Error(
       'AKASH_MNEMONIC is not set. Add it to your .env file.\n' +
-        'Run: phonix auth akash  to generate or import one.'
+        'Run: axon auth akash  to generate or import one.'
     );
   }
   if (!ipfsUrl) {
     throw new Error(
       'AKASH_IPFS_URL is not set. Akash deployments require IPFS to distribute the bundle.\n' +
-        'Run: phonix auth akash  to configure an IPFS endpoint.'
+        'Run: axon auth akash  to configure an IPFS endpoint.'
     );
   }
 

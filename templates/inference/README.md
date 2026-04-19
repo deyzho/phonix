@@ -1,10 +1,10 @@
-# Phonix Inference Template
+# AxonSDK Inference Template
 
 Confidential LLM inference running privately inside a Trusted Execution Environment (TEE) on Acurast smartphone nodes — callable from any JavaScript app, Next.js backend, or iOS/Android app.
 
 ## What this does
 
-- Deploys to 3 Acurast processor nodes (configurable in `phonix.json`)
+- Deploys to 3 Acurast processor nodes (configurable in `axon.json`)
 - Listens for prompts via WebSocket
 - Calls any OpenAI-compatible inference API (Ollama, vLLM, OpenAI, etc.)
 - Returns results privately — neither the device owner nor Acurast can inspect your prompts or responses
@@ -13,7 +13,7 @@ Confidential LLM inference running privately inside a Trusted Execution Environm
 
 ```bash
 # 1. Set up Acurast credentials (one-time)
-phonix auth acurast
+axon auth acurast
 
 # 2. Set your inference endpoint in .env
 echo "INFERENCE_API_URL=https://your-inference-endpoint" >> .env
@@ -21,13 +21,13 @@ echo "INFERENCE_API_KEY=your_api_key" >> .env   # omit for local Ollama
 echo "INFERENCE_MODEL=llama3" >> .env
 
 # 3. Test locally first
-phonix run-local
+axon run-local
 
 # 4. Deploy
-phonix deploy
+axon deploy
 
 # 5. Note the processor ID(s) from the output, then send a prompt
-phonix send <processorId> '{"prompt":"Summarize: The quick brown fox...","requestId":"1"}'
+axon send <processorId> '{"prompt":"Summarize: The quick brown fox...","requestId":"1"}'
 ```
 
 ## Environment variables
@@ -38,7 +38,7 @@ phonix send <processorId> '{"prompt":"Summarize: The quick brown fox...","reques
 | `INFERENCE_API_KEY` | *(empty)* | API key — leave empty for local Ollama |
 | `INFERENCE_MODEL` | `llama3` | Model name to use |
 
-Set non-secret values in `phonix.json` under `environment` (injected at bundle time):
+Set non-secret values in `axon.json` under `environment` (injected at bundle time):
 
 ```json
 {
@@ -49,9 +49,9 @@ Set non-secret values in `phonix.json` under `environment` (injected at bundle t
 }
 ```
 
-> **Note:** `INFERENCE_API_KEY` should stay in `.env` only — never put secrets in `phonix.json`.
+> **Note:** `INFERENCE_API_KEY` should stay in `.env` only — never put secrets in `axon.json`.
 
-## `phonix.json` configuration
+## `axon.json` configuration
 
 | Field | Default | Description |
 |---|---|---|
@@ -77,11 +77,11 @@ The template targets the OpenAI-compatible `/v1/chat/completions` endpoint:
 ### From a Node.js / Next.js backend
 
 ```typescript
-import { PhonixClient } from '@axonsdk/sdk';
+import { AxonClient } from '@axonsdk/sdk';
 
-const client = new PhonixClient({
+const client = new AxonClient({
   provider: 'acurast',
-  secretKey: process.env.PHONIX_SECRET_KEY,
+  secretKey: process.env.AXON_SECRET_KEY,
 });
 
 await client.connect();
@@ -95,7 +95,7 @@ client.onMessage((msg) => {
   console.log(`[${requestId}] ${model}: ${result}`);
 });
 
-// Get processor IDs from `phonix status`
+// Get processor IDs from `axon status`
 await client.send('0xproc...', {
   requestId: 'req-001',
   model: 'llama3',        // optional — overrides INFERENCE_MODEL env var
@@ -108,12 +108,12 @@ client.disconnect();
 ### From an iOS or Android app (React Native / Expo)
 
 ```tsx
-import { usePhonix, useMessages, useSend } from '@axonsdk/mobile';
+import { useAxon, useMessages, useSend } from '@axonsdk/mobile';
 
 export function InferenceScreen() {
-  const { client, connected, connect } = usePhonix({
+  const { client, connected, connect } = useAxon({
     provider: 'acurast',
-    secretKey: PHONIX_SECRET_KEY,
+    secretKey: AXON_SECRET_KEY,
   });
   const messages = useMessages(client);
   const { send, sending } = useSend(client);

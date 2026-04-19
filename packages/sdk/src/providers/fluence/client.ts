@@ -62,7 +62,7 @@ export class FluenceMessagingClient {
       throw new AxonError(
         'fluence',
         `FLUENCE_PRIVATE_KEY must be exactly 32 bytes (64 hex chars). Got ${rawHex.length} chars.\n` +
-          'Run: phonix auth fluence  to generate a valid key.'
+          'Run: axon auth fluence  to generate a valid key.'
       );
     }
     const keyBytes = hexToUint8Array(rawHex);

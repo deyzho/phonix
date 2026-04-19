@@ -1,5 +1,5 @@
 /**
- * Phonix Inference Template — Confidential LLM Inference
+ * AxonSDK Inference Template — Confidential LLM Inference
  *
  * This script runs ON the device inside the Trusted Execution Environment (TEE).
  * Prompts and responses are private — the device owner and provider cannot see them.
@@ -9,14 +9,14 @@
  *  2. Your dApp sends { prompt, requestId, model? } via client.send()
  *  3. This script calls your configured LLM API and sends the result back
  *
- * Configuration (set in phonix.json > environment, or .env for local testing):
+ * Configuration (set in axon.json > environment, or .env for local testing):
  *   INFERENCE_API_URL  — Base URL of your LLM API (default: http://localhost:11434)
  *                        Supports any OpenAI-compatible endpoint (Ollama, vLLM, etc.)
  *   INFERENCE_API_KEY  — API key (empty string for local Ollama)
  *   INFERENCE_MODEL    — Model name to use (default: llama3)
  *
- * Deploy:   phonix deploy
- * Test locally: phonix run-local
+ * Deploy:   axon deploy
+ * Test locally: axon run-local
  *
  * Note: For local testing, INFERENCE_API_URL must use https:// (SSRF protection).
  * Point it at a publicly accessible LLM endpoint or a local Ollama instance
@@ -48,7 +48,7 @@ declare const phonix: {
 };
 
 // ─── Configuration ────────────────────────────────────────────────────────────
-// These values are injected by esbuild at bundle time from phonix.json > environment.
+// These values are injected by esbuild at bundle time from axon.json > environment.
 
 const _RAW_INFERENCE_API_URL: string =
   (typeof process !== 'undefined' && process.env?.['INFERENCE_API_URL']) || '';

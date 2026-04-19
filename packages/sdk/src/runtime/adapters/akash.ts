@@ -16,7 +16,7 @@
  */
 export function akashRuntimeBootstrap(): string {
   return `
-// ─── Phonix Runtime (Akash adapter) ──────────────────────────────────────────
+// ─── AxonSDK Runtime (Akash adapter) ─────────────────────────────────────────
 (function () {
   var _messageHandler = null;
   var _pendingRespond = null;

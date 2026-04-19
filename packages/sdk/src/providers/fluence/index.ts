@@ -1,7 +1,7 @@
 /**
  * FluenceProvider — full implementation.
  *
- * Deploys Phonix spells to the Fluence P2P network and exchanges messages
+ * Deploys AxonSDK spells to the Fluence P2P network and exchanges messages
  * with workers via @fluencelabs/js-client.
  *
  * Required credentials (in .env):

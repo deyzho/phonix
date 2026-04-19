@@ -1,7 +1,7 @@
 /**
  * KoiiProvider — full implementation.
  *
- * Deploys Phonix scripts as Koii Tasks on the K2 network and exchanges
+ * Deploys AxonSDK scripts as Koii Tasks on the K2 network and exchanges
  * messages with task nodes via their HTTP API.
  *
  * Required credentials (in .env):

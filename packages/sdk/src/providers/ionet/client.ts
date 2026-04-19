@@ -1,7 +1,7 @@
 /**
  * IoNetMessagingClient — HTTP-based messaging with io.net GPU cluster deployments.
  *
- * io.net workers run as containerised GPU workloads. Phonix containers expose:
+ * io.net workers run as containerised GPU workloads. AxonSDK containers expose:
  *
  *   GET  /health   → liveness probe (returns 200 "ok")
  *   POST /message  → deliver a payload; response body is the result

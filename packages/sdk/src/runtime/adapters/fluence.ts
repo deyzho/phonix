@@ -16,7 +16,7 @@
  */
 export function fluenceRuntimeBootstrap(): string {
   return `
-// ─── Phonix Runtime (Fluence adapter) ────────────────────────────────────────
+// ─── AxonSDK Runtime (Fluence adapter) ───────────────────────────────────────
 (function () {
   var _messageHandler = null;
 

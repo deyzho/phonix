@@ -8,7 +8,7 @@
  *  3. Submitting a cluster job to the io.net API
  *  4. Polling until the worker is live
  *
- * Required credentials (run `phonix auth ionet` to set up):
+ * Required credentials (run `axon auth ionet` to set up):
  *   IONET_API_KEY    — io.net API key from console.io.net
  *   IONET_CLUSTER_ID — target cluster ID (optional — auto-selected if omitted)
  *   IONET_IPFS_URL   — IPFS API endpoint for bundle uploads

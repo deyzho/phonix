@@ -4,7 +4,7 @@ export type ProviderName = 'acurast' | 'fluence' | 'koii' | 'akash' | 'ionet' | 
 // Runtime types (provider availability varies)
 export type RuntimeType = 'nodejs' | 'python' | 'docker' | 'wasm';
 
-// Top-level project config (stored in phonix.json)
+// Top-level project config (stored in axon.json)
 export interface AxonConfig {
   projectName: string;
   provider: ProviderName;
@@ -83,7 +83,7 @@ export class ProviderNotImplementedError extends AxonError {
 
 export class ConfigValidationError extends AxonError {
   constructor(field: string, reason: string) {
-    super(`Invalid phonix.json — field '${field}': ${reason}`);
+    super(`Invalid axon.json — field '${field}': ${reason}`);
     this.name = 'ConfigValidationError';
     Object.setPrototypeOf(this, new.target.prototype);
   }

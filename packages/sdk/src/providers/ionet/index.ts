@@ -2,7 +2,7 @@
  * IoNetProvider — GPU compute via io.net clusters.
  *
  * io.net aggregates hundreds of thousands of GPUs into on-demand clusters,
- * offering the lowest-cost GPU compute available anywhere. Phonix integrates
+ * offering the lowest-cost GPU compute available anywhere. AxonSDK integrates
  * io.net as a first-class provider, enabling automatic routing between:
  *
  *  - TEE smartphone compute (Acurast) — private, low-cost, always-on
@@ -11,7 +11,7 @@
  * The AxonRouter can automatically select between TEE and GPU compute
  * depending on workload requirements using the 'latency' or 'cost' strategy.
  *
- * Required credentials (run `phonix auth ionet`):
+ * Required credentials (run `axon auth ionet`):
  *   IONET_API_KEY    — io.net API key from console.io.net
  *   IONET_CLUSTER_ID — target cluster ID (optional — auto-selected if omitted)
  */

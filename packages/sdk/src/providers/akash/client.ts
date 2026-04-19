@@ -1,7 +1,7 @@
 /**
  * AkashMessagingClient — HTTP-based messaging with Akash container deployments.
  *
- * Akash workloads run as Docker containers. Phonix containers expose a small
+ * Akash workloads run as Docker containers. AxonSDK containers expose a small
  * HTTP API on their lease URL:
  *
  *   GET  /health   → liveness probe (returns 200 "ok")

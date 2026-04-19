@@ -1,6 +1,6 @@
 # @axonsdk/inference
 
-OpenAI-compatible inference routing for the Phonix SDK. Routes chat completion requests across decentralized compute providers (io.net, Akash, Acurast) with automatic failover and latency-aware routing.
+OpenAI-compatible inference routing for AxonSDK. Routes chat completion requests across decentralized compute providers (io.net, Akash, Acurast) with automatic failover and latency-aware routing.
 
 ## Installation
 

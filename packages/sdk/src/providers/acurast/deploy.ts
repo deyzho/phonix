@@ -29,7 +29,7 @@ const execFileAsync = promisify(execFile);
  * prepended to the output so deployment scripts can use either `phonix.*`
  * or `_STD_.*` at runtime.
  *
- * Environment variables from `phonix.json > environment` are injected via
+ * Environment variables from `axon.json > environment` are injected via
  * esbuild's `define` so they are available as `process.env.KEY` in the bundle.
  */
 export async function bundleEntryFile(
@@ -52,7 +52,7 @@ export async function bundleEntryFile(
   //  1. Keys must match SCREAMING_SNAKE_CASE — esbuild treats define keys as JS
   //     expressions, so unsanitised keys could corrupt the build config.
   //  2. Values are baked into the public bundle (uploaded to IPFS, on-chain).
-  //     Secret credentials must NEVER appear in phonix.json > environment.
+  //     Secret credentials must NEVER appear in axon.json > environment.
   //     Use the provider's secure secret store for sensitive values instead.
   const SAFE_ENV_KEY_RE = /^[A-Z][A-Z0-9_]{0,127}$/;
   // Keys whose values are secrets and must not be inlined into a public bundle
@@ -64,14 +64,14 @@ export async function bundleEntryFile(
   for (const [key, value] of Object.entries(environment)) {
     if (!SAFE_ENV_KEY_RE.test(key)) {
       throw new Error(
-        `Invalid environment variable name in phonix.json: "${key}".\n` +
+        `Invalid environment variable name in axon.json: "${key}".\n` +
           'Keys must be SCREAMING_SNAKE_CASE (e.g. INFERENCE_API_URL).'
       );
     }
     if (SECRET_KEY_PATTERNS.some((re) => re.test(key))) {
       throw new Error(
         `Environment variable "${key}" looks like a secret credential.\n` +
-          'Do not put secrets in phonix.json > environment — they are baked into\n' +
+          'Do not put secrets in axon.json > environment — they are baked into\n' +
           'the public IPFS bundle and become permanently readable by anyone.\n' +
           'Use your provider\'s secure runtime secret store instead.'
       );
@@ -235,7 +235,7 @@ export interface AcurastDeployOptions {
 }
 
 /**
- * Deploy a Phonix project to the Acurast network.
+ * Deploy an AxonSDK project to the Acurast network.
  */
 export async function acurastDeploy(options: AcurastDeployOptions): Promise<Deployment> {
   const { config, cwd = process.cwd() } = options;
