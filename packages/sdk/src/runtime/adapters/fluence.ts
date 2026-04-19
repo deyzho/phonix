@@ -29,7 +29,7 @@ export function fluenceRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:fluence] HTTP GET error:', err && err.message);
+            console.error('[axonsdk:fluence] HTTP GET error:', err && err.message);
             callback('{}');
           });
       },
@@ -38,7 +38,7 @@ export function fluenceRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:fluence] HTTP POST error:', err && err.message);
+            console.error('[axonsdk:fluence] HTTP POST error:', err && err.message);
             callback('{}');
           });
       },

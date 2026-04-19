@@ -26,7 +26,7 @@ export function koiiRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:koii] HTTP GET error:', err && err.message);
+            console.error('[axonsdk:koii] HTTP GET error:', err && err.message);
             callback('{}');
           });
       },
@@ -35,7 +35,7 @@ export function koiiRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:koii] HTTP POST error:', err && err.message);
+            console.error('[axonsdk:koii] HTTP POST error:', err && err.message);
             callback('{}');
           });
       },

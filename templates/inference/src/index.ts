@@ -67,13 +67,13 @@ const _RAW_INFERENCE_API_URL: string =
       u.hostname !== '127.0.0.1'
     ) {
       // Cannot throw here (TEE env), so log loudly and halt
-      print('[phonix:inference] FATAL: INFERENCE_API_URL must use https:// for non-localhost endpoints.');
-      print('[phonix:inference] FATAL: Plain HTTP exposes the API key and all prompts in transit.');
+      print('[axonsdk:inference] FATAL: INFERENCE_API_URL must use https:// for non-localhost endpoints.');
+      print('[axonsdk:inference] FATAL: Plain HTTP exposes the API key and all prompts in transit.');
       // Intentionally do not connect — stall the script
       return;
     }
   } catch {
-    print('[phonix:inference] FATAL: INFERENCE_API_URL is not a valid URL: ' + _RAW_INFERENCE_API_URL);
+    print('[axonsdk:inference] FATAL: INFERENCE_API_URL is not a valid URL: ' + _RAW_INFERENCE_API_URL);
     return;
   }
 })();
@@ -121,7 +121,7 @@ function runInference(
     headers['Authorization'] = 'Bearer ' + INFERENCE_API_KEY;
   }
 
-  print('[phonix:inference] Calling ' + apiUrl + ' model=' + (model || INFERENCE_MODEL));
+  print('[axonsdk:inference] Calling ' + apiUrl + ' model=' + (model || INFERENCE_MODEL));
 
   axon.http.POST(apiUrl, headers, requestBody, (response: string) => {
     let parsed: {
@@ -162,18 +162,18 @@ axon.ws.open(
 
   // onOpen — called when the connection is established
   () => {
-    print('[phonix:inference] Connected — ready to receive prompts');
+    print('[axonsdk:inference] Connected — ready to receive prompts');
   },
 
   // onMessage — called for each incoming message from your dApp
   (payload: string) => {
-    print('[phonix:inference] Received: ' + payload);
+    print('[axonsdk:inference] Received: ' + payload);
 
     let parsed: { prompt?: string; requestId?: string; model?: string };
     try {
       parsed = JSON.parse(payload) as typeof parsed;
     } catch {
-      print('[phonix:inference] Error: payload is not valid JSON');
+      print('[axonsdk:inference] Error: payload is not valid JSON');
       axon.ws.send(JSON.stringify({ error: 'Invalid JSON payload', requestId: null }));
       return;
     }
@@ -205,12 +205,12 @@ axon.ws.open(
             timestamp: Date.now(),
           })
         );
-        print('[phonix:inference] Result sent (' + result.length + ' chars)');
+        print('[axonsdk:inference] Result sent (' + result.length + ' chars)');
       },
 
       // onError
       (err: string) => {
-        print('[phonix:inference] Inference error: ' + err);
+        print('[axonsdk:inference] Inference error: ' + err);
         axon.ws.send(
           JSON.stringify({
             error: err,
@@ -223,7 +223,7 @@ axon.ws.open(
 
   // onError — called on WebSocket errors
   (err: unknown) => {
-    print('[phonix:inference] WebSocket error: ' + JSON.stringify(err));
+    print('[axonsdk:inference] WebSocket error: ' + JSON.stringify(err));
   }
 );
 

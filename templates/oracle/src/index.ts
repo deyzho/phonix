@@ -76,7 +76,7 @@ interface OracleResult {
  * Fetch the latest prices and push the signed result to destinations.
  */
 function fetchAndFulfill(): void {
-  print('[phonix:oracle] Fetching prices from CoinGecko...');
+  print('[axonsdk:oracle] Fetching prices from CoinGecko...');
 
   _STD_.http.GET(
     PRICE_FEED_URL,
@@ -84,13 +84,13 @@ function fetchAndFulfill(): void {
       Accept: 'application/json',
     },
     (response: string) => {
-      print('[phonix:oracle] Got response: ' + response.slice(0, 200));
+      print('[axonsdk:oracle] Got response: ' + response.slice(0, 200));
 
       let data: PriceFeedResponse;
       try {
         data = JSON.parse(response) as PriceFeedResponse;
       } catch {
-        print('[phonix:oracle] Error: response is not valid JSON');
+        print('[axonsdk:oracle] Error: response is not valid JSON');
         return;
       }
 
@@ -102,7 +102,7 @@ function fetchAndFulfill(): void {
       };
 
       print(
-        `[phonix:oracle] BTC: $${result.btcUsd ?? 'N/A'} | ETH: $${result.ethUsd ?? 'N/A'}`
+        `[axonsdk:oracle] BTC: $${result.btcUsd ?? 'N/A'} | ETH: $${result.ethUsd ?? 'N/A'}`
       );
 
       const resultString = JSON.stringify(result);
@@ -116,10 +116,10 @@ function fetchAndFulfill(): void {
           // Destination config — filled in by Acurast based on axon.json destinations[]
         },
         () => {
-          print('[phonix:oracle] Result fulfilled successfully');
+          print('[axonsdk:oracle] Result fulfilled successfully');
         },
         (err: unknown) => {
-          print('[phonix:oracle] Error fulfilling result: ' + JSON.stringify(err));
+          print('[axonsdk:oracle] Error fulfilling result: ' + JSON.stringify(err));
         }
       );
     }
@@ -134,4 +134,4 @@ fetchAndFulfill();
 // Note: For interval deployments, Acurast will re-invoke this script
 // according to the schedule defined in axon.json.
 // You do NOT need to set up your own timer — the TEE runtime handles it.
-print('[phonix:oracle] Oracle script initialised');
+print('[axonsdk:oracle] Oracle script initialised');
