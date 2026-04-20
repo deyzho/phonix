@@ -188,9 +188,9 @@ describe('generateAkashSdl', () => {
     expect(sdl).not.toContain('My Cool App!!');
   });
 
-  it('should default to phonix-app service name when projectName is empty', () => {
+  it('should default to axonsdk-app service name when projectName is empty', () => {
     const sdl = generateAkashSdl({ bundleCid: 'QmAbc', projectName: '---' });
-    expect(sdl).toContain('phonix-app');
+    expect(sdl).toContain('axonsdk-app');
   });
 
   it('should include the Akash auditor signedBy address', () => {

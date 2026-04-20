@@ -1,15 +1,15 @@
 /**
  * Akash runtime bootstrap.
  *
- * Akash containers run as standard Docker containers with Node.js. The phonix
- * runtime on Akash maps the provider-agnostic `phonix` API to:
+ * Akash containers run as standard Docker containers with Node.js. The axon
+ * runtime on Akash maps the provider-agnostic `axon` API to:
  *
- *  - phonix.ws.open()   → starts an HTTP server on PORT (default 3000).
+ *  - axon.ws.open()   → starts an HTTP server on PORT (default 3000).
  *                         Messages arrive as POST /message; results are sent
  *                         back in the synchronous HTTP response.
- *  - phonix.ws.send()   → resolves the pending HTTP response with the payload.
- *  - phonix.http.GET/POST → Node.js global fetch (Node 18+).
- *  - phonix.fulfill()   → writes the result to stdout and resolves the response.
+ *  - axon.ws.send()   → resolves the pending HTTP response with the payload.
+ *  - axon.http.GET/POST → Node.js global fetch (Node 18+).
+ *  - axon.fulfill()   → writes the result to stdout and resolves the response.
  *
  * The AkashMessagingClient (client-side SDK) communicates with deployed
  * containers by POSTing to their lease endpoint: POST /message.
@@ -38,12 +38,12 @@ export function akashRuntimeBootstrap(): string {
       var body = '';
       req.on('data', function (chunk) { body += chunk; });
       req.on('end', function () {
-        // Register the responder for this request so phonix.ws.send() can reply
+        // Register the responder for this request so axon.ws.send() can reply
         _pendingRespond = function (payload) {
           var out = typeof payload === 'string' ? payload : JSON.stringify(payload);
           res.writeHead(200, {
             'Content-Type': 'application/json',
-            'X-Phonix-Provider': 'akash',
+            'X-AxonSDK-Provider': 'akash',
           });
           res.end(out);
           _pendingRespond = null;
@@ -81,7 +81,7 @@ export function akashRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:akash] HTTP GET error:', err && err.message);
+            console.error('[axonsdk:akash] HTTP GET error:', err && err.message);
             callback('{}');
           });
       },
@@ -90,7 +90,7 @@ export function akashRuntimeBootstrap(): string {
           .then(function (r) { return r.text(); })
           .then(function (text) { callback(text); })
           .catch(function (err) {
-            console.error('[phonix:akash] HTTP POST error:', err && err.message);
+            console.error('[axonsdk:akash] HTTP POST error:', err && err.message);
             callback('{}');
           });
       },
@@ -105,15 +105,15 @@ export function akashRuntimeBootstrap(): string {
           var http = mod.default || mod;
           _server = http.createServer(_handleRequest);
           _server.listen(PORT, function () {
-            console.log('[phonix:akash] Listening on port ' + PORT);
+            console.log('[axonsdk:akash] Listening on port ' + PORT);
             if (typeof onOpen === 'function') onOpen();
           });
           _server.on('error', function (err) {
-            console.error('[phonix:akash] Server error:', err && err.message);
+            console.error('[axonsdk:akash] Server error:', err && err.message);
             if (typeof onError === 'function') onError(err);
           });
         }).catch(function (err) {
-          console.error('[phonix:akash] Failed to start HTTP server:', err && err.message);
+          console.error('[axonsdk:akash] Failed to start HTTP server:', err && err.message);
           if (typeof onError === 'function') onError(err);
         });
       },
@@ -122,7 +122,7 @@ export function akashRuntimeBootstrap(): string {
         if (typeof _pendingRespond === 'function') {
           _pendingRespond(payload);
         } else {
-          console.warn('[phonix:akash] ws.send() called with no pending request to respond to.');
+          console.warn('[axonsdk:akash] ws.send() called with no pending request to respond to.');
         }
       },
       close: function () {
@@ -135,7 +135,7 @@ export function akashRuntimeBootstrap(): string {
     },
 
     fulfill: function (result, contentType, destinations, onSuccess, onError) {
-      console.log('[phonix:akash] fulfill:', result);
+      console.log('[axonsdk:akash] fulfill:', result);
       if (typeof _pendingRespond === 'function') {
         _pendingRespond(result);
       }
@@ -144,7 +144,7 @@ export function akashRuntimeBootstrap(): string {
   };
 
   if (typeof globalThis !== 'undefined') {
-    globalThis.phonix = _ph;
+    globalThis.axon = _ph;
   }
 })();
 // ─────────────────────────────────────────────────────────────────────────────

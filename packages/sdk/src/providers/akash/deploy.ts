@@ -75,7 +75,7 @@ async function uploadToIpfs(
   }
 
   const uploadUrl = `${ipfsUrl.replace(/\/$/, '')}/api/v0/add?pin=true`;
-  const boundary = `phonix-${createHash('sha256').update(content).digest('hex').slice(0, 16)}`;
+  const boundary = `axon-${createHash('sha256').update(content).digest('hex').slice(0, 16)}`;
   const body =
     `--${boundary}\r\n` +
     `Content-Disposition: form-data; name="file"; filename="bundle.js"\r\n` +
@@ -134,7 +134,7 @@ export function generateAkashSdl(options: {
     environment = {},
     replicas = 1,
     maxUaktPerBlock = 10_000,
-    projectName = 'phonix-app',
+    projectName = 'axonsdk-app',
   } = options;
 
   // Service name must be lowercase alphanumeric + hyphens
@@ -142,7 +142,7 @@ export function generateAkashSdl(options: {
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, '-')
     .replace(/^-+|-+$/g, '')
-    .slice(0, 30) || 'phonix-app';
+    .slice(0, 30) || 'axonsdk-app';
 
   // Build env block — each entry as "KEY=value"
   const envLines = [
@@ -297,7 +297,7 @@ export async function akashDeploy(options: AkashDeployOptions): Promise<Deployme
   const ipfsUrl = options.ipfsUrl ?? process.env['AKASH_IPFS_URL'] ?? process.env['ACURAST_IPFS_URL'] ?? '';
   const ipfsApiKey = options.ipfsApiKey ?? process.env['AKASH_IPFS_API_KEY'] ?? process.env['ACURAST_IPFS_API_KEY'] ?? '';
   const akashNode = options.akashNode ?? process.env['AKASH_NODE'] ?? DEFAULT_AKASH_NODE;
-  const keyName = options.keyName ?? process.env['AKASH_KEY_NAME'] ?? 'phonix';
+  const keyName = options.keyName ?? process.env['AKASH_KEY_NAME'] ?? 'axonsdk';
 
   if (!mnemonic) {
     throw new Error(
@@ -322,7 +322,7 @@ export async function akashDeploy(options: AkashDeployOptions): Promise<Deployme
   }
 
   const rawBundle = await bundleEntryFile(entryPath, config.environment ?? {});
-  // Prepend Akash runtime bootstrap so phonix.* global is available
+  // Prepend Akash runtime bootstrap so axon.* global is available
   const bootstrapCode = generateRuntimeBootstrap('akash');
   const bundleWithRuntime = bootstrapCode + rawBundle;
 
@@ -338,7 +338,7 @@ export async function akashDeploy(options: AkashDeployOptions): Promise<Deployme
   });
 
   // 4. Write SDL to temp file and shell out to Akash CLI
-  const tmpDir = await mkdtemp(join(tmpdir(), 'phonix-akash-'));
+  const tmpDir = await mkdtemp(join(tmpdir(), 'axon-akash-'));
   const sdlPath = join(tmpDir, 'deploy.yaml');
 
   try {

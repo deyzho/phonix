@@ -23,9 +23,9 @@
  * with ngrok/cloudflared for tunnelling.
  */
 
-// `phonix` is the provider-agnostic runtime global injected at bundle time.
+// `axon` is the provider-agnostic runtime global injected at bundle time.
 // In local mode (_STD_ backward compat is also available via the mock shim).
-declare const phonix: {
+declare const axon: {
   ws: {
     open(
       url: string,
@@ -67,13 +67,13 @@ const _RAW_INFERENCE_API_URL: string =
       u.hostname !== '127.0.0.1'
     ) {
       // Cannot throw here (TEE env), so log loudly and halt
-      print('[phonix:inference] FATAL: INFERENCE_API_URL must use https:// for non-localhost endpoints.');
-      print('[phonix:inference] FATAL: Plain HTTP exposes the API key and all prompts in transit.');
+      print('[axonsdk:inference] FATAL: INFERENCE_API_URL must use https:// for non-localhost endpoints.');
+      print('[axonsdk:inference] FATAL: Plain HTTP exposes the API key and all prompts in transit.');
       // Intentionally do not connect — stall the script
       return;
     }
   } catch {
-    print('[phonix:inference] FATAL: INFERENCE_API_URL is not a valid URL: ' + _RAW_INFERENCE_API_URL);
+    print('[axonsdk:inference] FATAL: INFERENCE_API_URL is not a valid URL: ' + _RAW_INFERENCE_API_URL);
     return;
   }
 })();
@@ -121,9 +121,9 @@ function runInference(
     headers['Authorization'] = 'Bearer ' + INFERENCE_API_KEY;
   }
 
-  print('[phonix:inference] Calling ' + apiUrl + ' model=' + (model || INFERENCE_MODEL));
+  print('[axonsdk:inference] Calling ' + apiUrl + ' model=' + (model || INFERENCE_MODEL));
 
-  phonix.http.POST(apiUrl, headers, requestBody, (response: string) => {
+  axon.http.POST(apiUrl, headers, requestBody, (response: string) => {
     let parsed: {
       choices?: Array<{ message?: { content?: string }; text?: string }>;
       error?: { message?: string };
@@ -154,7 +154,7 @@ function runInference(
 
 // ─── WebSocket handler ────────────────────────────────────────────────────────
 
-phonix.ws.open(
+axon.ws.open(
   WS_URL,
 
   // WebSocket options
@@ -162,26 +162,26 @@ phonix.ws.open(
 
   // onOpen — called when the connection is established
   () => {
-    print('[phonix:inference] Connected — ready to receive prompts');
+    print('[axonsdk:inference] Connected — ready to receive prompts');
   },
 
   // onMessage — called for each incoming message from your dApp
   (payload: string) => {
-    print('[phonix:inference] Received: ' + payload);
+    print('[axonsdk:inference] Received: ' + payload);
 
     let parsed: { prompt?: string; requestId?: string; model?: string };
     try {
       parsed = JSON.parse(payload) as typeof parsed;
     } catch {
-      print('[phonix:inference] Error: payload is not valid JSON');
-      phonix.ws.send(JSON.stringify({ error: 'Invalid JSON payload', requestId: null }));
+      print('[axonsdk:inference] Error: payload is not valid JSON');
+      axon.ws.send(JSON.stringify({ error: 'Invalid JSON payload', requestId: null }));
       return;
     }
 
     const { prompt, requestId, model } = parsed;
 
     if (!prompt) {
-      phonix.ws.send(
+      axon.ws.send(
         JSON.stringify({
           error: 'Missing required field: prompt',
           requestId: requestId ?? null,
@@ -197,7 +197,7 @@ phonix.ws.open(
 
       // onResult
       (result: string) => {
-        phonix.ws.send(
+        axon.ws.send(
           JSON.stringify({
             requestId: requestId ?? null,
             result,
@@ -205,13 +205,13 @@ phonix.ws.open(
             timestamp: Date.now(),
           })
         );
-        print('[phonix:inference] Result sent (' + result.length + ' chars)');
+        print('[axonsdk:inference] Result sent (' + result.length + ' chars)');
       },
 
       // onError
       (err: string) => {
-        print('[phonix:inference] Inference error: ' + err);
-        phonix.ws.send(
+        print('[axonsdk:inference] Inference error: ' + err);
+        axon.ws.send(
           JSON.stringify({
             error: err,
             requestId: requestId ?? null,
@@ -223,7 +223,7 @@ phonix.ws.open(
 
   // onError — called on WebSocket errors
   (err: unknown) => {
-    print('[phonix:inference] WebSocket error: ' + JSON.stringify(err));
+    print('[axonsdk:inference] WebSocket error: ' + JSON.stringify(err));
   }
 );
 

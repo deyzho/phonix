@@ -7,9 +7,9 @@
  *
  * Message flow (send):
  *   1. Client calls the spell's handleMessage function via callFunction()
- *   2. The spell's phonix bootstrap receives the payload via __phonixDispatch()
- *   3. The script handles it and stores a result in globalThis.__phonixResult
- *   4. The Fluence spell returns __phonixResult to the caller
+ *   2. The spell's axon bootstrap receives the payload via __axonDispatch()
+ *   3. The script handles it and stores a result in globalThis.__axonResult
+ *   4. The Fluence spell returns __axonResult to the caller
  *
  * Message flow (onMessage — receiving unsolicited messages):
  *   Not natively supported by Fluence; handlers registered here are invoked

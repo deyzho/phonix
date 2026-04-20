@@ -25,8 +25,8 @@ const execFileAsync = promisify(execFile);
 /**
  * Bundle an entry file to a single self-contained JS string using esbuild.
  *
- * The Acurast runtime bootstrap (`phonix` global mapping to `_STD_`) is
- * prepended to the output so deployment scripts can use either `phonix.*`
+ * The Acurast runtime bootstrap (`axon` global mapping to `_STD_`) is
+ * prepended to the output so deployment scripts can use either `axon.*`
  * or `_STD_.*` at runtime.
  *
  * Environment variables from `axon.json > environment` are injected via
@@ -89,7 +89,7 @@ export async function bundleEntryFile(
     write: false,
     minify: false,
     // Acurast TEE runtime provides _STD_ globally — do not tree-shake it
-    globalName: '__phonix_bundle',
+    globalName: '__axon_bundle',
     define: defines,
   });
 
@@ -103,7 +103,7 @@ export async function bundleEntryFile(
     throw new Error('esbuild produced no output');
   }
 
-  // Prepend the Acurast runtime bootstrap so `phonix` global is available
+  // Prepend the Acurast runtime bootstrap so `axon` global is available
   return generateRuntimeBootstrap('acurast') + outputFile.text;
 }
 
@@ -272,7 +272,7 @@ export async function acurastDeploy(options: AcurastDeployOptions): Promise<Depl
   }
 
   // 2. Write bundle to a temp directory
-  const tmpDir = await mkdtemp(join(tmpdir(), 'phonix-'));
+  const tmpDir = await mkdtemp(join(tmpdir(), 'axon-'));
   const bundlePath = join(tmpDir, 'bundle.js');
   await writeFile(bundlePath, bundledCode, 'utf8');
 

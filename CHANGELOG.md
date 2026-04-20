@@ -7,6 +7,24 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [Unreleased] — @axonsdk/sdk
+
+### Changed — Breaking
+
+- **Runtime global renamed:** `globalThis.phonix` → `globalThis.axon`. Any deployment bundled against the previous runtime will throw on first call to `phonix.*`. To recover, re-bundle and redeploy affected scripts with the updated `@axonsdk/sdk` / `@axonsdk/cli` (`axon deploy`).
+- **Runtime bootstrap companions renamed:** `__phonixDispatch` → `__axonDispatch`, `__phonixResult` → `__axonResult`, `__phonixMessageHandler` → `__axonMessageHandler`, `__phonix_bundle` → `__axon_bundle`. Internal to the bootstrap protocol but visible to any user template that reaches into the bootstrap globals directly.
+- **HTTP response header renamed:** the Akash runtime adapter now emits `X-AxonSDK-Provider: akash` instead of `X-Phonix-Provider: akash`. Clients that parse the old header name must be updated.
+- **Default Akash key name changed:** when neither `AKASH_KEY_NAME` nor `options.keyName` is set, the Akash deployer now looks up the key `axonsdk` in the provider-services keyring instead of `phonix`. Operators with an existing `phonix` key can either rename it (`provider-services keys rename phonix axonsdk`) or keep using it by setting `AKASH_KEY_NAME=phonix` in `.env`.
+- **Default project name changed:** SDL output now uses `axonsdk-app` instead of `phonix-app` when `projectName` is omitted. Cosmetic for new deploys; no impact on existing leases since the service name is re-derived at each deploy.
+- **Default MIME boundary / tempdir / User-Agent strings changed:** MIME boundary `phonix-${hash}` → `axon-${hash}`, tempdir prefixes `phonix-akash-` / `phonix-fluence-` / `phonix-` → `axon-akash-` / `axon-fluence-` / `axon-`, mock runtime User-Agent `phonix-run-local/0.1` → `axon-run-local/0.1`. No downstream impact unless something was pattern-matching against these strings.
+- **Log prefixes unified:** runtime logs now all use `[axonsdk:<adapter>]` (e.g. `[axonsdk:akash]`, `[axonsdk:inference]`) or `[axonsdk.<method>]` (e.g. `[axonsdk.http]`, `[axonsdk.ws]`). Log-aggregation rules keyed off the old `[phonix:*]` / `[phonix.*]` prefixes must be updated.
+
+### Migration
+
+Anyone already running a bundle deployed via the `acurast`, `akash`, `fluence`, or `koii` adapters must redeploy before their scripts will work again. The redeployed bundle carries the renamed runtime bootstrap; until redeploy, existing scripts reference `globalThis.phonix` (now undefined) and throw at first call.
+
+---
+
 ## [@axonsdk/sdk@0.2.5] — 2026-04-13
 
 ### Added

@@ -2,7 +2,7 @@
  * Mock runtime bootstrap for `axon run-local`.
  *
  * Returns a JavaScript string that, when injected via `node --import`,
- * sets up both `globalThis.phonix` and `globalThis._STD_` (for backward
+ * sets up both `globalThis.axon` and `globalThis._STD_` (for backward
  * compatibility with templates that still reference _STD_ directly).
  *
  * The mock:
@@ -25,20 +25,20 @@ export function mockRuntimeBootstrap(): string {
   var MAX_RESPONSE_BYTES = 4 * 1024 * 1024;
 
   function _safeHttpRequest(method, url, headers, body, callback) {
-    console.log('[phonix.' + method + '] ' + url);
+    console.log('[axonsdk.' + method + '] ' + url);
     var urlObj;
     try { urlObj = new URL(url); } catch (e) {
-      console.error('[phonix.http] Invalid URL:', url);
+      console.error('[axonsdk.http] Invalid URL:', url);
       callback('{}');
       return;
     }
     if (urlObj.protocol !== 'https:') {
-      console.error('[phonix.http] Blocked non-HTTPS request:', url);
+      console.error('[axonsdk.http] Blocked non-HTTPS request:', url);
       callback('{}');
       return;
     }
     if (PRIVATE_HOST_RE.test(urlObj.hostname)) {
-      console.error('[phonix.http] Blocked request to private/internal host:', urlObj.hostname);
+      console.error('[axonsdk.http] Blocked request to private/internal host:', urlObj.hostname);
       callback('{}');
       return;
     }
@@ -50,7 +50,7 @@ export function mockRuntimeBootstrap(): string {
       return dns.lookup(urlObj.hostname);
     }).then(function (resolved) {
       if (PRIVATE_IP_RE.test(resolved.address)) {
-        console.error('[phonix.http] Blocked: ' + urlObj.hostname + ' resolves to private IP ' + resolved.address);
+        console.error('[axonsdk.http] Blocked: ' + urlObj.hostname + ' resolves to private IP ' + resolved.address);
         callback('{}');
         return;
       }
@@ -63,7 +63,7 @@ export function mockRuntimeBootstrap(): string {
           path: urlObj.pathname + urlObj.search,
           method: method.toUpperCase(),
           headers: Object.assign(
-            { 'User-Agent': 'phonix-run-local/0.1', 'Host': urlObj.hostname },
+            { 'User-Agent': 'axon-run-local/0.1', 'Host': urlObj.hostname },
             headers || {}
           ),
         };
@@ -80,7 +80,7 @@ export function mockRuntimeBootstrap(): string {
             if (bytesReceived > MAX_RESPONSE_BYTES) {
               aborted = true;
               req.destroy();
-              console.error('[phonix.http] Response exceeded ' + MAX_RESPONSE_BYTES + ' bytes — aborted.');
+              console.error('[axonsdk.http] Response exceeded ' + MAX_RESPONSE_BYTES + ' bytes — aborted.');
               callback('{}');
               return;
             }
@@ -92,7 +92,7 @@ export function mockRuntimeBootstrap(): string {
         });
         req.on('error', function (err) {
           if (!aborted) {
-            console.error('[phonix.http] Error:', err.message);
+            console.error('[axonsdk.http] Error:', err.message);
             callback('{}');
           }
         });
@@ -100,7 +100,7 @@ export function mockRuntimeBootstrap(): string {
         req.end();
       });
     }).catch(function (err) {
-      console.error('[phonix.http] DNS resolution failed for ' + urlObj.hostname + ':', err.message);
+      console.error('[axonsdk.http] DNS resolution failed for ' + urlObj.hostname + ':', err.message);
       callback('{}');
     });
   }
@@ -117,9 +117,9 @@ export function mockRuntimeBootstrap(): string {
     },
     ws: {
       open: function (url, opts, onOpen, onMessage, onError) {
-        console.log('[phonix.ws] Connecting to', url);
+        console.log('[axonsdk.ws] Connecting to', url);
         setTimeout(function () {
-          console.log('[phonix.ws] Connected (mock)');
+          console.log('[axonsdk.ws] Connected (mock)');
           if (typeof onOpen === 'function') onOpen();
           // Deliver a default test message after 500ms
           setTimeout(function () {
@@ -128,27 +128,27 @@ export function mockRuntimeBootstrap(): string {
               requestId: 'test-001',
               model: 'default',
             });
-            console.log('[phonix.ws] Incoming message:', testPayload);
+            console.log('[axonsdk.ws] Incoming message:', testPayload);
             if (typeof onMessage === 'function') onMessage(testPayload);
           }, 500);
         }, 100);
       },
       send: function (payload) {
-        console.log('[phonix.ws] Outgoing:', payload);
+        console.log('[axonsdk.ws] Outgoing:', payload);
       },
       close: function () {
-        console.log('[phonix.ws] Closed');
+        console.log('[axonsdk.ws] Closed');
       },
     },
     fulfill: function (result, contentType, destinations, onSuccess, onError) {
-      console.log('[phonix.fulfill] Result:', result);
-      console.log('[phonix.fulfill] Content-Type:', contentType);
+      console.log('[axonsdk.fulfill] Result:', result);
+      console.log('[axonsdk.fulfill] Content-Type:', contentType);
       if (typeof onSuccess === 'function') onSuccess();
     },
   };
 
   if (typeof globalThis !== 'undefined') {
-    globalThis.phonix = _ph;
+    globalThis.axon = _ph;
     // Backward compatibility: expose as _STD_ for templates that still use it
     globalThis._STD_ = {
       ws: _ph.ws,

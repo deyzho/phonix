@@ -10,9 +10,9 @@ describe('generateRuntimeBootstrap', () => {
     }
   });
 
-  it('acurast bootstrap should assign globalThis.phonix', () => {
+  it('acurast bootstrap should assign globalThis.axon', () => {
     const bootstrap = generateRuntimeBootstrap('acurast');
-    expect(bootstrap).toContain('globalThis.phonix');
+    expect(bootstrap).toContain('globalThis.axon');
     expect(bootstrap).toContain('acurast');
   });
 
@@ -25,22 +25,22 @@ describe('generateRuntimeBootstrap', () => {
     expect(bootstrap).toContain('_STD_.fulfill');
   });
 
-  it('fluence bootstrap should assign globalThis.phonix with fluence dispatch globals', () => {
+  it('fluence bootstrap should assign globalThis.axon with fluence dispatch globals', () => {
     const bootstrap = generateRuntimeBootstrap('fluence');
-    expect(bootstrap).toContain('globalThis.phonix');
-    expect(bootstrap).toContain('__phonixDispatch');
-    expect(bootstrap).toContain('__phonixResult');
+    expect(bootstrap).toContain('globalThis.axon');
+    expect(bootstrap).toContain('__axonDispatch');
+    expect(bootstrap).toContain('__axonResult');
   });
 
-  it('koii bootstrap should assign globalThis.phonix with koii dispatch globals', () => {
+  it('koii bootstrap should assign globalThis.axon with koii dispatch globals', () => {
     const bootstrap = generateRuntimeBootstrap('koii');
-    expect(bootstrap).toContain('globalThis.phonix');
-    expect(bootstrap).toContain('__phonixDispatch');
+    expect(bootstrap).toContain('globalThis.axon');
+    expect(bootstrap).toContain('__axonDispatch');
   });
 
-  it('mock bootstrap should set both phonix and _STD_ globals', () => {
+  it('mock bootstrap should set both axon and _STD_ globals', () => {
     const bootstrap = generateRuntimeBootstrap('mock');
-    expect(bootstrap).toContain('globalThis.phonix');
+    expect(bootstrap).toContain('globalThis.axon');
     expect(bootstrap).toContain('globalThis._STD_');
   });
 
@@ -50,7 +50,7 @@ describe('generateRuntimeBootstrap', () => {
     expect(() => new Function(bootstrap)).not.toThrow();
   });
 
-  it('mock bootstrap should set up phonix.http.GET and phonix.http.POST', () => {
+  it('mock bootstrap should set up axon.http.GET and axon.http.POST', () => {
     const bootstrap = generateRuntimeBootstrap('mock');
     expect(bootstrap).toContain('http');
     expect(bootstrap).toContain('GET');

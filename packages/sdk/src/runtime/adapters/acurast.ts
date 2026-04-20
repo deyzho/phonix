@@ -2,7 +2,7 @@
  * Acurast runtime bootstrap.
  *
  * Returns a JavaScript string that is prepended to the deployment bundle.
- * It maps `globalThis.phonix` to the Acurast TEE's `_STD_` global,
+ * It maps `globalThis.axon` to the Acurast TEE's `_STD_` global,
  * providing a provider-agnostic interface to templates.
  *
  * Also keeps `_STD_` itself intact for backward compatibility with templates
@@ -37,7 +37,7 @@ export function acurastRuntimeBootstrap(): string {
       _STD_.fulfill(result, contentType, destinations, onSuccess, onError);
     },
   };
-  if (typeof globalThis !== 'undefined') globalThis.phonix = _ph;
+  if (typeof globalThis !== 'undefined') globalThis.axon = _ph;
 })();
 // ─────────────────────────────────────────────────────────────────────────────
 `;

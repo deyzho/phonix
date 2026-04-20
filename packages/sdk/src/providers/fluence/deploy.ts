@@ -2,7 +2,7 @@
  * Fluence deployment helpers.
  *
  * Flow:
- *  1. Bundle the entry file with esbuild (IIFE, phonix runtime prepended)
+ *  1. Bundle the entry file with esbuild (IIFE, axon runtime prepended)
  *  2. Write to a temp directory as a Fluence spell JS file
  *  3. Shell out to the `fluence` CLI to deploy the spell
  *  4. Parse output for deal ID and worker peer IDs
@@ -60,7 +60,7 @@ async function bundleForFluence(
     format: 'iife',
     write: false,
     minify: false,
-    globalName: '__phonix_bundle',
+    globalName: '__axon_bundle',
     define: defines,
   });
 
@@ -188,7 +188,7 @@ export async function fluenceDeploy(options: FluenceDeployOptions): Promise<Depl
   }
 
   // Write to temp dir as a spell JS file
-  const tmpDir = await mkdtemp(join(tmpdir(), 'phonix-fluence-'));
+  const tmpDir = await mkdtemp(join(tmpdir(), 'axon-fluence-'));
   const spellPath = join(tmpDir, 'spell.js');
   await writeFile(spellPath, bundledCode, 'utf8');
 
