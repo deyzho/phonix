@@ -1,6 +1,6 @@
 {
   "name": "@axonsdk/inference",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "OpenAI-compatible inference endpoint that automatically routes requests to the fastest, cheapest available compute backend.",
   "type": "module",
   "main": "./dist/index.js",
@@ -51,7 +51,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@axonsdk/sdk": "^0.2.0"
+    "@axonsdk/sdk": "^0.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.39",
