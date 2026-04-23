@@ -1,8 +1,8 @@
 {
-  "name": "axon",
-  "version": "0.1.0",
+  "name": "@axonsdk/monorepo",
+  "version": "0.0.0",
   "private": true,
-  "description": "Universal AI compute routing SDK — deploy inference to any provider from one interface.",
+  "description": "AxonSDK TypeScript monorepo (workspace root, not published). Published packages live under packages/*.",
   "workspaces": [
     "packages/*",
     "templates/*",

@@ -7,6 +7,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [@axonsdk/mobile@0.2.7] — 2026-04-22
+
+### Changed
+- **Packaging:** rebuilt to ship compiled JavaScript + TypeScript declarations under `dist/` instead of raw TypeScript sources. Consumers now get pre-compiled `./dist/index.js` and `./dist/index.d.ts`; the old `./src/index.ts` entry points are removed. Metro/Expo, Vite, and plain Node consumers all work with the new output.
+
+### Migration
+No source change required for typical users. If you imported from a subpath of the package (e.g. `@axonsdk/mobile/src/hooks`), switch to the top-level import: `import { useAxon } from '@axonsdk/mobile'`. The internal file layout is no longer a stable interface.
+
+---
+
 ## [@axonsdk/mobile@0.2.6] — 2026-04-22
 
 ### Fixed
