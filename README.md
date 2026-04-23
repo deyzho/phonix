@@ -386,7 +386,7 @@ axon/
 
 ```bash
 git clone https://github.com/deyzho/axon-ts.git
-cd axon
+cd axon-ts
 npm install
 npm run build
 npm test

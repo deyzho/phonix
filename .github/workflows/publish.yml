@@ -73,6 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
 
     steps:
       - name: Checkout
@@ -94,7 +95,7 @@ jobs:
 
       - name: Publish @axonsdk/sdk
         working-directory: packages/sdk
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -104,7 +105,7 @@ jobs:
 
       - name: Publish @axonsdk/inference
         working-directory: packages/inference
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -114,7 +115,7 @@ jobs:
 
       - name: Publish @axonsdk/mobile
         working-directory: packages/mobile
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -128,7 +129,7 @@ jobs:
 
       - name: Publish @axonsdk/cli
         working-directory: packages/cli
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

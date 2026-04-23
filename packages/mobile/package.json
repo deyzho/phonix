@@ -1,6 +1,6 @@
 {
   "name": "@axonsdk/mobile",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "React Native / Expo SDK for calling AI inference endpoints from iOS and Android apps — with automatic routing, failover, and secure key storage.",
   "private": false,
   "type": "module",
@@ -50,7 +50,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@axonsdk/sdk": "*"
+    "@axonsdk/sdk": "^0.3.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

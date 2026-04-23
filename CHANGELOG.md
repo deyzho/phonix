@@ -7,6 +7,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [@axonsdk/mobile@0.2.6] — 2026-04-22
+
+### Fixed
+- **Dependency pin:** `@axonsdk/sdk` dependency changed from floating `"*"` to `"^0.3.0"`. The floating range silently pulled in whichever sdk version was latest on the registry, including future breaking releases. Consumers on prior `@axonsdk/mobile` versions are unaffected at runtime but should upgrade to `0.2.6` for a stable transitive pin.
+
+---
+
 ## [@axonsdk/sdk@0.3.0] — 2026-04-20
 
 ### Changed — Breaking
