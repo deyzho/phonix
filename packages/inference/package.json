@@ -54,8 +54,8 @@
     "@axonsdk/sdk": "^0.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20.19.39",
-    "typescript": "^5.4.0",
-    "vitest": "^1.6.1"
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
   }
 }
